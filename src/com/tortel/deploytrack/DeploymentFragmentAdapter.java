@@ -13,7 +13,6 @@ public class DeploymentFragmentAdapter extends FragmentPagerAdapter {
 	private List<Deployment> deployments;
 	private DatabaseManager db;
 	
-	
 	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm);
 		db = DatabaseManager.getInstance(context);
@@ -22,8 +21,7 @@ public class DeploymentFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		// TODO Create fragment class
-		return null;
+		return DeploymentFragment.newInstance(deployments.get(position));
 	}
 
 	@Override
