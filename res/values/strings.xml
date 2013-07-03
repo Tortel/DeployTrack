@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Deployment Tracker</string>
-    <string name="hello_world">Hello world!</string>
     
+    <!-- Menu -->
     <string name="settings">Settings</string>
     <string name="add_new">Add New</string>
+    
+    <!-- Display fragment strings -->
+    <string name="days_complete"> days complete, </string>
+    <string name="days_left"> days left</string>
+    <string name="to"> to </string>
 
 </resources>
