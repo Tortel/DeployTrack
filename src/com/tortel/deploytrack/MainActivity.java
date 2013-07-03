@@ -1,11 +1,13 @@
 package com.tortel.deploytrack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
@@ -37,6 +39,17 @@ public class MainActivity extends SherlockFragmentActivity {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		settingsMenu = menu;
 		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_create_new:
+			Intent intent = new Intent(this, CreateActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	@Override

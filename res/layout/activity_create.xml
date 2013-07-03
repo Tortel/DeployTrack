@@ -15,6 +15,7 @@
             android:text="@string/name"/>
         
         <EditText
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dip"
@@ -115,16 +116,5 @@
                 android:text="@string/save"
                 android:enabled="false" />
         </LinearLayout>
-    
-    <!-- Disabled until I find the drawable
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/dialog_divider_horizontal_holo_light"
-            android:paddingBottom="5dip" />
-     -->
-     
-    
     </LinearLayout>
-
 </RelativeLayout>
