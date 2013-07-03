@@ -7,3 +7,6 @@
 [submodule "HoloGraphLibrary"]
 	path = HoloGraphLibrary
 	url = https://bitbucket.org/danielnadeau/holographlibrary.git
+[submodule "ViewPagerIndicator"]
+	path = ViewPagerIndicator
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
