@@ -1,18 +1,34 @@
 package com.tortel.deploytrack;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.PageIndicator;
 
 public class MainActivity extends SherlockFragmentActivity {
 	private Menu settingsMenu;
+	
+	private DeploymentFragmentAdapter adapter;
+	private ViewPager pager;
+	private PageIndicator indicator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
+		
+		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
+		indicator.setViewPager(pager);
+		
 	}
 
 	@Override

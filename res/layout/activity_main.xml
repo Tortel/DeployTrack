@@ -4,9 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        />
+    
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:padding="10dip"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_width="match_parent"
+        />
 
 </LinearLayout>
