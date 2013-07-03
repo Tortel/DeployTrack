@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Deployment Tracker</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="settings">Settings</string>
+    <string name="add_new">Add New</string>
 
 </resources>
