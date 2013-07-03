@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:text="@string/name"/>
+        
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences"
+            />
+       
+    <!-- Disabled until I find the drawable
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_divider_horizontal_holo_light" />
+    -->
+    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+    
+            <Button
+                android:id="@+id/button_start"
+                style="@style/Widget.Sherlock.ActionButton"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:onClick="onClick"
+                android:text="@string/start_date" />
+    
+            <!-- Disabled until I find the drawable
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="@drawable/divider_vertical_holo_light" />
+            -->
+    
+            <Button
+                android:id="@+id/button_end"
+                style="@style/Widget.Sherlock.ActionButton"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:onClick="onClick"
+                android:text="@string/end_date"
+                android:enabled="false" />
+        </LinearLayout>
+    
+    <!-- Disabled until I find the drawable
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_divider_horizontal_holo_light"
+            android:paddingBottom="5dip" />
+     -->
+     
+    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+       
+    <!-- Disabled until I find the drawable
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_divider_horizontal_holo_light" />
+    -->
+    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+    
+            <Button
+                android:id="@+id/button_cancel"
+                style="@style/Widget.Sherlock.ActionButton"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:onClick="onClick"
+                android:text="@string/cancel" />
+    
+            <!-- Disabled until I find the drawable
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:background="@drawable/divider_vertical_holo_light" />
+            -->
+    
+            <Button
+                android:id="@+id/button_save"
+                style="@style/Widget.Sherlock.ActionButton"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:onClick="onClick"
+                android:text="@string/save"
+                android:enabled="false" />
+        </LinearLayout>
+    
+    <!-- Disabled until I find the drawable
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_divider_horizontal_holo_light"
+            android:paddingBottom="5dip" />
+     -->
+     
+    
+    </LinearLayout>
+
+</RelativeLayout>
