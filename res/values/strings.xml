@@ -24,4 +24,8 @@
     <string name="invalid_name">Please enter a valid name</string>
     <string name="invalid_start">Start date is not before end date!</string>
     <string name="invalid_end">End date is not after start date!</string>
+    
+    <!-- Info fragment text -->
+    <string name="howto_add">To add data, open the menu and select \"Create New\"! \n
+        You may need to swipe right for the new data to load.</string>
 </resources>

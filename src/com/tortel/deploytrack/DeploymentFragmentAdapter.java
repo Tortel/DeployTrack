@@ -20,22 +20,29 @@ public class DeploymentFragmentAdapter extends FragmentPagerAdapter {
 	}
 	
 	public void reload(){
+		Log.d("Reloading data");
 		deployments = db.getAllDeployments();
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
+		if(deployments.size() == position){
+			return new NoDataFragment();
+		}
 		return DeploymentFragment.newInstance(deployments.get(position));
 	}
 
 	@Override
 	public int getCount() {
-		return deployments.size();
+		return deployments.size() + 1;
 	}
 	
 	@Override
 	public CharSequence getPageTitle(int position){
+		if(deployments.size() == position){
+			return "Welcome";
+		}
 		return deployments.get(position).getName();
 	}
 

@@ -32,11 +32,13 @@ public class MainActivity extends SherlockFragmentActivity {
 		indicator.setViewPager(pager);
 	}
 	
+	@Override
 	public void onResume(){
 		super.onResume();
 		//Reload the data
 		if(adapter != null){
 			adapter.reload();
+			pager.invalidate();
 		}
 	}
 
