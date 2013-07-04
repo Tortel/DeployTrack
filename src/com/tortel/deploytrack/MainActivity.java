@@ -35,11 +35,9 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		//Reload the data
-		if(adapter != null){
-			adapter.reload();
-			pager.setAdapter(adapter);
-		}
+		adapter.reload();
+		pager.setAdapter(adapter);
+		indicator.setViewPager(pager);
 	}
 
 	@Override
