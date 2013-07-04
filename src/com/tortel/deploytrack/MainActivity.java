@@ -108,7 +108,8 @@ public class MainActivity extends SherlockFragmentActivity {
 			dialog.show();
 			return true;
 		case R.id.menu_about:
-			//TODO: About dialog
+			AboutDialogFragment about = new AboutDialogFragment();
+			about.show(getSupportFragmentManager(), "about");
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);

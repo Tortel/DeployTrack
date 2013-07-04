@@ -27,6 +27,7 @@
     
     <!-- Confirmation Dialog -->
     <string name="confirm">Are you sure?</string>
+    <string name="close">Close</string>
     
     <!-- Titles for the create/edit activity -->
     <string name="edit">Edit</string>
