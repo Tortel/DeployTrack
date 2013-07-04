@@ -2,33 +2,26 @@ package com.tortel.deploytrack;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.squareup.timessquare.CalendarPickerView;
-import com.squareup.timessquare.CalendarPickerView.SelectionMode;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.tortel.deploytrack.data.*;
 
 /**
  * Activity for creating a new Deployment
  */
 public class CreateActivity extends SherlockFragmentActivity {
-	private Date start;
-	private Date end;
+	private Calendar start;
+	private Calendar end;
 	private EditText nameEdit;
 	private Button startButton;
 	private Button endButton;
@@ -48,6 +41,10 @@ public class CreateActivity extends SherlockFragmentActivity {
 		startButton = (Button) findViewById(R.id.button_start);
 		endButton = (Button) findViewById(R.id.button_end);
 		saveButton = (Button) findViewById(R.id.button_save);
+		
+		start = Calendar.getInstance();
+		end = Calendar.getInstance();
+		end.add(Calendar.YEAR, 20);
 	}
 	
 	public void onClick(View v){
@@ -65,8 +62,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			}
 			//Create it
 			Deployment tmp = new Deployment();
-			tmp.setStartDate(start);
-			tmp.setEndDate(end);
+			tmp.setStartDate(start.getTime());
+			tmp.setEndDate(end.getTime());
 			tmp.setName(name);
 			//Save it
 			DatabaseManager.getInstance(this).saveDeployment(tmp);
@@ -74,10 +71,38 @@ public class CreateActivity extends SherlockFragmentActivity {
 			finish();
 			return;
 		case R.id.button_start:
-
+			DatePickerDialog startPicker = new DatePickerDialog();
+			startPicker.initialize(new OnDateSetListener(){
+				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
+					start.set(year, month, day, 0, 0);
+					if(start.compareTo(end) < 0){
+						endButton.setEnabled(true);
+						startButton.setText(getResources().getString(R.string.start_date)+
+								"\n"+format.format(start.getTime())); 
+					} else {
+						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
+						saveButton.setEnabled(false);
+					}
+				}
+			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
+			startPicker.show(fm, "startPicker");
 			return;
 		case R.id.button_end:
-
+			DatePickerDialog endPicker = new DatePickerDialog();
+			endPicker.initialize(new OnDateSetListener(){
+				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
+					end.set(year, month, day, 0, 0);
+					if(end.compareTo(start) > 0){
+						saveButton.setEnabled(true);
+						endButton.setText(getResources().getString(R.string.end_date)+
+								"\n"+format.format(end.getTime())); 
+					} else {
+						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
+						saveButton.setEnabled(false);
+					}
+				}
+			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
+			endPicker.show(fm, "endPicker");
 			return;
 		}
 	}

@@ -39,6 +39,11 @@ public class DeploymentFragment extends SherlockFragment {
 		Resources resources = getActivity().getResources();
 		
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
+		
+		//Title
+		
+		
+		//Date range
 		TextView dateRange = (TextView) view.findViewById(R.id.daterange);
 		dateRange.setText(deployment.getFormattedStart()
 				+resources.getString(R.string.to)
@@ -47,12 +52,12 @@ public class DeploymentFragment extends SherlockFragment {
 		//Figure out the percentage
 		DateTime now = new DateTime();
 		int days = Days.daysBetween(deployment.getStart(), deployment.getEnd()).getDays();
-		double percent = 0;
+		int percent = 0;
 		int completed = 0;
 		
 		if(now.compareTo(deployment.getStart()) > 0){
 			completed = Days.daysBetween(deployment.getStart(), now).getDays();
-			percent = (double) completed / (double) days;
+			percent = (int) ((double) completed / (double) days * 100);
 		}
 		
 		//Days completed, days left
