@@ -35,6 +35,7 @@
             <Button
                 android:id="@+id/button_start"
                 style="@style/Widget.Sherlock.ActionButton"
+                android:textColor="@android:color/white"
                 android:layout_width="0dip"
                 android:layout_height="75dip"
                 android:layout_weight="0.45"
@@ -49,6 +50,7 @@
             <Button
                 android:id="@+id/button_end"
                 style="@style/Widget.Sherlock.ActionButton"
+                android:textColor="@android:color/white"
                 android:layout_width="0dip"
                 android:layout_height="75dip"
                 android:layout_weight="0.45"
@@ -71,6 +73,7 @@
             <Button
                 android:id="@+id/button_cancel"
                 style="@style/Widget.Sherlock.ActionButton"
+                android:textColor="@android:color/white"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
@@ -85,6 +88,7 @@
             <Button
                 android:id="@+id/button_save"
                 style="@style/Widget.Sherlock.ActionButton"
+                android:textColor="@android:color/white"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"

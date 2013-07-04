@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -42,9 +43,22 @@ public class CreateActivity extends SherlockFragmentActivity {
 		endButton = (Button) findViewById(R.id.button_end);
 		saveButton = (Button) findViewById(R.id.button_save);
 		
+		disableButton(endButton);
+		disableButton(saveButton);
+		
 		start = Calendar.getInstance();
-		end = Calendar.getInstance();
+		end = (Calendar) start.clone();
 		end.add(Calendar.YEAR, 20);
+	}
+	
+	private void disableButton(Button button){
+		button.setEnabled(false);
+		button.setTextColor(Color.DKGRAY);
+	}
+	
+	private void enableButton(Button button){
+		button.setEnabled(true);
+		button.setTextColor(Color.WHITE);
 	}
 	
 	public void onClick(View v){
@@ -76,12 +90,12 @@ public class CreateActivity extends SherlockFragmentActivity {
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					start.set(year, month, day, 0, 0);
 					if(start.compareTo(end) < 0){
-						endButton.setEnabled(true);
+						enableButton(endButton);
 						startButton.setText(getResources().getString(R.string.start_date)+
 								"\n"+format.format(start.getTime())); 
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-						saveButton.setEnabled(false);
+						disableButton(saveButton);
 					}
 				}
 			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
@@ -93,12 +107,12 @@ public class CreateActivity extends SherlockFragmentActivity {
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					end.set(year, month, day, 0, 0);
 					if(end.compareTo(start) > 0){
-						saveButton.setEnabled(true);
+						enableButton(saveButton);
 						endButton.setText(getResources().getString(R.string.end_date)+
 								"\n"+format.format(end.getTime())); 
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-						saveButton.setEnabled(false);
+						disableButton(saveButton);
 					}
 				}
 			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));

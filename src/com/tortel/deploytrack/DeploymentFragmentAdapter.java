@@ -18,6 +18,11 @@ public class DeploymentFragmentAdapter extends FragmentPagerAdapter {
 		db = DatabaseManager.getInstance(context);
 		deployments = db.getAllDeployments();
 	}
+	
+	public void reload(){
+		deployments = db.getAllDeployments();
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public Fragment getItem(int position) {

@@ -30,7 +30,14 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
-		
+	}
+	
+	public void onResume(){
+		super.onResume();
+		//Reload the data
+		if(adapter != null){
+			adapter.reload();
+		}
 	}
 
 	@Override

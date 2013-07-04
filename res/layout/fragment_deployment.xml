@@ -27,7 +27,8 @@
         <com.echo.holographlibrary.PieGraph
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="400dip"
+            android:layout_height="300dip"
+            android:padding="5dip"
             />
         
         <TextView 
