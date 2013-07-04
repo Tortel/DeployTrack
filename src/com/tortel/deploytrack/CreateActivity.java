@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.larswerkman.colorpicker.ColorPicker;
+import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
 import com.tortel.deploytrack.data.*;
 
 /**
@@ -27,6 +29,10 @@ public class CreateActivity extends SherlockFragmentActivity {
 	private Button startButton;
 	private Button endButton;
 	private Button saveButton;
+	
+	//Colors
+	private int completedColor;
+	private int remainingColor;
 	
 	private SimpleDateFormat format;
 	
@@ -49,6 +55,18 @@ public class CreateActivity extends SherlockFragmentActivity {
 		start = Calendar.getInstance();
 		end = (Calendar) start.clone();
 		end.add(Calendar.YEAR, 20);
+		
+		completedColor = Color.GREEN;
+		remainingColor = Color.RED;
+		
+		//Color pickers
+		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
+		completedPicker.setColor(completedColor);
+		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
+		
+		ColorPicker remainingPicker = (ColorPicker) findViewById(R.id.picker_remain);
+		remainingPicker.setColor(remainingColor);
+		remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
 	}
 	
 	private void disableButton(Button button){
@@ -118,6 +136,23 @@ public class CreateActivity extends SherlockFragmentActivity {
 			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
 			endPicker.show(fm, "endPicker");
 			return;
+		}
+	}
+	
+	/*
+	 * Classes to listen for color changes
+	 */
+	private class CompletedColorChangeListener implements OnColorChangedListener{
+		@Override
+		public void onColorChanged(int color) {
+			completedColor = color;
+		}
+	}
+	
+	private class RemainingColorChangeListener implements OnColorChangedListener{
+		@Override
+		public void onColorChanged(int color) {
+			remainingColor = color;
 		}
 	}
 }
