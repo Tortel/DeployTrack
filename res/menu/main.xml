@@ -9,7 +9,26 @@
                 <item
                     android:id="@+id/menu_create_new"
                     android:showAsAction="never"
-                    android:title="@string/add_new"/>
+                    android:title="@string/add_new"
+                    />
+
+                <item
+                    android:id="@+id/menu_edit"
+                    android:showAsAction="never"
+                    android:title="@string/edit"
+                    />
+
+                <item
+                    android:id="@+id/menu_delete"
+                    android:showAsAction="never"
+                    android:title="@string/delete"
+                    />
+
+                <item
+                    android:id="@+id/menu_about"
+                    android:showAsAction="never"
+                    android:title="@string/about"
+                    />
             </group>
         </menu>
     </item>

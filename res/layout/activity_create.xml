@@ -55,8 +55,7 @@
                 android:layout_height="75dip"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
-                android:text="@string/end_date"
-                android:enabled="false" />
+                android:text="@string/end_date" />
         </LinearLayout>
     
 	    <View
@@ -68,7 +67,7 @@
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Completed color:" />
+	        android:text="@string/color_completed" />
 	        
 	    <com.larswerkman.colorpicker.ColorPicker
 		    android:id="@+id/picker_completed"
@@ -79,7 +78,7 @@
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Remaining color:" />
+	        android:text="@string/color_remaining" />
 	        
 	    <com.larswerkman.colorpicker.ColorPicker
 		    android:id="@+id/picker_remain"
@@ -121,8 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
-                android:text="@string/save"
-                android:enabled="false" />
+                android:text="@string/save" />
         </LinearLayout>
         
 	    <View

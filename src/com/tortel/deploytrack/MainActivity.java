@@ -11,12 +11,18 @@ import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
+/**
+ * The main activity that contains the fragments that show the graphs.
+ * Also handles the options menu
+ */
 public class MainActivity extends SherlockFragmentActivity {
 	private Menu settingsMenu;
 	
 	private DeploymentFragmentAdapter adapter;
 	private ViewPager pager;
 	private PageIndicator indicator;
+	
+	private int currentPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
+		indicator.setOnPageChangeListener(new PageChangeListener());
 	}
 	
 	@Override
@@ -50,10 +57,32 @@ public class MainActivity extends SherlockFragmentActivity {
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		Intent intent = null;
+		int id = adapter.getId(currentPosition);
+		
 		switch (item.getItemId()) {
 		case R.id.menu_create_new:
-			Intent intent = new Intent(this, CreateActivity.class);
+			intent = new Intent(this, CreateActivity.class);
 			startActivity(intent);
+			return true;
+		case R.id.menu_edit:
+			//If its the info fragment, ignore
+			if(id == -1){
+				return true;
+			}
+			intent = new Intent(this, CreateActivity.class);
+			intent.putExtra("id", id);
+			startActivity(intent);
+			return true;
+		case R.id.menu_delete:
+			//If its the info fragment, ignore
+			if(id == -1){
+				return true;
+			}
+			//TODO: Confirmation dialog, delete, reload
+			return true;
+		case R.id.menu_about:
+			//TODO: About dialog
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
@@ -66,7 +95,26 @@ public class MainActivity extends SherlockFragmentActivity {
 			settingsMenu.performIdentifierAction(R.id.full_menu_settings, 0);
 			return true; 
 		}
-		
 		return super.onKeyUp(keyCode, e);
+	}
+	
+	/**
+	 * Class to listen for page changes.
+	 * The page number is used for editing and deleting data
+	 */
+	private class PageChangeListener implements ViewPager.OnPageChangeListener{
+		@Override
+		public void onPageSelected(int position) {
+			currentPosition = position;
+		}
+		
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			//Ignore
+		}
+		@Override
+		public void onPageScrollStateChanged(int state) {
+			//Ignore
+		}
 	}
 }

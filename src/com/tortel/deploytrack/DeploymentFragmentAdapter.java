@@ -24,6 +24,19 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		deployments = db.getAllDeployments();
 		notifyDataSetChanged();
 	}
+	
+	/**
+	 * Get the ID of the deployment at the provided position.
+	 * Returns -1 if it is the info fragment
+	 * @param position
+	 * @return
+	 */
+	public int getId(int position){
+		if(position == deployments.size()){
+			return -1;
+		}
+		return deployments.get(position).getId();
+	}
 
 	@Override
 	public Fragment getItem(int position) {

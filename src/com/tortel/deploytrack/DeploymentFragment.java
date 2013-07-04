@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

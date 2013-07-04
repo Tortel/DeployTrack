@@ -36,6 +36,9 @@ public class CreateActivity extends SherlockFragmentActivity {
 	
 	private SimpleDateFormat format;
 	
+	//The data to save;
+	private Deployment deployment;
+	
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -49,24 +52,55 @@ public class CreateActivity extends SherlockFragmentActivity {
 		endButton = (Button) findViewById(R.id.button_end);
 		saveButton = (Button) findViewById(R.id.button_save);
 		
-		disableButton(endButton);
-		disableButton(saveButton);
-		
-		start = Calendar.getInstance();
-		end = (Calendar) start.clone();
-		end.add(Calendar.YEAR, 20);
-		
-		completedColor = Color.GREEN;
-		remainingColor = Color.RED;
-		
 		//Color pickers
 		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
-		completedPicker.setColor(completedColor);
-		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
-		
 		ColorPicker remainingPicker = (ColorPicker) findViewById(R.id.picker_remain);
+		
+		int id = getIntent().getIntExtra("id", -1);
+		if(id >= 0){
+			//Starting in edit mode, load the old data
+			deployment = DatabaseManager.getInstance(this).getDeployment(id);
+			
+			//Set the colors
+			completedColor = deployment.getCompletedColor();
+			remainingColor = deployment.getRemainingColor();
+			
+			//Set the dates
+			start = Calendar.getInstance();
+			end = Calendar.getInstance();
+			
+			start.setTimeInMillis(deployment.getStartDate().getTime());
+			end.setTimeInMillis(deployment.getEndDate().getTime());
+			
+			//Set the buttons
+			startButton.setText(getResources().getString(R.string.start_date)+
+					"\n"+format.format(start.getTime()));
+			endButton.setText(getResources().getString(R.string.end_date)+
+					"\n"+format.format(end.getTime()));
+			
+			//Set the name
+			nameEdit.setText(deployment.getName());
+			
+			getSupportActionBar().setTitle(R.string.edit);
+		} else {
+			deployment = new Deployment();
+			disableButton(endButton);
+			disableButton(saveButton);
+			
+			start = Calendar.getInstance();
+			end = (Calendar) start.clone();
+			end.add(Calendar.YEAR, 20);
+			
+			completedColor = Color.GREEN;
+			remainingColor = Color.RED;
+			
+			getSupportActionBar().setTitle(R.string.add_new);
+		}
+		
 		remainingPicker.setColor(remainingColor);
 		remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
+		completedPicker.setColor(completedColor);
+		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
 	}
 	
 	private void disableButton(Button button){
@@ -92,15 +126,14 @@ public class CreateActivity extends SherlockFragmentActivity {
 				Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
 				return;
 			}
-			//Create it
-			Deployment tmp = new Deployment();
-			tmp.setStartDate(start.getTime());
-			tmp.setEndDate(end.getTime());
-			tmp.setName(name);
-			tmp.setCompletedColor(completedColor);
-			tmp.setRemainingColor(remainingColor);
+			//Set the values
+			deployment.setStartDate(start.getTime());
+			deployment.setEndDate(end.getTime());
+			deployment.setName(name);
+			deployment.setCompletedColor(completedColor);
+			deployment.setRemainingColor(remainingColor);
 			//Save it
-			DatabaseManager.getInstance(this).saveDeployment(tmp);
+			DatabaseManager.getInstance(this).saveDeployment(deployment);
 			//End
 			finish();
 			return;
