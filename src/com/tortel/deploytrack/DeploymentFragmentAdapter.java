@@ -7,9 +7,9 @@ import com.tortel.deploytrack.data.*;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class DeploymentFragmentAdapter extends FragmentPagerAdapter {
+public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private List<Deployment> deployments;
 	private DatabaseManager db;
 	
