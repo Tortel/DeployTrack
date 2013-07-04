@@ -10,3 +10,6 @@
 [submodule "DateTimePicker"]
 	path = DateTimePicker
 	url = https://github.com/biboune/datetimepicker.git
+[submodule "HoloColorPicker"]
+	path = HoloColorPicker
+	url = https://github.com/LarsWerkman/HoloColorPicker.git
