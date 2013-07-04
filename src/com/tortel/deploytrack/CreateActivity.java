@@ -97,6 +97,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			tmp.setStartDate(start.getTime());
 			tmp.setEndDate(end.getTime());
 			tmp.setName(name);
+			tmp.setCompletedColor(completedColor);
+			tmp.setRemainingColor(remainingColor);
 			//Save it
 			DatabaseManager.getInstance(this).saveDeployment(tmp);
 			//End

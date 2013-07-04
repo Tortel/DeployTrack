@@ -38,7 +38,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		//Reload the data
 		if(adapter != null){
 			adapter.reload();
-			pager.invalidate();
+			pager.setAdapter(adapter);
 		}
 	}
 

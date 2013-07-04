@@ -21,8 +21,10 @@ public class Deployment {
 	private Date startDate;
 	@DatabaseField
 	private Date endDate;
-	
-	//TODO: Maybe custom colors later?
+	@DatabaseField
+	private int completedColor;
+	@DatabaseField
+	private int remainingColor;
 	
 	public String getFormattedStart(){
 		if(format == null){
@@ -75,5 +77,17 @@ public class Deployment {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public int getCompletedColor() {
+		return completedColor;
+	}
+	public void setCompletedColor(int completedColor) {
+		this.completedColor = completedColor;
+	}
+	public int getRemainingColor() {
+		return remainingColor;
+	}
+	public void setRemainingColor(int remainingColor) {
+		this.remainingColor = remainingColor;
 	}
 }
