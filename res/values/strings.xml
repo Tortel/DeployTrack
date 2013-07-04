@@ -25,6 +25,9 @@
     <string name="color_completed">Completed color:</string>
     <string name="color_remaining">Remaining color:</string>
     
+    <!-- Confirmation Dialog -->
+    <string name="confirm">Are you sure?</string>
+    
     <!-- Titles for the create/edit activity -->
     <string name="edit">Edit</string>
     

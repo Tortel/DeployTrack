@@ -1,5 +1,7 @@
 package com.tortel.deploytrack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -8,6 +10,7 @@ import android.view.KeyEvent;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.tortel.deploytrack.data.DatabaseManager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
@@ -42,6 +45,10 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
+		reload();
+	}
+	
+	private void reload(){
 		adapter.reload();
 		pager.setAdapter(adapter);
 		indicator.setViewPager(pager);
@@ -58,7 +65,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		Intent intent = null;
-		int id = adapter.getId(currentPosition);
+		final int id = adapter.getId(currentPosition);
 		
 		switch (item.getItemId()) {
 		case R.id.menu_create_new:
@@ -79,7 +86,26 @@ public class MainActivity extends SherlockFragmentActivity {
 			if(id == -1){
 				return true;
 			}
-			//TODO: Confirmation dialog, delete, reload
+			//show a nice confirmation dialog
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.confirm);
+			builder.setTitle(R.string.delete);
+			builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//Delete it
+					DatabaseManager.getInstance(getApplicationContext()).deleteDeployment(id);
+					reload();
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// No op
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
 			return true;
 		case R.id.menu_about:
 			//TODO: About dialog

@@ -63,6 +63,19 @@ public class DatabaseManager {
     	}
     	return tmp;
     }
+    
+    /**
+     * Delete a specific Deployment from the database
+     * @param id
+     * @return
+     */
+    public void deleteDeployment(int id){
+    	try{
+    		helper.getDeploymentDao().deleteById(id);
+    	} catch(SQLException e){
+    		Log.e("Exception getting Deployment", e);
+    	}
+    }
 
     /**
      * Clear the entire database
