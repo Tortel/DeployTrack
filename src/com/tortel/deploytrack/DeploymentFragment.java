@@ -56,9 +56,16 @@ public class DeploymentFragment extends SherlockFragment {
 		int percent = 0;
 		int completed = 0;
 		
+		//Check if its started
 		if(now.compareTo(deployment.getStart()) > 0){
 			completed = Days.daysBetween(deployment.getStart(), now).getDays();
 			percent = (int) ((double) completed / (double) days * 100);
+		}
+		
+		//Extra check for completed events
+		if(now.compareTo(deployment.getEnd()) >= 0) {
+			completed = days;
+			percent = 100;
 		}
 		
 		//Days completed, days left
