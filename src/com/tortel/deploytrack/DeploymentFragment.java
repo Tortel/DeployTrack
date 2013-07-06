@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
 
 /**
@@ -48,6 +49,7 @@ public class DeploymentFragment extends SherlockFragment {
 		return fragment;
 	}
 	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
 		Resources resources = getActivity().getResources();
@@ -108,5 +110,20 @@ public class DeploymentFragment extends SherlockFragment {
 		pie.addSlice(togoSlice);
 		
 		return view;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if(savedInstanceState != null){
+			int id = savedInstanceState.getInt("id");
+			deployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("id", deployment.getId());
 	}
 }

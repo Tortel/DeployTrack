@@ -34,6 +34,8 @@ import com.viewpagerindicator.PageIndicator;
  * Also handles the options menu
  */
 public class MainActivity extends SherlockFragmentActivity {
+	private static String KEY_POSITION = "position";
+	
 	private Menu settingsMenu;
 	
 	private DeploymentFragmentAdapter adapter;
@@ -47,14 +49,13 @@ public class MainActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		if(savedInstanceState != null){
+			currentPosition = savedInstanceState.getInt(KEY_POSITION);
+		} else {
+			currentPosition = 0;
+		}
 		
-		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setAdapter(adapter);
-		
-		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
-		indicator.setViewPager(pager);
-		indicator.setOnPageChangeListener(new PageChangeListener());
+		reload();
 	}
 	
 	@Override
@@ -64,9 +65,16 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 	
 	private void reload(){
-		adapter.reload();
+		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		
+		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
+		
+		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
+		indicator.setOnPageChangeListener(new PageChangeListener());
+		
+		pager.setCurrentItem(currentPosition);
 	}
 
 	@Override
@@ -130,6 +138,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		return super.onMenuItemSelected(featureId, item);
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(KEY_POSITION, currentPosition);
+	}
+	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent e){
 		switch(keyCode){

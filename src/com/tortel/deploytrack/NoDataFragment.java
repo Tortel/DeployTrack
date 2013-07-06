@@ -37,7 +37,11 @@ public class NoDataFragment extends SherlockFragment {
 		view.setGravity(Gravity.CENTER);
 		return view;
 	}
-	
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("something", true);
+	}
 
 }
