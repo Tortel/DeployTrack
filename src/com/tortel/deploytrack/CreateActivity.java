@@ -35,7 +35,7 @@ import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
 import com.tortel.deploytrack.data.*;
 
 /**
- * Activity for creating a new Deployment
+ * Activity for creating and editing a Deployment
  */
 public class CreateActivity extends SherlockFragmentActivity {
 	private static final String KEY_TIME_START = "start";
