@@ -38,18 +38,32 @@ import com.tortel.deploytrack.data.*;
  * Activity for creating a new Deployment
  */
 public class CreateActivity extends SherlockFragmentActivity {
-	private Calendar start;
-	private Calendar end;
+	private static final String KEY_TIME_START = "start";
+	private static final String KEY_TIME_END = "end";
+	private static final String KEY_SET_START = "startset";
+	private static final String KEY_SET_END = "endset";
+	private static final String KEY_NAME = "name";
+	private static final String KEY_COLOR_COMPLETED = "completed";
+	private static final String KEY_COLOR_REMAINING = "remaining";
+	
 	private EditText nameEdit;
 	private Button startButton;
 	private Button endButton;
 	private Button saveButton;
 	
+	private SimpleDateFormat format;
+	
 	//Colors
 	private int completedColor;
 	private int remainingColor;
 	
-	private SimpleDateFormat format;
+	//Date range
+	private Calendar start;
+	private Calendar end;
+	
+	//Flags for dates
+	private boolean startSet;
+	private boolean endSet;
 	
 	//The data to save;
 	private Deployment deployment;
@@ -86,6 +100,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			
 			start.setTimeInMillis(deployment.getStartDate().getTime());
 			end.setTimeInMillis(deployment.getEndDate().getTime());
+			startSet = true;
+			endSet = true;
 			
 			//Set the buttons
 			startButton.setText(getResources().getString(R.string.start_date)+
@@ -104,12 +120,40 @@ public class CreateActivity extends SherlockFragmentActivity {
 			
 			start = Calendar.getInstance();
 			end = (Calendar) start.clone();
-			end.add(Calendar.YEAR, 20);
+			startSet = false;
+			endSet = false;
 			
 			completedColor = Color.GREEN;
 			remainingColor = Color.RED;
 			
 			getSupportActionBar().setTitle(R.string.add_new);
+		}
+		
+		//If restore from rotation
+		if(savedInstanceState != null){
+			start.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
+			end.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
+			
+			startSet = savedInstanceState.getBoolean(KEY_SET_START);
+			endSet = savedInstanceState.getBoolean(KEY_SET_END);
+			
+			nameEdit.setText(savedInstanceState.getString(KEY_NAME));
+			
+			completedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
+			remainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
+			
+			//Set the date buttons, if set
+			if(startSet){
+				startButton.setText(getResources().getString(R.string.start_date)+
+						"\n"+format.format(start.getTime()));
+				enableButton(endButton);
+			}
+			
+			if(endSet && end.after(start)){
+				endButton.setText(getResources().getString(R.string.end_date)+
+						"\n"+format.format(end.getTime()));
+				enableButton(saveButton);
+			}
 		}
 		
 		remainingPicker.setColor(remainingColor);
@@ -118,16 +162,46 @@ public class CreateActivity extends SherlockFragmentActivity {
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//Save everything
+		outState.putLong(KEY_TIME_START, start.getTimeInMillis());
+		outState.putLong(KEY_TIME_END, end.getTimeInMillis());
+		
+		outState.putBoolean(KEY_SET_START, startSet);
+		outState.putBoolean(KEY_SET_END, endSet);
+		
+		outState.putString(KEY_NAME, nameEdit.getText().toString());
+		
+		outState.putInt(KEY_COLOR_COMPLETED, completedColor);
+		outState.putInt(KEY_COLOR_REMAINING, remainingColor);
+	}
+	
+	/**
+	 * Method to both disable a button, and set
+	 * the text color to gray
+	 * @param button
+	 */
 	private void disableButton(Button button){
 		button.setEnabled(false);
 		button.setTextColor(Color.DKGRAY);
 	}
 	
+	/**
+	 * Method to both enable the button and set the
+	 * text color to white
+	 * @param button
+	 */
 	private void enableButton(Button button){
 		button.setEnabled(true);
 		button.setTextColor(Color.WHITE);
 	}
 	
+	/**
+	 * Method called when the buttons are clicked
+	 * @param v
+	 */
 	public void onClick(View v){
 		FragmentManager fm = getSupportFragmentManager();
 		
@@ -157,7 +231,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			startPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					start.set(year, month, day, 0, 0);
-					if(start.compareTo(end) < 0){
+					if(!endSet || start.before(end)){
+						startSet = true;
 						enableButton(endButton);
 						startButton.setText(getResources().getString(R.string.start_date)+
 								"\n"+format.format(start.getTime())); 
@@ -174,7 +249,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			endPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					end.set(year, month, day, 0, 0);
-					if(end.compareTo(start) > 0){
+					if(end.after(start)){
+						endSet = true;
 						enableButton(saveButton);
 						endButton.setText(getResources().getString(R.string.end_date)+
 								"\n"+format.format(end.getTime())); 
