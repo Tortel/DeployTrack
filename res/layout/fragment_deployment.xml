@@ -40,10 +40,10 @@ limitations under the License.
             android:gravity="center"
             />
         
-        <com.echo.holographlibrary.PieGraph
+        <com.tortel.deploytrack.view.CustomPieGraph
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="300dip"
+            android:layout_height="wrap_content"
             android:padding="5dip"
             />
         
