@@ -96,10 +96,6 @@ public class DeploymentFragment extends SherlockFragment {
 		//Fill the graph
 		PieGraph pie = (PieGraph) view.findViewById(R.id.graph);
 		
-		//Fill it
-		pie.setThickness(150);
-		
-		
 		PieSlice completedSlice = new PieSlice();
 		completedSlice.setColor(deployment.getCompletedColor());
 		completedSlice.setValue(completed);
