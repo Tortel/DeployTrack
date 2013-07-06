@@ -41,6 +41,10 @@ public class NoDataFragment extends SherlockFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		/*
+		 * This is a fix for some stupid bug:
+		 * http://code.google.com/p/android/issues/detail?id=19917
+		 */
 		outState.putBoolean("something", true);
 	}
 
