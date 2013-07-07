@@ -27,9 +27,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private List<Deployment> deployments;
 	private DatabaseManager db;
+	private Context context;
 	
 	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm);
+		this.context = context.getApplicationContext();
 		db = DatabaseManager.getInstance(context);
 		deployments = db.getAllDeployments();
 	}
@@ -47,7 +49,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	 * @return
 	 */
 	public int getId(int position){
-		if(position == deployments.size()){
+		if(deployments.size() == 0){
 			return -1;
 		}
 		return deployments.get(position).getId();
@@ -63,13 +65,16 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		return deployments.size() + 1;
+		if(deployments.size() == 0){
+			return 1;
+		}
+		return deployments.size();
 	}
 	
 	@Override
 	public CharSequence getPageTitle(int position){
-		if(deployments.size() == position){
-			return "Welcome";
+		if(deployments.size() == 0){
+			return context.getText(R.string.info);
 		}
 		return deployments.get(position).getName();
 	}
