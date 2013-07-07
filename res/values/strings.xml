@@ -31,6 +31,7 @@ limitations under the License.
     <!-- Generic strings -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="info">Info</string>
     
     <!-- Create strings -->
     <string name="name">Name:</string>
