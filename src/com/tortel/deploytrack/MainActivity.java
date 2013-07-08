@@ -26,8 +26,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tortel.deploytrack.data.DatabaseManager;
-import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 /**
  * The main activity that contains the fragments that show the graphs.
@@ -70,11 +70,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
 		
-		indicator = (CirclePageIndicator) findViewById(R.id.indicator);
+		indicator = (TitlePageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
 		
 		pager.setCurrentItem(currentPosition);
+		indicator.notifyDataSetChanged();
 	}
 
 	@Override

@@ -20,26 +20,10 @@ limitations under the License.
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dip"
+        android:paddingTop="5dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
         android:orientation="vertical" >
-        
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:gravity="center"
-            android:textStyle="italic"
-            />
-        
-        <TextView
-            android:id="@+id/daterange"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:textStyle="bold"
-            android:gravity="center"
-            />
         
         <com.tortel.deploytrack.view.CustomPieGraph
             android:id="@+id/graph"
@@ -56,6 +40,15 @@ limitations under the License.
             android:textSize="25sp"
             android:gravity="center"
             android:textStyle="bold|italic"
+            />
+        
+        <TextView
+            android:id="@+id/daterange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:textStyle="bold"
+            android:gravity="center"
             />
     
         <TextView 
