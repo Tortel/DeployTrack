@@ -21,10 +21,17 @@ public class CustomPieGraph extends PieGraph {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+		int size;
+		if(MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY){
+			size = widthMeasureSpec;
+		} else {
+			size = heightMeasureSpec;
+		}
+		
+		super.onMeasure(size, size);
 		
 		// Make the graph mostly a filled circle
-		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+		int widthSize = MeasureSpec.getSize(size);
 		int graphThickness = widthSize / 3;
 		Log.v("Thickness: "+graphThickness);
 		setThickness(graphThickness);
