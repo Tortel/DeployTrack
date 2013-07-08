@@ -24,6 +24,7 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="5dip"
+            android:gravity="center"
             />
         
         <LinearLayout
@@ -41,6 +42,16 @@ limitations under the License.
 	            android:textStyle="italic"
 	            />
 	        
+	        <TextView 
+	            android:id="@+id/percentage"
+	            android:layout_height="wrap_content"
+	            android:layout_width="match_parent"
+	            android:textSize="25sp"
+	            android:padding="5dip"
+	            android:gravity="center"
+	            android:textStyle="bold|italic"
+	            />
+			
 	        <TextView
 	            android:id="@+id/daterange"
 	            android:layout_width="match_parent"
@@ -48,15 +59,6 @@ limitations under the License.
 	            android:padding="5dip"
 	            android:textStyle="bold"
 	            android:gravity="center"
-	            />
-	        
-	        <TextView 
-	            android:id="@+id/percentage"
-	            android:layout_height="wrap_content"
-	            android:layout_width="match_parent"
-	            android:padding="5dip"
-	            android:gravity="center"
-	            android:textStyle="bold|italic"
 	            />
 	    
 	        <TextView 
