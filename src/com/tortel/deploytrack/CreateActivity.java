@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.larswerkman.colorpicker.ColorPicker;
@@ -73,6 +74,7 @@ public class CreateActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		format = new SimpleDateFormat("MMM dd, yyyy");
 		
@@ -176,6 +178,17 @@ public class CreateActivity extends SherlockFragmentActivity {
 		
 		outState.putInt(KEY_COLOR_COMPLETED, completedColor);
 		outState.putInt(KEY_COLOR_REMAINING, remainingColor);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+		//Finish on the icon 'up' pressed
+		case android.R.id.home:
+			this.finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	/**
