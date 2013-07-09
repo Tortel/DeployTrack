@@ -47,6 +47,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
 	
+	private static final int NAME_LENGTH = 15;
+	
 	private EditText nameEdit;
 	private Button startButton;
 	private Button endButton;
@@ -232,6 +234,10 @@ public class CreateActivity extends SherlockFragmentActivity {
 			if("".equals(name)){
 				Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
 				return;
+			}
+			//Trim the name to the LENGTH characters
+			if(name.length() > NAME_LENGTH){
+				name = name.substring(0, NAME_LENGTH);
 			}
 			//Set the values
 			deployment.setStartDate(start.getTime());
