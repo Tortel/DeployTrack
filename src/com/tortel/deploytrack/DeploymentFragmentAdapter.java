@@ -18,6 +18,8 @@ package com.tortel.deploytrack;
 import java.util.List;
 
 import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.fragments.DeploymentFragment;
+import com.tortel.deploytrack.fragments.NoDataFragment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

@@ -26,6 +26,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.fragments.AboutDialogFragment;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 

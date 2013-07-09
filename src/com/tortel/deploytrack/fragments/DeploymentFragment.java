@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack;
+package com.tortel.deploytrack.fragments;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack;
+package com.tortel.deploytrack.fragments;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.tortel.deploytrack.R;
 
 public class AboutDialogFragment extends SherlockDialogFragment {
 

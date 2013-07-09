@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack;
+package com.tortel.deploytrack.fragments;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.tortel.deploytrack.R;
 
 /**
  * A fragment that is shown if there is no other data
