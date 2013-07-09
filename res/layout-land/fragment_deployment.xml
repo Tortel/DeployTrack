@@ -39,12 +39,7 @@ limitations under the License.
 	        
 	        <TextView 
 	            android:id="@+id/percentage"
-	            android:layout_height="wrap_content"
-	            android:layout_width="match_parent"
-	            android:textSize="25sp"
-	            android:padding="5dip"
-	            android:gravity="center"
-	            android:textStyle="bold|italic"
+	            style="@style/Percentage"
 	            />
 			
 	        <TextView
