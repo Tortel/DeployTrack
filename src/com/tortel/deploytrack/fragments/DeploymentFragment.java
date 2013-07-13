@@ -102,11 +102,15 @@ public class DeploymentFragment extends SherlockFragment {
 		PieSlice completedSlice = new PieSlice();
 		completedSlice.setColor(deployment.getCompletedColor());
 		completedSlice.setValue(completed);
-		pie.addSlice(completedSlice);
+		if(completed > 0){
+			pie.addSlice(completedSlice);
+		}
 		PieSlice togoSlice = new PieSlice();
 		togoSlice.setColor(deployment.getRemainingColor());
 		togoSlice.setValue(days - completed);
-		pie.addSlice(togoSlice);
+		if( (days - completed) > 0){
+			pie.addSlice(togoSlice);
+		}
 		
 		return view;
 	}
