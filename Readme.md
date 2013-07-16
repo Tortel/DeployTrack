@@ -1,6 +1,8 @@
 Deployment Tracker
 ==================
 
+![Screenshot](https://raw.github.com/Tortel/MilTrack/master/images/frame.png)
+
 This is a simple application designed for people to track how much longre someone is deployed for. It can also be used to track anything with a time interval.
 
 It supports tracking an unlimited number of intervals, editing, deleting, and custom colors.
