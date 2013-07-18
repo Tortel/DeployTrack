@@ -104,7 +104,7 @@ limitations under the License.
 			    
 			    <com.larswerkman.colorpicker.SVBar
 		            android:id="@+id/sv_completed"
-		            android:layout_width="wrap_content"
+		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 					android:paddingLeft="5dip"
 		            android:paddingRight="5dip"/>
@@ -131,7 +131,7 @@ limitations under the License.
 			    
 			    <com.larswerkman.colorpicker.SVBar
 		            android:id="@+id/sv_remain"
-		            android:layout_width="wrap_content"
+		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:paddingLeft="5dip"
 		            android:paddingRight="5dip" />
