@@ -101,6 +101,14 @@ limitations under the License.
 				    android:layout_width="match_parent"
 				    android:layout_height="200dip"
 				    android:gravity="center" />
+			    
+			    <com.larswerkman.colorpicker.SVBar
+		            android:id="@+id/sv_completed"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+					android:paddingLeft="5dip"
+		            android:paddingRight="5dip"/>
+			    
 			</LinearLayout>
 		    
 	        <LinearLayout
@@ -120,6 +128,14 @@ limitations under the License.
 				    android:layout_width="match_parent"
 				    android:layout_height="200dip"
 				    android:gravity="center" />
+			    
+			    <com.larswerkman.colorpicker.SVBar
+		            android:id="@+id/sv_remain"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:paddingLeft="5dip"
+		            android:paddingRight="5dip" />
+			    
 		    </LinearLayout>
 	    </LinearLayout>
 	    

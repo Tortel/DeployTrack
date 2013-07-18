@@ -33,6 +33,7 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.larswerkman.colorpicker.ColorPicker;
 import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
+import com.larswerkman.colorpicker.SVBar;
 import com.tortel.deploytrack.data.*;
 
 /**
@@ -88,6 +89,9 @@ public class CreateActivity extends SherlockFragmentActivity {
 		//Color pickers
 		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
 		ColorPicker remainingPicker = (ColorPicker) findViewById(R.id.picker_remain);
+		
+		SVBar completedBar = (SVBar) findViewById(R.id.sv_completed);
+		SVBar remainingBar = (SVBar) findViewById(R.id.sv_remain);
 		
 		int id = getIntent().getIntExtra("id", -1);
 		if(id >= 0){
@@ -164,11 +168,13 @@ public class CreateActivity extends SherlockFragmentActivity {
 		remainingPicker.setNewCenterColor(remainingColor);
 		remainingPicker.setColor(remainingColor);
 		remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
+		remainingPicker.addSVBar(remainingBar);
 		
 		completedPicker.setOldCenterColor(completedColor);
 		completedPicker.setNewCenterColor(completedColor);
 		completedPicker.setColor(completedColor);
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
+		completedPicker.addSVBar(completedBar);
 	}
 	
 	@Override

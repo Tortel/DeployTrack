@@ -89,6 +89,14 @@ limitations under the License.
 		    android:layout_width="match_parent"
 		    android:layout_height="200dip"
 		    android:layout_gravity="center" />
+
+	    <com.larswerkman.colorpicker.SVBar
+            android:id="@+id/sv_completed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="5dip"
+		    android:paddingRight="5dip" />
 	
 	    <TextView
 	        android:layout_width="wrap_content"
@@ -100,7 +108,15 @@ limitations under the License.
 		    android:layout_width="match_parent"
 		    android:layout_height="200dip"
 		    android:layout_gravity="center" />
-	    
+
+	    <com.larswerkman.colorpicker.SVBar
+            android:id="@+id/sv_remain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="5dip"
+		    android:paddingRight="5dip" />
+	    	    
 	    <View
 	        android:layout_width="match_parent"
 	        android:layout_height="2dip"
