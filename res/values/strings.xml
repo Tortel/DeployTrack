@@ -24,9 +24,8 @@ limitations under the License.
     <string name="about">About</string>
     
     <!-- Display fragment strings -->
-    <string name="days_complete">" days complete, "</string>
-    <string name="days_left">" days left "</string>
-    <string name="to">" to "</string>
+    <string name="date_range">%1$s to %2$s</string>
+    <string name="date_stats">%1$d days complete, %2$d days left</string>
 
     <!-- Generic strings -->
     <string name="save">Save</string>

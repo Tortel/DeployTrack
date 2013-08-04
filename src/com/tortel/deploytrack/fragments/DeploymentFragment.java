@@ -62,9 +62,9 @@ public class DeploymentFragment extends SherlockFragment {
 		
 		//Date range
 		TextView dateRange = (TextView) view.findViewById(R.id.daterange);
-		dateRange.setText(deployment.getFormattedStart()
-				+resources.getString(R.string.to)
-				+deployment.getFormattedEnd());
+		dateRange.setText(
+				String.format(resources.getString(R.string.date_range),
+						deployment.getFormattedStart(), deployment.getFormattedEnd()));
 		
 		//Get the needed values
 		int completed = deployment.getCompleted();
@@ -73,8 +73,7 @@ public class DeploymentFragment extends SherlockFragment {
 		
 		//Days completed, days left
 		TextView stats = (TextView) view.findViewById(R.id.time_stats);
-		stats.setText(completed+resources.getString(R.string.days_complete)+
-				remaining+resources.getString(R.string.days_left));
+		stats.setText(String.format(resources.getString(R.string.date_stats), completed, remaining));
 		
 		//Percentage
 		TextView percentage = (TextView) view.findViewById(R.id.percentage);
