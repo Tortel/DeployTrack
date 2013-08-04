@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import android.annotation.SuppressLint;
 import com.j256.ormlite.field.DatabaseField;
@@ -68,6 +69,44 @@ public class Deployment {
 		return new DateTime(endDate);
 	}
 	
+	/**
+	 * Returns the length of the deployment, in days
+	 * @return the length
+	 */
+	public int getLength(){
+		return Days.daysBetween(getStart(), getEnd()).getDays();
+	}
+	
+	/**
+	 * Get the number of days completed so far
+	 * @return
+	 */
+	public int getCompleted(){
+		DateTime start = getStart();
+		//Check if it has even started
+		if(start.isAfterNow()){
+			return 0;
+		}
+		return Math.min(
+				Days.daysBetween(start, new DateTime()).getDays(),
+				getLength());
+	}
+	
+	/**
+	 * Get the remaining time, in days
+	 * @return
+	 */
+	public int getRemaining(){
+		return getLength() - getCompleted();
+	}
+	
+	/**
+	 * Gets the percentage completed, as a whole number (0-100)
+	 * @return
+	 */
+	public int getPercentage(){
+		return (int) ((double) getCompleted() / (double) getLength() * 100);
+	}
 	
 	public int getId() {
 		return id;

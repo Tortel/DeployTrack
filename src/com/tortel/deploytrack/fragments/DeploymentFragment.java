@@ -15,9 +15,6 @@
  */
 package com.tortel.deploytrack.fragments;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -69,28 +66,15 @@ public class DeploymentFragment extends SherlockFragment {
 				+resources.getString(R.string.to)
 				+deployment.getFormattedEnd());
 		
-		//Figure out the percentage
-		DateTime now = new DateTime();
-		int days = Days.daysBetween(deployment.getStart(), deployment.getEnd()).getDays();
-		int percent = 0;
-		int completed = 0;
-		
-		//Check if its started
-		if(now.compareTo(deployment.getStart()) > 0){
-			completed = Days.daysBetween(deployment.getStart(), now).getDays();
-			percent = (int) ((double) completed / (double) days * 100);
-		}
-		
-		//Extra check for completed events
-		if(now.compareTo(deployment.getEnd()) >= 0) {
-			completed = days;
-			percent = 100;
-		}
+		//Get the needed values
+		int completed = deployment.getCompleted();
+		int remaining = deployment.getRemaining();
+		int percent = deployment.getPercentage();
 		
 		//Days completed, days left
 		TextView stats = (TextView) view.findViewById(R.id.time_stats);
 		stats.setText(completed+resources.getString(R.string.days_complete)+
-				(days - completed)+resources.getString(R.string.days_left));
+				remaining+resources.getString(R.string.days_left));
 		
 		//Percentage
 		TextView percentage = (TextView) view.findViewById(R.id.percentage);
@@ -107,8 +91,8 @@ public class DeploymentFragment extends SherlockFragment {
 		}
 		PieSlice togoSlice = new PieSlice();
 		togoSlice.setColor(deployment.getRemainingColor());
-		togoSlice.setValue(days - completed);
-		if( (days - completed) > 0){
+		togoSlice.setValue(remaining);
+		if(remaining > 0){
 			pie.addSlice(togoSlice);
 		}
 		
