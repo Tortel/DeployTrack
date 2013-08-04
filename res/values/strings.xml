@@ -22,6 +22,8 @@ limitations under the License.
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="about">About</string>
+    <string name="show_notification">Show as notification</string>
+    <string name="hide_notification">Hide notification</string>
     
     <!-- Display fragment strings -->
     <string name="date_range">%1$s to %2$s</string>

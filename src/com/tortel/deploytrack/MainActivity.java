@@ -27,6 +27,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.fragments.AboutDialogFragment;
+import com.tortel.deploytrack.service.NotificationService;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -134,6 +135,19 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.menu_about:
 			AboutDialogFragment about = new AboutDialogFragment();
 			about.show(getSupportFragmentManager(), "about");
+			return true;
+		case R.id.menu_notification_show:
+			if(id == -1){
+				return true;
+			}
+			NotificationService.setSavedId(this, id);
+			intent = new Intent(this, NotificationService.class);
+			startService(intent);
+			return true;
+		case R.id.menu_notification_hide:
+			NotificationService.setSavedId(this, -1);
+			intent = new Intent(this, NotificationService.class);
+			stopService(intent);
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
