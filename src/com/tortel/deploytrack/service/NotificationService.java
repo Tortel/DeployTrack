@@ -80,8 +80,9 @@ public class NotificationService extends Service {
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setContentTitle(deployment.getName());
-		//TODO: Change into a resource string
-		builder.setContentText(deployment.getPercentage()+"% - "+deployment.getCompleted()+" of "+deployment.getLength()+" days complete");
+		builder.setContentText(
+				getResources().getString(R.string.small_notification, deployment.getPercentage(),
+						deployment.getCompleted(), deployment.getLength()));
 		builder.setOngoing(true);
 		//Hide the time, its persistent
 		builder.setWhen(0);
