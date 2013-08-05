@@ -54,12 +54,6 @@ public class DeploymentFragment extends SherlockFragment {
 		
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
 		
-		//Name
-		/*
-		TextView name = (TextView) view.findViewById(R.id.name);
-		name.setText(deployment.getName());
-		*/
-		
 		//Date range
 		TextView dateRange = (TextView) view.findViewById(R.id.daterange);
 		dateRange.setText(resources.getString(R.string.date_range,
