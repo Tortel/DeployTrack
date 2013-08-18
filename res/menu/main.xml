@@ -45,15 +45,18 @@ limitations under the License.
                     android:title="@string/about"
                     />
                 
+                <!-- Disable for now -->
                 <item 
                     android:id="@+id/menu_notification_show"
                     android:showAsAction="never"
+                    android:visible="false"
                     android:title="@string/show_notification"
                     />
                 
                 <item 
                     android:id="@+id/menu_notification_hide"
                     android:showAsAction="never"
+                    android:visible="false"
                     android:title="@string/hide_notification"
                     />
             </group>
