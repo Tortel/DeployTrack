@@ -18,15 +18,19 @@ package com.tortel.deploytrack.service;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 public class NotificationService extends Service {
@@ -65,6 +69,7 @@ public class NotificationService extends Service {
 		return START_STICKY;
 	}
 	
+	@SuppressLint("NewApi")
 	private void showNotification(){
 		//Cancel any existing notifications
 		notificationManager.cancel(NOTIFICATION_ID);
@@ -77,6 +82,9 @@ public class NotificationService extends Service {
 
 		//Load the Deployment object
 		Deployment deployment = DatabaseManager.getInstance(this).getDeployment(deploymentId);
+		RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification);
+		
+		
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setContentTitle(deployment.getName());
@@ -89,8 +97,13 @@ public class NotificationService extends Service {
 		//TODO: Create a notification-suitable icon
 		builder.setSmallIcon(R.drawable.ic_launcher);
 		//TODO: Add a RemoteView to make it fancy and expandable
+		Notification notification = builder.build();
 		
-		notificationManager.notify(NOTIFICATION_ID, builder.build());
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			notification.bigContentView = view;
+		}
+		
+		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 	
 	/**
