@@ -28,6 +28,7 @@ limitations under the License.
     <!-- Display fragment strings -->
     <string name="date_range">%1$s to %2$s</string>
     <string name="date_stats">%1$d days complete, %2$d days left</string>
+    <string name="days_left">%1$d days left</string>
     
     <!-- Notification Strings -->
 	<string name="small_notification">%1$d%% - %2$d of %3$d days complete</string>
