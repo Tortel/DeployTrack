@@ -91,7 +91,49 @@ public class DatabaseManager {
     		Log.e("Exception getting Deployment", e);
     	}
     }
+    
+    /**
+     * Gets the widget information for the specified ID
+     * @param id
+     * @return
+     */
+    public WidgetInfo getWidgetInfo(int id){
+        try{
+            WidgetInfo info = helper.getWidgetInfoDao().queryForId(id);
+            if(info != null){
+                helper.getDeploymentDao().refresh(info.getDeployment());
+            }
+            return info; 
+        } catch(SQLException e){
+            Log.e("Exception getting widget info", e);
+            return null;
+        }
+    }
 
+    /**
+     * Saves the WidgetInfo
+     * @param info
+     */
+    public void saveWidgetInfo(WidgetInfo info){
+        try{
+            helper.getWidgetInfoDao().createOrUpdate(info);
+        } catch(SQLException e){
+            Log.e("Exception getting widget info", e);
+        }
+    }
+    
+    /**
+     * Deletes the widget information from the database
+     * @param id
+     */
+    public void deleteWidgetInfo(int id){
+        try{
+            helper.getWidgetInfoDao().deleteById(id);
+        } catch(SQLException e){
+            Log.e("Error deleting widget info", e);
+        }
+    }
+    
     /**
      * Clear the entire database
      */

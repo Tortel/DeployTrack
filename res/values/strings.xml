@@ -38,6 +38,9 @@ limitations under the License.
     <string name="cancel">Cancel</string>
     <string name="info">Info</string>
     
+    <!-- Widget Configuration Strings -->
+    <string name="widget_pick">Pick an item to use for the widget</string>
+    
     <!-- Create strings -->
     <string name="name">Name: (15 Character Limit)</string>
     <string name="start_date">Start Date:</string>

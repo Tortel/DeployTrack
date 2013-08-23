@@ -32,9 +32,10 @@ import java.sql.SQLException;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private Dao<Deployment, Integer> deploymentDao;
+    private Dao<WidgetInfo, Integer> widgetInfoDao;
 
     public DatabaseHelper(Context context){
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -44,6 +45,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase databse, ConnectionSource connectionSource){
         try{
             TableUtils.createTable(connectionSource, Deployment.class);
+            TableUtils.createTable(connectionSource, WidgetInfo.class);
         } catch(SQLException e) {
             Log.e("Cant create database", e);
             throw new RuntimeException(e);
@@ -53,7 +55,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion){
         try{
-            TableUtils.dropTable(connectionSource, Deployment.class, true);
+            if(newVersion == 2 && oldVersion == 1){
+                //For version 2, I added the WidgetInfo table
+                TableUtils.createTable(connectionSource, WidgetInfo.class);
+            } else {
+                TableUtils.dropTable(connectionSource, Deployment.class, true);
+                TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
+            }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);
             throw new RuntimeException(e);
@@ -69,5 +77,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return deploymentDao;
+    }
+    
+    public Dao<WidgetInfo, Integer> getWidgetInfoDao(){
+        if(widgetInfoDao == null){
+            try{
+                widgetInfoDao = getDao(WidgetInfo.class);
+            } catch(SQLException e){
+                Log.e("Error getting widget info DAO", e);
+            }
+        }
+        return widgetInfoDao;
     }
 }
