@@ -37,6 +37,7 @@ limitations under the License.
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="info">Info</string>
+    <string name="pie">Mmm, pie</string>
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>

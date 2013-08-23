@@ -26,7 +26,7 @@ limitations under the License.
         android:padding="5dip"
         android:gravity="center"
         android:textSize="30sp"
-        android:text="5%"
+        android:text=""
         />
     
     <LinearLayout
@@ -41,7 +41,7 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:padding="5dip"
             android:gravity="center"
-            android:text="Name"
+            android:text=""
             />
         
         <TextView
@@ -50,7 +50,7 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:padding="5dip"
             android:gravity="center"
-            android:text="x days completed, y days left"
+            android:text=""
             />
         
     </LinearLayout>
