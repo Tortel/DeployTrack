@@ -34,6 +34,7 @@ import android.graphics.RectF;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
+    private static final int DEFAULT_SIZE = 200;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -62,6 +63,17 @@ public class WidgetProvider extends AppWidgetProvider {
         }
     }
     
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        //Remove them from the database
+        for(int id: appWidgetIds){
+            Log.d("Deleting widget "+id);
+            DatabaseManager.getInstance(context).deleteWidgetInfo(id);
+        }
+        
+        super.onDeleted(context, appWidgetIds);
+    }
+    
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
      * @param context
@@ -74,7 +86,7 @@ public class WidgetProvider extends AppWidgetProvider {
         
         //Set up the pie chart image
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(200,200,conf);
+        Bitmap bmp = Bitmap.createBitmap(DEFAULT_SIZE,DEFAULT_SIZE,conf);
         Canvas canvas = new Canvas(bmp);
         
         //Configure the paint
@@ -100,7 +112,9 @@ public class WidgetProvider extends AppWidgetProvider {
         canvas.drawArc(box, sweep - 90f, 360f - sweep, true, mPaint);
         
         //Draw a blank circle in the middle
-        RectF smallbox = new RectF(100 - 20, 100 - 20, 100 + 20, 100 + 20);
+        int middle = bmp.getWidth() / 2;
+        int padding = bmp.getWidth() / 10;
+        RectF smallbox = new RectF(middle - padding, middle - padding, middle + padding, middle + padding);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         canvas.drawArc(smallbox, 0f, 360f, false, mPaint);
         
