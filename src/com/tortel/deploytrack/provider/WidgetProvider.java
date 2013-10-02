@@ -15,10 +15,15 @@
  */
 package com.tortel.deploytrack.provider;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -31,6 +36,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.os.Build;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
@@ -61,6 +68,20 @@ public class WidgetProvider extends AppWidgetProvider {
             //Update it
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
+        
+        //Schedule an update at midnight
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        DateTime now = new DateTime();
+        DateMidnight tomorrow = new DateMidnight(now.plusDays(1));
+        
+        Intent updateIntent = new Intent();
+        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        PendingIntent pending = PendingIntent.getBroadcast(context, 1, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        
+        //Adding 100msec to make sure its triggered after midnight
+        Log.d("Scheduling update for "+tomorrow.getMillis() + 100);
+        alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
     }
     
     @Override
@@ -140,5 +161,15 @@ public class WidgetProvider extends AppWidgetProvider {
                 .setOnClickPendingIntent(R.id.widget_pie, pendingIntent);
         
         return remoteViews;
+    }
+
+    
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void onAppWidgetOptionsChanged(Context context,
+            AppWidgetManager appWidgetManager, int appWidgetId,
+            Bundle newOptions) {
+        // TODO Auto-generated method stub
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,
+                newOptions);
     }
 }

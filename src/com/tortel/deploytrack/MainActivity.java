@@ -15,9 +15,13 @@
  */
 package com.tortel.deploytrack;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
@@ -149,9 +153,25 @@ public class MainActivity extends SherlockFragmentActivity {
 			intent = new Intent(this, NotificationService.class);
 			stopService(intent);
 			return true;
+		case R.id.menu_feedback:
+		    intent = new Intent(Intent.ACTION_SEND);
+		    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
+		    intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
+		    intent.setType("plain/text");
+		    if(isAvailable(intent)){
+		        startActivity(intent);
+		    }
+		    return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
+	
+    private boolean isAvailable(Intent intent) {
+        final PackageManager mgr = getPackageManager();
+        List<ResolveInfo> list = mgr.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

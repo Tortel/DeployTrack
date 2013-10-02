@@ -59,6 +59,12 @@ limitations under the License.
                     android:visible="false"
                     android:title="@string/hide_notification"
                     />
+
+                <item 
+                    android:id="@+id/menu_feedback"
+                    android:showAsAction="never"
+                    android:title="@string/send_feedback"
+                    />
             </group>
         </menu>
     </item>
