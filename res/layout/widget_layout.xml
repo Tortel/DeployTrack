@@ -28,19 +28,26 @@ limitations under the License.
         />
 
     <TextView
-        android:id="@+id/widget_name"
-        style="@android:style/TextAppearance.Small"
+        android:id="@+id/widget_percent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dip" />
+        android:textStyle="bold"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/widget_name"
+        style="@android:style/TextAppearance.Small"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
     
     <TextView
         android:id="@+id/widget_info"
         style="@android:style/TextAppearance.Small"
+        android:textStyle="italic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dip" />
+        android:gravity="center" />
         
 </LinearLayout> 

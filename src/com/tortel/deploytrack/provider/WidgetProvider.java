@@ -140,6 +140,7 @@ public class WidgetProvider extends AppWidgetProvider {
         canvas.drawArc(smallbox, 0f, 360f, false, mPaint);
         
         // Set the text
+        remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage()+"%");
         remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
         remoteViews.setTextViewText(
                 R.id.widget_info,
