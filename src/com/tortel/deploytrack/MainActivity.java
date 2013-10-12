@@ -196,7 +196,9 @@ public class MainActivity extends SherlockFragmentActivity {
 	private class PageChangeListener implements ViewPager.OnPageChangeListener{
 		@Override
 		public void onPageSelected(int position) {
+			//adapter.getItem(currentPosition).onPause();
 			currentPosition = position;
+			adapter.getItem(currentPosition).onResume();
 		}
 		
 		@Override

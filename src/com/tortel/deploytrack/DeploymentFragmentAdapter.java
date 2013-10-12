@@ -25,17 +25,20 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
 
 public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private List<Deployment> deployments;
 	private DatabaseManager db;
 	private Context context;
+	SparseArray<Fragment> fragmentList;
 	
 	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm);
 		this.context = context.getApplicationContext();
 		db = DatabaseManager.getInstance(context);
 		deployments = db.getAllDeployments();
+		fragmentList = new SparseArray<Fragment>();
 	}
 	
 	public void reload(){
@@ -54,6 +57,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		if(deployments.size() == 0){
 			return -1;
 		}
+
 		return deployments.get(position).getId();
 	}
 
@@ -62,7 +66,10 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		if(deployments.size() == position){
 			return new NoDataFragment();
 		}
-		return DeploymentFragment.newInstance(deployments.get(position));
+		if(fragmentList.get(position) == null){
+			fragmentList.put(position, DeploymentFragment.newInstance(deployments.get(position)));
+		}
+		return fragmentList.get(position);
 	}
 
 	@Override

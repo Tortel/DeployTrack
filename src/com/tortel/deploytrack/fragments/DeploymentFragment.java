@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
@@ -34,6 +36,8 @@ import com.tortel.deploytrack.data.Deployment;
  */
 public class DeploymentFragment extends SherlockFragment {
 	private Deployment deployment;
+	private TextView percentage;
+	private PieGraph pie;
 	
 	/**
 	 * Creates a new DeploymentFragment with the provided
@@ -62,18 +66,17 @@ public class DeploymentFragment extends SherlockFragment {
 		//Get the needed values
 		int completed = deployment.getCompleted();
 		int remaining = deployment.getRemaining();
-		int percent = deployment.getPercentage();
 		
 		//Days completed, days left
 		TextView stats = (TextView) view.findViewById(R.id.time_stats);
 		stats.setText(resources.getString(R.string.date_stats, completed, remaining));
 		
 		//Percentage
-		TextView percentage = (TextView) view.findViewById(R.id.percentage);
-		percentage.setText(percent+"%");
+		percentage = (TextView) view.findViewById(R.id.percentage);
+		percentage.setText("0%");
 		
 		//Fill the graph
-		PieGraph pie = (PieGraph) view.findViewById(R.id.graph);
+		pie = (PieGraph) view.findViewById(R.id.graph);
 		
 		PieSlice completedSlice = new PieSlice();
 		completedSlice.setColor(deployment.getCompletedColor());
@@ -89,6 +92,37 @@ public class DeploymentFragment extends SherlockFragment {
 		}
 		
 		return view;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		animate();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		if(pie != null){
+			pie.setPercent(0);
+		}
+	}
+	
+	public void animate(){
+		if(pie == null){
+			return;
+		}
+		AnimatorSet set = new AnimatorSet();
+		set.playTogether(
+				ObjectAnimator.ofInt(pie, "percent", 0, 100),
+				ObjectAnimator.ofInt(this, "percent", 0, deployment.getPercentage())
+		);
+		set.setDuration(1000);
+		set.start();
+	}
+	
+	public void setPercent(int percent){
+		percentage.setText(percent+"%");
 	}
 
 	@Override
