@@ -1,22 +1,6 @@
-/*
- * Copyright (C) 2013 Scott Warner
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.tortel.deploytrack.view;
 
 import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,16 +14,11 @@ import android.graphics.Path.Direction;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.echo.holographlibrary.PieSlice;
 import com.tortel.deploytrack.Log;
 
-/**
- * This is the full PieGraph class from the HoloGraphLibrary, modified for 
- * animation and to be square based on the size of the fixed dimension.
- */
 @SuppressLint("DrawAllocation")
-public class CustomPieGraph extends View {
+public class PieGraph extends View {
 	private ArrayList<PieSlice> slices = new ArrayList<PieSlice>();
 	private Paint paint = new Paint();
 	private Path path = new Path();
@@ -50,10 +29,10 @@ public class CustomPieGraph extends View {
 	private float percent;
 	
 	
-	public CustomPieGraph(Context context) {
+	public PieGraph(Context context) {
 		super(context);
 	}
-	public CustomPieGraph(Context context, AttributeSet attrs) {
+	public PieGraph(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 	
