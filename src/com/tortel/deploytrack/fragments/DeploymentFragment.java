@@ -23,13 +23,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.view.CustomPieGraph;
 
 /**
  * Fragment that displays the fancy deployment graph and info
@@ -37,7 +37,7 @@ import com.tortel.deploytrack.data.Deployment;
 public class DeploymentFragment extends SherlockFragment {
 	private Deployment deployment;
 	private TextView percentage;
-	private PieGraph pie;
+	private CustomPieGraph pie;
 	
 	/**
 	 * Creates a new DeploymentFragment with the provided
@@ -76,7 +76,7 @@ public class DeploymentFragment extends SherlockFragment {
 		percentage.setText("0%");
 		
 		//Fill the graph
-		pie = (PieGraph) view.findViewById(R.id.graph);
+		pie = (CustomPieGraph) view.findViewById(R.id.graph);
 		
 		PieSlice completedSlice = new PieSlice();
 		completedSlice.setColor(deployment.getCompletedColor());
