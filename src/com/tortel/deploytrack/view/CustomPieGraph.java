@@ -1,5 +1,9 @@
 /*
- * Copyright (C) 2013 Scott Warner
+ * Created by Daniel Nadeau
+ *         daniel.nadeau01@gmail.com
+ *         danielnadeau.blogspot.com
+ * 
+ * Portions Copyright (C) 2013 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +83,7 @@ public class CustomPieGraph extends View {
 		float currentSweep = 0;
 		float percentSweep = 0;
 		int totalValue = 0;
-		float padding = 2;
+		float padding = 1;
 		
 		midX = getWidth()/2;
 		midY = getHeight()/2;
