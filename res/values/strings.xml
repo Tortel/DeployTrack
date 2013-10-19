@@ -64,4 +64,14 @@ limitations under the License.
     
     <!-- Info fragment text -->
     <string name="howto_add">To add data, tap on the + icon in the Action Bar.</string>
+    
+    <!-- Preference Strings -->
+    <string name="settings">Settings</string>
+    <string name="prefs_display">Display Settings</string>
+    <string name="prefs_animate">Enable Animation</string>
+    <string name="prefs_animate_summary">Enable animating the circle and percent</string>
+    <string name="prefs_main_view">Change Main View</string>
+    <string name="prefs_main_view_summary">Choose what to display as the bold text</string>
+    <string name="prefs_main_view_default">Percent (Default)</string>
+    
 </resources>

@@ -26,6 +26,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieSlice;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
@@ -109,12 +110,13 @@ public class DeploymentFragment extends SherlockFragment {
 	}
 	
 	public void animate(){
-		if(pie == null){
+		if(pie == null || !Prefs.isAnimationEnabled()){
+			setPercent(deployment.getPercentage());
 			return;
 		}
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(
-				ObjectAnimator.ofInt(pie, "percent", 0, 100),
+				ObjectAnimator.ofFloat(pie, "percent", 0, 100),
 				ObjectAnimator.ofInt(this, "percent", 0, deployment.getPercentage())
 		);
 		set.setDuration(1000);
@@ -122,7 +124,9 @@ public class DeploymentFragment extends SherlockFragment {
 	}
 	
 	public void setPercent(int percent){
-		percentage.setText(percent+"%");
+		if(percentage != null){
+			percentage.setText(percent+"%");
+		}
 	}
 
 	@Override

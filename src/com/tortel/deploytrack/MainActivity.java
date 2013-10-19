@@ -60,6 +60,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			currentPosition = 0;
 		}
+		Prefs.load(this);
 		
 		reload();
 	}
@@ -67,6 +68,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
+		Prefs.load(this);
 		reload();
 	}
 	
@@ -162,6 +164,10 @@ public class MainActivity extends SherlockFragmentActivity {
 		        startActivity(intent);
 		    }
 		    return true;
+		case R.id.menu_settings:
+			intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}

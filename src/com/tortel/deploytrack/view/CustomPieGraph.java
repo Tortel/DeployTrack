@@ -51,7 +51,7 @@ public class CustomPieGraph extends View {
 	private int indexSelected = -1;
 	private int thickness = 50;
 	private OnSliceClickedListener listener;
-	private float percent;
+	private float percent = 1;
 	
 	
 	public CustomPieGraph(Context context) {
@@ -61,7 +61,7 @@ public class CustomPieGraph extends View {
 		super(context, attrs);
 	}
 	
-	public void setPercent(int x){
+	public void setPercent(float x){
 		if(x >= 100){
 			percent = 1;
 		} else if(x <= 0){
