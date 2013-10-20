@@ -33,7 +33,7 @@ limitations under the License.
             />
         
         <TextView 
-            android:id="@+id/percentage"
+            android:id="@+id/main"
             style="@style/Percentage"
             />
         
@@ -47,7 +47,7 @@ limitations under the License.
             />
     
         <TextView 
-            android:id="@+id/time_stats"
+            android:id="@+id/secondary"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:padding="5dip"

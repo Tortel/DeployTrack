@@ -69,11 +69,11 @@ public class DeploymentFragment extends SherlockFragment {
 		int remaining = deployment.getRemaining();
 		
 		//Days completed, days left
-		TextView stats = (TextView) view.findViewById(R.id.time_stats);
+		TextView stats = (TextView) view.findViewById(R.id.secondary);
 		stats.setText(resources.getString(R.string.date_stats, completed, remaining));
 		
 		//Percentage
-		percentage = (TextView) view.findViewById(R.id.percentage);
+		percentage = (TextView) view.findViewById(R.id.main);
 		percentage.setText("0%");
 		
 		//Fill the graph
