@@ -144,8 +144,8 @@ public class WidgetProvider extends AppWidgetProvider {
         remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
         remoteViews.setTextViewText(
                 R.id.widget_info,
-                resources.getString(R.string.days_left,
-                        deployment.getRemaining()));
+                resources.getQuantityString(R.plurals.days_remaining,
+                        deployment.getRemaining(), deployment.getRemaining()));
         remoteViews.setImageViewBitmap(R.id.widget_pie, bmp);
 
         // Register an onClickListener

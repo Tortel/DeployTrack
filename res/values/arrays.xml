@@ -24,7 +24,7 @@ limitations under the License.
     <string-array name="prefs_main_view_values">
         <item>0</item>
         <item>1</item>
-        <item>3</item>
+        <item>2</item>
     </string-array>
     
 </resources>

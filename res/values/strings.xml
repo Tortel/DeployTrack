@@ -29,7 +29,16 @@ limitations under the License.
     <!-- Display fragment strings -->
     <string name="date_range">%1$s to %2$s</string>
     <string name="date_stats">%1$d days complete, %2$d days left</string>
-    <string name="days_left">%1$d days left</string>
+    
+    <plurals name="days_remaining">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+    
+    <plurals name="days_complete">
+        <item quantity="one">%d day complete</item>
+        <item quantity="other">%d days complete</item>
+    </plurals>
     
     <!-- Notification Strings -->
 	<string name="small_notification">%1$d%% - %2$d of %3$d days complete</string>
@@ -39,6 +48,7 @@ limitations under the License.
     <string name="cancel">Cancel</string>
     <string name="info">Info</string>
     <string name="pie">Mmm, pie</string>
+    <string name="comma">", "</string>
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>

@@ -15,8 +15,10 @@
  */
 package com.tortel.deploytrack.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,9 @@ import com.tortel.deploytrack.view.CustomPieGraph;
 public class DeploymentFragment extends SherlockFragment {
 	private Deployment deployment;
 	private TextView percentage;
+	private TextView completed;
+	private TextView remaining;
+	private Resources resources;
 	private CustomPieGraph pie;
 	
 	/**
@@ -55,7 +60,7 @@ public class DeploymentFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
-		Resources resources = getActivity().getResources();
+		resources = getActivity().getResources();
 		
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
 		
@@ -64,35 +69,65 @@ public class DeploymentFragment extends SherlockFragment {
 		dateRange.setText(resources.getString(R.string.date_range,
 						deployment.getFormattedStart(), deployment.getFormattedEnd()));
 		
-		//Get the needed values
-		int completed = deployment.getCompleted();
-		int remaining = deployment.getRemaining();
-		
 		//Days completed, days left
-		TextView stats = (TextView) view.findViewById(R.id.secondary);
-		stats.setText(resources.getString(R.string.date_stats, completed, remaining));
+		setUpTextViews(view);
 		
-		//Percentage
-		percentage = (TextView) view.findViewById(R.id.main);
-		percentage.setText("0%");
+		completed.setText(resources.getQuantityString(R.plurals.days_complete, deployment.getCompleted(), deployment.getCompleted()));
+		remaining.setText(resources.getQuantityString(R.plurals.days_remaining, deployment.getRemaining(), deployment.getRemaining()));
+		percentage.setText(deployment.getPercentage()+"%");
 		
 		//Fill the graph
 		pie = (CustomPieGraph) view.findViewById(R.id.graph);
 		
 		PieSlice completedSlice = new PieSlice();
 		completedSlice.setColor(deployment.getCompletedColor());
-		completedSlice.setValue(completed);
-		if(completed > 0){
+		completedSlice.setValue(deployment.getCompleted());
+		if(deployment.getCompleted() > 0){
 			pie.addSlice(completedSlice);
 		}
 		PieSlice togoSlice = new PieSlice();
 		togoSlice.setColor(deployment.getRemainingColor());
-		togoSlice.setValue(remaining);
-		if(remaining > 0){
+		togoSlice.setValue(deployment.getRemaining());
+		if(deployment.getRemaining() > 0){
 			pie.addSlice(togoSlice);
 		}
 		
 		return view;
+	}
+	
+	@SuppressLint("CutPasteId")
+	private void setUpTextViews(View view){
+		float density = getResources().getDisplayMetrics().density;
+		switch(Prefs.getMainDisplayType()){
+		case Prefs.ViewTypes.PERCENT:
+			percentage = (TextView) view.findViewById(R.id.main);
+			completed = (TextView) view.findViewById(R.id.second);
+			remaining = (TextView) view.findViewById(R.id.third);
+			return;
+		case Prefs.ViewTypes.COMPLETE:
+			completed = (TextView) view.findViewById(R.id.main);
+			completed.setTextSize(TypedValue.COMPLEX_UNIT_PX, completed.getTextSize() - density * 20f);
+			percentage = (TextView) view.findViewById(R.id.second);
+			remaining = (TextView) view.findViewById(R.id.third);
+			return;	
+		case Prefs.ViewTypes.REMAINING:
+			remaining = (TextView) view.findViewById(R.id.main);
+			remaining.setTextSize(TypedValue.COMPLEX_UNIT_PX, remaining.getTextSize() - density * 10f);
+			percentage = (TextView) view.findViewById(R.id.second);
+			completed = (TextView) view.findViewById(R.id.third);
+			return;
+		}
+	}
+	
+	private ObjectAnimator getFragmentAnimator(){
+		switch(Prefs.getMainDisplayType()){
+		case Prefs.ViewTypes.REMAINING:
+			return ObjectAnimator.ofInt(this, "remaining", deployment.getLength(), deployment.getRemaining());
+		case Prefs.ViewTypes.COMPLETE:
+			return ObjectAnimator.ofInt(this, "completed", 0, deployment.getCompleted());
+		}
+		//Default is to return percent
+		return ObjectAnimator.ofInt(this, "percent", 0, deployment.getPercentage());
 	}
 	
 	@Override
@@ -117,10 +152,22 @@ public class DeploymentFragment extends SherlockFragment {
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(
 				ObjectAnimator.ofFloat(pie, "percent", 0, 100),
-				ObjectAnimator.ofInt(this, "percent", 0, deployment.getPercentage())
+				getFragmentAnimator()
 		);
 		set.setDuration(1000);
 		set.start();
+	}
+	
+	public void setCompleted(int days){
+		if(completed != null && resources != null){
+			completed.setText(resources.getQuantityString(R.plurals.days_complete, days, days));
+		}
+	}
+	
+	public void setRemaining(int days){
+		if(remaining != null && resources != null){
+			remaining.setText(resources.getQuantityString(R.plurals.days_remaining, days, days));
+		}
 	}
 	
 	public void setPercent(int percent){

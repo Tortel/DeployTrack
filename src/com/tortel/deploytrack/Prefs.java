@@ -40,5 +40,10 @@ public class Prefs {
 	public static int getMainDisplayType() {
 		return mainDisplayType;
 	}
-
+	
+	public class ViewTypes{
+		public static final int PERCENT = 0;
+		public static final int COMPLETE = 1;
+		public static final int REMAINING = 2;
+	}
 }

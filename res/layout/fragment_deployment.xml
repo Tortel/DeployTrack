@@ -46,13 +46,43 @@ limitations under the License.
             android:gravity="center"
             />
     
-        <TextView 
-            android:id="@+id/secondary"
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:padding="5dip"
-            android:gravity="center"
-            />
+            android:layout_gravity="center"
+            >
+
+	        <TextView
+	            android:id="@+id/second"
+	            android:layout_height="wrap_content"
+	            android:layout_width="wrap_content"
+	            android:paddingTop="5dip"
+	            android:paddingBottom="5dip"
+	            android:paddingLeft="5dip"
+	            android:gravity="center"
+	            />
+	        
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:text="@string/comma"
+                android:gravity="center"
+                />
+	        
+            <TextView
+                android:id="@+id/third"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:paddingRight="5dip"
+                android:gravity="center"
+                />
+        
+        </LinearLayout>
         
     </LinearLayout>
 </ScrollView>
