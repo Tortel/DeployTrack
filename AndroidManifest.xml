@@ -51,6 +51,9 @@ limitations under the License.
         <!-- Create/edit activity -->
         <activity android:name="com.tortel.deploytrack.CreateActivity" />
         
+        <!-- Settings activity -->
+        <activity android:name="com.tortel.deploytrack.SettingsActivity" />
+        
         <!-- Notification service -->
         <service android:name="com.tortel.deploytrack.service.NotificationService" />
         

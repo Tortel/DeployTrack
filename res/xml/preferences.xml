@@ -16,19 +16,29 @@ limitations under the License.
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/prefs_display">
-	<CheckBoxPreference
-	    android:key="pref_animate"
-	    android:title="@string/prefs_animate"
-	    android:summary="@string/prefs_animate_summary"
-	    android:defaultValue="true" />
-	<ListPreference 
-	    android:key="pref_main_view"
-	    android:title="@string/prefs_main_view"
-	    android:summary="@string/prefs_main_view_summary"
-	    android:dialogTitle="@string/prefs_main_view"
-	    android:entries="@array/prefs_main_view_type"
-	    android:entryValues="@array/prefs_main_view_values"
-	    android:defaultValue="0"
-	    />
+		<CheckBoxPreference
+		    android:key="pref_animate"
+		    android:title="@string/prefs_animate"
+		    android:summary="@string/prefs_animate_summary"
+		    android:defaultValue="true" />
+		<ListPreference 
+		    android:key="pref_main_view"
+		    android:title="@string/prefs_main_view"
+		    android:summary="@string/prefs_main_view_summary"
+		    android:dialogTitle="@string/prefs_main_view"
+		    android:entries="@array/prefs_main_view_type"
+		    android:entryValues="@array/prefs_main_view_values"
+		    android:defaultValue="0"
+		    />
+	</PreferenceCategory>
+	<PreferenceCategory
+	    android:title="@string/other">
+	    <Preference android:title="@string/send_feedback"
+	        android:summary="@string/send_feedback_summary">
+	        <intent
+	            android:action="android.intent.action.VIEW"
+	            android:data="mailto:Swarner.dev@gmail.com?subject=Deployment Tracker Feedback"
+	            />
+	    </Preference>
 	</PreferenceCategory>
 </PreferenceScreen>
