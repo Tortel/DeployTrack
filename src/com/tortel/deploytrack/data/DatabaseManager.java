@@ -97,6 +97,26 @@ public class DatabaseManager {
      * @param id
      * @return
      */
+    public List<WidgetInfo> getAllWidgetInfo(){
+        try{
+            List<WidgetInfo> list = helper.getWidgetInfoDao().queryForAll();
+            if(list != null){
+            	for(WidgetInfo info : list){
+            		helper.getDeploymentDao().refresh(info.getDeployment());
+            	}
+            }
+            return list; 
+        } catch(SQLException e){
+            Log.e("Exception getting widget info", e);
+            return null;
+        }
+    }
+    
+    /**
+     * Gets the widget information for the specified ID
+     * @param id
+     * @return
+     */
     public WidgetInfo getWidgetInfo(int id){
         try{
             WidgetInfo info = helper.getWidgetInfoDao().queryForId(id);
@@ -138,7 +158,7 @@ public class DatabaseManager {
      * Clear the entire database
      */
     public void clear(){
-        helper.onUpgrade(helper.getWritableDatabase(), 1, 2);
+        helper.onUpgrade(helper.getWritableDatabase(), 0, 1);
     }
 
 }

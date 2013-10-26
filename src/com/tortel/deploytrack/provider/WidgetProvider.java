@@ -15,6 +15,8 @@
  */
 package com.tortel.deploytrack.provider;
 
+import java.util.List;
+
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
@@ -45,28 +47,34 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
-        
-        for (int widgetId : appWidgetIds) {
-            // Get the deployment
-            WidgetInfo info = DatabaseManager.getInstance(context).getWidgetInfo(widgetId);
+            int[] appWidgetIds){
+        List<WidgetInfo> infoList = DatabaseManager.getInstance(context).getAllWidgetInfo();
+    	
+        for(WidgetInfo info : infoList){
+        	int widgetId = info.getId();
 
             Log.d("Updating widget "+widgetId);
             
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.widget_layout);
-            
-            if(info != null){
-                Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getId());
 
-                //Draw everything
-                remoteViews = updateWidgetView(context, remoteViews, info);
-            } else {
-                Log.d("Widget "+widgetId+" has null info");
-            }
+            Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getId());
+
+            //Draw everything
+            remoteViews = updateWidgetView(context, remoteViews, info);
+
             
             //Update it
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            try{
+            	appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            } catch(Exception e){
+            	/*
+            	 * Catching all exceptions, because I suspect that if a widget has been deleted,
+            	 * yet not removed from the database, it will still try to update it and probably cause
+            	 * some sort of exception. So Ill just go ahead and keep the app from crashing.
+            	 */
+            	Log.e("Uhoh!",e);
+            }
         }
         
         //Schedule an update at midnight
