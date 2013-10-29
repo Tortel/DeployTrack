@@ -96,7 +96,6 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         //Remove them from the database
         for(int id: appWidgetIds){
-            Log.d("Deleting widget "+id);
             DatabaseManager.getInstance(context).deleteWidgetInfo(id);
         }
         

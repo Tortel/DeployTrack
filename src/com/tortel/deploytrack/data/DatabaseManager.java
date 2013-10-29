@@ -85,6 +85,7 @@ public class DatabaseManager {
      * @return
      */
     public void deleteDeployment(int id){
+    	Log.v("Deleting deployment "+id);
     	try{
     		helper.getDeploymentDao().deleteById(id);
     	} catch(SQLException e){
@@ -98,6 +99,7 @@ public class DatabaseManager {
      * @return
      */
     public List<WidgetInfo> getAllWidgetInfo(){
+    	Log.v("Getting all widget information");
         try{
             List<WidgetInfo> list = helper.getWidgetInfoDao().queryForAll();
             if(list != null){
@@ -118,6 +120,7 @@ public class DatabaseManager {
      * @return
      */
     public WidgetInfo getWidgetInfo(int id){
+    	Log.v("Getting widget info for "+id);
         try{
             WidgetInfo info = helper.getWidgetInfoDao().queryForId(id);
             if(info != null){
@@ -135,6 +138,7 @@ public class DatabaseManager {
      * @param info
      */
     public void saveWidgetInfo(WidgetInfo info){
+    	Log.v("Saving widget info for "+info.getId());
         try{
             helper.getWidgetInfoDao().createOrUpdate(info);
         } catch(SQLException e){
@@ -147,6 +151,7 @@ public class DatabaseManager {
      * @param id
      */
     public void deleteWidgetInfo(int id){
+    	Log.v("Deleting widget info "+id);
         try{
             helper.getWidgetInfoDao().deleteById(id);
         } catch(SQLException e){

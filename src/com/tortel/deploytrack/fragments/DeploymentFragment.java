@@ -28,6 +28,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieSlice;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
@@ -38,6 +39,8 @@ import com.tortel.deploytrack.view.CustomPieGraph;
  * Fragment that displays the fancy deployment graph and info
  */
 public class DeploymentFragment extends SherlockFragment {
+	private static final boolean DEBUG = true;
+	
 	private Deployment deployment;
 	private TextView percentage;
 	private TextView completed;
@@ -54,7 +57,19 @@ public class DeploymentFragment extends SherlockFragment {
 	public static DeploymentFragment newInstance(Deployment deployment){
 		DeploymentFragment fragment = new DeploymentFragment();
 		fragment.deployment = deployment;
+		if(DEBUG){
+			fragment.printAllInfo();
+		}
 		return fragment;
+	}
+	
+	private void printAllInfo(){
+		Log.v("Deployment id "+deployment.getId());
+		Log.v("Start date: "+deployment.getFormattedStart());
+		Log.v("End date: "+deployment.getFormattedEnd());
+		Log.v("Days complete: "+deployment.getCompleted());
+		Log.v("Days left: "+deployment.getRemaining());
+		Log.v("Percentage: "+deployment.getPercentage());
 	}
 	
 	@Override

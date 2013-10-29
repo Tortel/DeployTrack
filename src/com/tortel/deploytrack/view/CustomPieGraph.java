@@ -139,7 +139,6 @@ public class CustomPieGraph extends View {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
 	    Point point = new Point();
 	    point.x = (int) event.getX();
 	    point.y = (int) event.getY();
@@ -166,8 +165,6 @@ public class CustomPieGraph extends View {
 	    	postInvalidate();
 	    }
 	    
-	    
-
 	    return true;
 	}
 	

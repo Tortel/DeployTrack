@@ -73,6 +73,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 	
 	private void reload(){
+		Log.v("Reloading activity");
 		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
 		
 		pager = (ViewPager) findViewById(R.id.pager);
@@ -124,6 +125,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					Log.v("Deleting "+id);
 					//Delete it
 					DatabaseManager.getInstance(getApplicationContext()).deleteDeployment(id);
 					reload();
@@ -202,9 +204,9 @@ public class MainActivity extends SherlockFragmentActivity {
 	private class PageChangeListener implements ViewPager.OnPageChangeListener{
 		@Override
 		public void onPageSelected(int position) {
-			//adapter.getItem(currentPosition).onPause();
 			currentPosition = position;
 			adapter.getItem(currentPosition).onResume();
+			Log.v("Page changed to "+position);
 		}
 		
 		@Override
