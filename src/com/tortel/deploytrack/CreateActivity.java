@@ -31,9 +31,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.larswerkman.colorpicker.ColorPicker;
-import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
-import com.larswerkman.colorpicker.SVBar;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.ColorPicker.OnColorChangedListener;
+import com.larswerkman.holocolorpicker.SVBar;
 import com.tortel.deploytrack.data.*;
 
 /**
@@ -271,7 +271,7 @@ public class CreateActivity extends SherlockFragmentActivity {
 						disableButton(saveButton);
 					}
 				}
-			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
+			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
 			startPicker.show(fm, "startPicker");
 			return;
 		case R.id.button_end:
@@ -289,7 +289,7 @@ public class CreateActivity extends SherlockFragmentActivity {
 						disableButton(saveButton);
 					}
 				}
-			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH));
+			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
 			endPicker.show(fm, "endPicker");
 			return;
 		}
