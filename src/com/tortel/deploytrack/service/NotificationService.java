@@ -17,6 +17,7 @@ package com.tortel.deploytrack.service;
 
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.provider.WidgetProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -37,6 +38,7 @@ public class NotificationService extends Service {
 	private static final String KEY_ID = "id";
 	private static final int NOTIFICATION_ID = 1234;
 	private static final boolean DEBUG = true;
+	private static final int SIZE = 250;
 	
 	private int deploymentId;
 	private NotificationManager notificationManager;
@@ -83,7 +85,9 @@ public class NotificationService extends Service {
 		//Load the Deployment object
 		Deployment deployment = DatabaseManager.getInstance(this).getDeployment(deploymentId);
 		RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification);
-		
+		view.setImageViewBitmap(R.id.notification_pie, WidgetProvider.getChartBitmap(deployment, SIZE));
+		view.setTextViewText(R.id.notification_daterange, deployment.getFormattedEnd());
+		view.setTextViewText(R.id.notification_main, deployment.getName());
 		
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -96,6 +100,7 @@ public class NotificationService extends Service {
 		builder.setWhen(0);
 		//TODO: Create a notification-suitable icon
 		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setPriority(Integer.MAX_VALUE);
 		//TODO: Add a RemoteView to make it fancy and expandable
 		Notification notification = builder.build();
 		

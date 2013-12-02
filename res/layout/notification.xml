@@ -13,46 +13,48 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_height="100dip" >
     
-    <TextView
-        android:id="@+id/notification_percent"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="5dip"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text=""
+    <ImageView
+        android:id="@+id/notification_pie"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/pie"
+        android:layout_alignParentLeft="true"
         />
     
-    <LinearLayout
-        android:layout_width="0dip"
+    <TextView
+        android:id="@+id/notification_main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        
-        <TextView
-            android:id="@+id/notification_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:gravity="center"
-            android:text=""
-            />
-        
-        <TextView
-            android:id="@+id/notification_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:gravity="center"
-            android:text=""
-            />
-        
-    </LinearLayout>
-    
-</LinearLayout>
+        android:gravity="center"
+        android:padding="5dip"
+        android:textStyle="bold"
+        android:text="Main"
+        android:layout_toRightOf="@id/notification_pie"
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
+        android:id="@+id/notification_secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="Secondary"
+        android:layout_toRightOf="@id/notification_pie"
+        android:layout_below="@id/notification_main"
+        />
+
+    <TextView
+        android:id="@+id/notification_daterange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:text="Date Range"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/notification_main"
+        />
+
+</RelativeLayout>

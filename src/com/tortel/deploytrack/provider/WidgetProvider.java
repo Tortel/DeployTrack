@@ -112,9 +112,35 @@ public class WidgetProvider extends AppWidgetProvider {
         Deployment deployment = info.getDeployment();
         Resources resources = context.getResources();
         
-        //Set up the pie chart image
+        // Set the text
+        remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage()+"%");
+        remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
+        remoteViews.setTextViewText(
+                R.id.widget_info,
+                resources.getQuantityString(R.plurals.days_remaining,
+                        deployment.getRemaining(), deployment.getRemaining()));
+        remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, DEFAULT_SIZE));
+
+        // Register an onClickListener
+        Intent intent = new Intent(context, WidgetProvider.class);
+
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int array[] = new int[1];
+        array[0] = info.getId();
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, array);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews
+                .setOnClickPendingIntent(R.id.widget_pie, pendingIntent);
+        
+        return remoteViews;
+    }
+    
+    public static Bitmap getChartBitmap(Deployment deployment, int size){
+    	//Set up the pie chart image
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(DEFAULT_SIZE,DEFAULT_SIZE,conf);
+        Bitmap bmp = Bitmap.createBitmap(size,size,conf);
         Canvas canvas = new Canvas(bmp);
         
         //Configure the paint
@@ -146,29 +172,7 @@ public class WidgetProvider extends AppWidgetProvider {
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         canvas.drawArc(smallbox, 0f, 360f, false, mPaint);
         
-        // Set the text
-        remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage()+"%");
-        remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
-        remoteViews.setTextViewText(
-                R.id.widget_info,
-                resources.getQuantityString(R.plurals.days_remaining,
-                        deployment.getRemaining(), deployment.getRemaining()));
-        remoteViews.setImageViewBitmap(R.id.widget_pie, bmp);
-
-        // Register an onClickListener
-        Intent intent = new Intent(context, WidgetProvider.class);
-
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int array[] = new int[1];
-        array[0] = info.getId();
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, array);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews
-                .setOnClickPendingIntent(R.id.widget_pie, pendingIntent);
-        
-        return remoteViews;
+        return bmp;
     }
 
     
