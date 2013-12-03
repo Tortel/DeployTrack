@@ -26,34 +26,33 @@ limitations under the License.
         />
     
     <TextView
-        android:id="@+id/notification_main"
+        android:id="@+id/notification_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:padding="5dip"
         android:textStyle="bold"
+        android:textSize="17sp"
         android:text="Main"
         android:layout_toRightOf="@id/notification_pie"
-        android:layout_alignParentTop="true"
         />
 
     <TextView
-        android:id="@+id/notification_secondary"
+        android:id="@+id/notification_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
         android:text="Secondary"
         android:layout_toRightOf="@id/notification_pie"
-        android:layout_below="@id/notification_main"
+        android:layout_below="@id/notification_title"
         />
-
+    
     <TextView
         android:id="@+id/notification_daterange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
-        android:text="Date Range"
-        android:layout_alignParentRight="true"
+        android:text="Secondary"
+        android:layout_toRightOf="@id/notification_pie"
         android:layout_below="@id/notification_main"
         />
 

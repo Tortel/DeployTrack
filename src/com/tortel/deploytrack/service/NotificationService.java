@@ -86,8 +86,12 @@ public class NotificationService extends Service {
 		Deployment deployment = DatabaseManager.getInstance(this).getDeployment(deploymentId);
 		RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification);
 		view.setImageViewBitmap(R.id.notification_pie, WidgetProvider.getChartBitmap(deployment, SIZE));
-		view.setTextViewText(R.id.notification_daterange, deployment.getFormattedEnd());
-		view.setTextViewText(R.id.notification_main, deployment.getName());
+		view.setTextViewText(R.id.notification_title, deployment.getName());
+		
+		view.setTextViewText(R.id.notification_main, getResources().getString(R.string.small_notification, deployment.getPercentage(),
+				deployment.getCompleted(), deployment.getLength()));
+		
+		view.setTextViewText(R.id.notification_daterange,getResources().getString(R.string.date_range, deployment.getFormattedStart(), deployment.getFormattedEnd()));
 		
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
