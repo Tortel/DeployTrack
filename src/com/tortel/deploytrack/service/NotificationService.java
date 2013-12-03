@@ -112,7 +112,7 @@ public class NotificationService extends Service {
         builder.setWhen(0);
         
         // TODO: Create a notification-suitable icon
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_notification);
         builder.setPriority(Integer.MAX_VALUE);
         
         Notification notification = builder.build();
