@@ -44,6 +44,13 @@ import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
     private static final int DEFAULT_SIZE = 200;
+    
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+        onUpdate(context, widgetManager, new int[0]);
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -159,11 +166,15 @@ public class WidgetProvider extends AppWidgetProvider {
         float sweep = 360* deployment.getPercentage() * 0.01f;
 
         //Draw the completed
-        canvas.drawArc(box, -90f, sweep, true, mPaint);
+        if(deployment.getCompleted() > 0){
+            canvas.drawArc(box, -90f, sweep, true, mPaint);
+        }
         
         //Draw the remaining
-        mPaint.setColor(deployment.getRemainingColor());
-        canvas.drawArc(box, sweep - 90f, 360f - sweep, true, mPaint);
+        if(deployment.getRemaining() > 0){
+            mPaint.setColor(deployment.getRemainingColor());
+            canvas.drawArc(box, sweep - 90f, 360f - sweep, true, mPaint);
+        }
         
         //Draw a blank circle in the middle
         int middle = bmp.getWidth() / 2;

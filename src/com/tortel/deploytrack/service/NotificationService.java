@@ -111,7 +111,6 @@ public class NotificationService extends Service {
         // Hide the time, its persistent
         builder.setWhen(0);
         
-        // TODO: Create a notification-suitable icon
         builder.setSmallIcon(R.drawable.ic_notification);
         builder.setPriority(Integer.MAX_VALUE);
         
