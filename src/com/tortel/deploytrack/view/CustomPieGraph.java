@@ -83,7 +83,7 @@ public class CustomPieGraph extends View {
 		float currentSweep = 0;
 		float percentSweep = 0;
 		int totalValue = 0;
-		float padding = 1;
+		float padding = 0.5f;
 		
 		midX = getWidth()/2;
 		midY = getHeight()/2;
