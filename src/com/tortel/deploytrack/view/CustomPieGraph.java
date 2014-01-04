@@ -21,7 +21,6 @@ package com.tortel.deploytrack.view;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -42,8 +41,9 @@ import com.tortel.deploytrack.Log;
  * This is the full PieGraph class from the HoloGraphLibrary, modified for 
  * animation and to be square based on the size of the fixed dimension.
  */
-@SuppressLint("DrawAllocation")
 public class CustomPieGraph extends View {
+    private static final float PADDING = 0.5f;
+    
 	private ArrayList<PieSlice> slices = new ArrayList<PieSlice>();
 	private Paint paint = new Paint();
 	private Path path = new Path();
@@ -52,6 +52,18 @@ public class CustomPieGraph extends View {
 	private int thickness = 50;
 	private OnSliceClickedListener listener;
 	private float percent = 1;
+	
+	// Drawing Variables
+	private Path p = new Path();
+	private RectF rect = new RectF();
+	private Region region = new Region();
+	
+    private float currentAngle = 270;
+    private float currentSweep = 0;
+    private float percentSweep = 0;
+    private int totalValue = 0;
+    
+    private float midX, midY, radius, innerRadius;
 	
 	
 	public CustomPieGraph(Context context) {
@@ -76,14 +88,13 @@ public class CustomPieGraph extends View {
 		canvas.drawColor(Color.TRANSPARENT);
 		paint.reset();
 		paint.setAntiAlias(true);
-		float midX, midY, radius, innerRadius;
 		path.reset();
 		
-		float currentAngle = 270;
-		float currentSweep = 0;
-		float percentSweep = 0;
-		int totalValue = 0;
-		float padding = 0.5f;
+		//Reset variables
+	    currentAngle = 270;
+	    currentSweep = 0;
+	    percentSweep = 0;
+	    totalValue = 0;
 		
 		midX = getWidth()/2;
 		midY = getHeight()/2;
@@ -92,7 +103,7 @@ public class CustomPieGraph extends View {
 		} else {
 			radius = midY;
 		}
-		radius -= padding;
+		radius -= PADDING;
 		innerRadius = radius - thickness;
 		
 		for (PieSlice slice : slices){
@@ -101,16 +112,21 @@ public class CustomPieGraph extends View {
 		
 		int count = 0;
 		for (PieSlice slice : slices){
-			Path p = new Path();
+			p.reset();
 			paint.setColor(slice.getColor());
 			currentSweep = (slice.getValue()/totalValue)*(360);
 			percentSweep = currentSweep * percent;
-			p.arcTo(new RectF(midX-radius, midY-radius, midX+radius, midY+radius), currentAngle+padding, percentSweep - padding);
-			p.arcTo(new RectF(midX-innerRadius, midY-innerRadius, midX+innerRadius, midY+innerRadius), (currentAngle+padding) + (percentSweep - padding), -(percentSweep-padding));
+			rect.set(midX-radius, midY-radius, midX+radius, midY+radius);
+			p.arcTo(rect, currentAngle+PADDING, percentSweep - PADDING);
+			
+			rect.set(midX-innerRadius, midY-innerRadius, midX+innerRadius, midY+innerRadius);
+			p.arcTo(rect, (currentAngle+PADDING) + (percentSweep - PADDING), -(percentSweep-PADDING));
 			p.close();
 			
 			slice.setPath(p);
-			slice.setRegion(new Region((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius)));
+			
+			region.set((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius));
+			slice.setRegion(region);
 			canvas.drawPath(p, paint);
 			
 			if (indexSelected == count && listener != null){
@@ -120,11 +136,14 @@ public class CustomPieGraph extends View {
 				paint.setAlpha(100);
 				
 				if (slices.size() > 1) {
-					path.arcTo(new RectF(midX-radius-(padding*2), midY-radius-(padding*2), midX+radius+(padding*2), midY+radius+(padding*2)), currentAngle, percentSweep+padding);
-					path.arcTo(new RectF(midX-innerRadius+(padding*2), midY-innerRadius+(padding*2), midX+innerRadius-(padding*2), midY+innerRadius-(padding*2)), currentAngle + percentSweep + padding, -(currentSweep + padding));
+				    rect.set(midX-radius-(PADDING*2), midY-radius-(PADDING*2), midX+radius+(PADDING*2), midY+radius+(PADDING*2));
+					path.arcTo(rect, currentAngle, percentSweep+PADDING);
+					
+					rect.set(midX-innerRadius+(PADDING*2), midY-innerRadius+(PADDING*2), midX+innerRadius-(PADDING*2), midY+innerRadius-(PADDING*2));
+					path.arcTo(rect, currentAngle + percentSweep + PADDING, -(currentSweep + PADDING));
 					path.close();
 				} else {
-					path.addCircle(midX, midY, radius+padding, Direction.CW);
+					path.addCircle(midX, midY, radius+PADDING, Direction.CW);
 				}
 				
 				canvas.drawPath(path, paint);
