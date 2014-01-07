@@ -84,13 +84,13 @@ limitations under the License.
 	        android:layout_height="wrap_content"
 	        android:text="@string/color_completed" />
 	        
-	    <com.larswerkman.colorpicker.ColorPicker
+	    <com.larswerkman.holocolorpicker.ColorPicker
 		    android:id="@+id/picker_completed"
 		    android:layout_width="match_parent"
 		    android:layout_height="200dip"
 		    android:layout_gravity="center" />
 
-	    <com.larswerkman.colorpicker.SVBar
+	    <com.larswerkman.holocolorpicker.SVBar
             android:id="@+id/sv_completed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,13 +103,13 @@ limitations under the License.
 	        android:layout_height="wrap_content"
 	        android:text="@string/color_remaining" />
 	        
-	    <com.larswerkman.colorpicker.ColorPicker
+	    <com.larswerkman.holocolorpicker.ColorPicker
 		    android:id="@+id/picker_remain"
 		    android:layout_width="match_parent"
 		    android:layout_height="200dip"
 		    android:layout_gravity="center" />
 
-	    <com.larswerkman.colorpicker.SVBar
+	    <com.larswerkman.holocolorpicker.SVBar
             android:id="@+id/sv_remain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
