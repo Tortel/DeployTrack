@@ -33,6 +33,11 @@ limitations under the License.
 	</PreferenceCategory>
 	<PreferenceCategory
 	    android:title="@string/other">
+		<CheckBoxPreference 
+		    android:key="pref_hide_date"
+		    android:title="@string/prefs_hide_date"
+		    android:summary="@string/prefs_hide_date_summary"
+		    android:defaultValue="false" />
 	    <Preference android:title="@string/send_feedback"
 	        android:summary="@string/send_feedback_summary">
 	        <intent

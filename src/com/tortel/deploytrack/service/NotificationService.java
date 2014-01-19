@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 1234;
     private static final boolean DEBUG = true;
     private static final int SIZE = 250;
+    
+    private static final String KEY_SHOW_DATE = "pref_hide_date";
 
     private int deploymentId;
     private NotificationManager notificationManager;
@@ -87,20 +90,27 @@ public class NotificationService extends Service {
 
         // Load the Deployment object
         Deployment deployment = DatabaseManager.getInstance(this).getDeployment(deploymentId);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        
         RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification);
         view.setImageViewBitmap(R.id.notification_pie,
                 WidgetProvider.getChartBitmap(deployment, SIZE));
         view.setTextViewText(R.id.notification_title, deployment.getName());
+        
 
         view.setTextViewText(
                 R.id.notification_main,
                 getResources().getString(R.string.small_notification, deployment.getPercentage(),
                         deployment.getCompleted(), deployment.getLength()));
 
-        view.setTextViewText(
-                R.id.notification_daterange,
-                getResources().getString(R.string.date_range, deployment.getFormattedStart(),
-                        deployment.getFormattedEnd()));
+        if(prefs.getBoolean(KEY_SHOW_DATE, false)){
+            view.setViewVisibility(R.id.notification_daterange, View.GONE);
+        } else {
+            view.setTextViewText(
+                    R.id.notification_daterange,
+                    getResources().getString(R.string.date_range, deployment.getFormattedStart(),
+                            deployment.getFormattedEnd()));
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle(deployment.getName());

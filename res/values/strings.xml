@@ -83,6 +83,8 @@ limitations under the License.
     <string name="prefs_main_view">Change Main View</string>
     <string name="prefs_main_view_summary">Choose what to display as the bold text</string>
     <string name="prefs_main_view_default">Percent (Default)</string>
+    <string name="prefs_hide_date">Hide Dates</string>
+    <string name="prefs_hide_date_summary">Hide all full dates from being shown</string>
     <string name="other">Other</string>
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
     
