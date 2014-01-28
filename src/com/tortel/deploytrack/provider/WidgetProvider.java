@@ -34,16 +34,19 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
     private static final int DEFAULT_SIZE = 200;
+    private static final float PADDING = 0.5f;
+    private static final int THICKNESS = 75;
     
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -149,41 +152,68 @@ public class WidgetProvider extends AppWidgetProvider {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmp = Bitmap.createBitmap(size,size,conf);
         Canvas canvas = new Canvas(bmp);
-        
-        //Configure the paint
-        Paint mPaint = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG | Paint.ANTI_ALIAS_FLAG);
-        mPaint.setDither(true);
-        mPaint.setColor(deployment.getCompletedColor());
-        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(10);
-        
-        //Pad the pie by 5px
-        RectF box = new RectF(5,5,bmp.getWidth() - 5,bmp.getHeight() - 5);
-        
-        //The length of the arc to use for completed
-        float sweep = 360* deployment.getPercentage() * 0.01f;
+    	
+    	canvas.drawColor(Color.TRANSPARENT);
+		Paint paint = new Paint();
+		paint.setAntiAlias(true);
+		Path p = new Path();
+		
+		RectF rect = new RectF();
+		Region region = new Region();
+		
+		//Reset variables
+	    float currentAngle = 270;
+	    float currentSweep = 0;
+	    float totalLength = deployment.getCompleted() + deployment.getRemaining();
+		
+		float midX = size / 2f;
+		float midY = size / 2f;
+		float radius;
+		if (midX < midY){
+			radius = midX;
+		} else {
+			radius = midY;
+		}
+		radius -= PADDING;
+		float innerRadius = radius - THICKNESS;
+		
+		// Draw completed
+		if(deployment.getCompleted() > 0){
+			p.reset();
+			paint.setColor(deployment.getCompletedColor());
+			currentSweep = (deployment.getCompleted() / totalLength)*(360);
+			rect.set(midX-radius, midY-radius, midX+radius, midY+radius);
+			p.arcTo(rect, currentAngle+PADDING, currentSweep - PADDING);
+			
+			rect.set(midX-innerRadius, midY-innerRadius, midX+innerRadius, midY+innerRadius);
+			p.arcTo(rect, (currentAngle+PADDING) + (currentSweep - PADDING), -(currentSweep-PADDING));
+			p.close();
+			
+			region.set((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius));
+			canvas.drawPath(p, paint);
+			
+			currentAngle = currentAngle+currentSweep;
+		}
+		
+		// Draw remaining
+		if(deployment.getCompleted() > 0){
+			p.reset();
+			paint.setColor(deployment.getRemainingColor());
+			currentSweep = (deployment.getRemaining() / totalLength)*(360);
+			rect.set(midX-radius, midY-radius, midX+radius, midY+radius);
+			p.arcTo(rect, currentAngle+PADDING, currentSweep - PADDING);
+			
+			rect.set(midX-innerRadius, midY-innerRadius, midX+innerRadius, midY+innerRadius);
+			p.arcTo(rect, (currentAngle+PADDING) + (currentSweep - PADDING), -(currentSweep-PADDING));
+			p.close();
+			
+			region.set((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius));
+			canvas.drawPath(p, paint);
+			
+			currentAngle = currentAngle+currentSweep;
+		}
 
-        //Draw the completed
-        if(deployment.getCompleted() > 0){
-            canvas.drawArc(box, -90f, sweep, true, mPaint);
-        }
-        
-        //Draw the remaining
-        if(deployment.getRemaining() > 0){
-            mPaint.setColor(deployment.getRemainingColor());
-            canvas.drawArc(box, sweep - 90f, 360f - sweep, true, mPaint);
-        }
-        
-        //Draw a blank circle in the middle
-        int middle = bmp.getWidth() / 2;
-        int padding = bmp.getWidth() / 10;
-        RectF smallbox = new RectF(middle - padding, middle - padding, middle + padding, middle + padding);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawArc(smallbox, 0f, 360f, false, mPaint);
-        
-        return bmp;
+		return bmp;
     }
 
     
