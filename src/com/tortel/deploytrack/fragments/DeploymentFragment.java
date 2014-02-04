@@ -16,10 +16,8 @@
 package com.tortel.deploytrack.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +40,6 @@ import com.tortel.deploytrack.view.CustomPieGraph;
  */
 public class DeploymentFragment extends SherlockFragment {
 	private static final boolean DEBUG = false;
-	
-	private static final String KEY_SHOW_DATE = "pref_hide_date";
 	
 	private Deployment deployment;
 	private TextView percentage;
@@ -80,8 +76,7 @@ public class DeploymentFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
 		resources = getActivity().getResources();
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		boolean hideDate = prefs.getBoolean(KEY_SHOW_DATE, false);
+		boolean hideDate = Prefs.hideDate();
 		
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
 		

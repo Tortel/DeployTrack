@@ -60,9 +60,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			currentPosition = 0;
 		}
-		Prefs.load(this);
-		
-		reload();
 	}
 	
 	@Override

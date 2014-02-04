@@ -15,6 +15,7 @@
  */
 package com.tortel.deploytrack.service;
 
+import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
@@ -40,8 +41,6 @@ public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 1234;
     private static final boolean DEBUG = true;
     private static final int SIZE = 250;
-    
-    private static final String KEY_SHOW_DATE = "pref_hide_date";
 
     private int deploymentId;
     private NotificationManager notificationManager;
@@ -103,7 +102,7 @@ public class NotificationService extends Service {
                 getResources().getString(R.string.small_notification, deployment.getPercentage(),
                         deployment.getCompleted(), deployment.getLength()));
 
-        if(prefs.getBoolean(KEY_SHOW_DATE, false)){
+        if(prefs.getBoolean(Prefs.KEY_HIDE_DATE, false)){
             view.setViewVisibility(R.id.notification_daterange, View.GONE);
         } else {
             view.setTextViewText(
