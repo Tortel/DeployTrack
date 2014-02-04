@@ -3,7 +3,7 @@
  *         daniel.nadeau01@gmail.com
  *         danielnadeau.blogspot.com
  * 
- * Portions Copyright (C) 2013 Scott Warner
+ * Portions Copyright (C) 2013-2014 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

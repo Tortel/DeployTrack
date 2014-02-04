@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Scott Warner
+ * Copyright (C) 2013-2014 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -191,7 +191,6 @@ public class DatabaseManager {
      * Clear the entire database
      */
     public void clear(){
-        //TODO: Fix
         helper.onUpgrade(helper.getWritableDatabase(), 0, 1);
         deploymentCache = null;
     }
