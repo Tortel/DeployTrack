@@ -35,7 +35,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.echo.holographlibrary.PieSlice;
-import com.tortel.deploytrack.Log;
 
 /**
  * This is the full PieGraph class from the HoloGraphLibrary, modified for 
@@ -234,7 +233,6 @@ public class CustomPieGraph extends View {
 		// Make the graph mostly a filled circle
 		int widthSize = MeasureSpec.getSize(size);
 		int graphThickness = widthSize / 3;
-		Log.v("Thickness: "+graphThickness);
 		setThickness(graphThickness);
 	}
 
