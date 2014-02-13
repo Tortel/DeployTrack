@@ -20,7 +20,7 @@ limitations under the License.
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
     
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -62,7 +62,7 @@ limitations under the License.
             android:name="com.tortel.deploytrack.provider.WidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.tortel.deploytrack.widget" />
+                <action android:name="com.tortel.deploytrack.WIDGET_UPDATE" />
             </intent-filter>
             
             <meta-data

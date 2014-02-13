@@ -44,6 +44,8 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
+    private static final String UPDATE_INTENT = "com.tortel.deploytrack.WIDGET_UPDATE";
+    
     private static final int DEFAULT_SIZE = 200;
     private static final float PADDING = 0.5f;
     private static final int THICKNESS = 75;
@@ -51,10 +53,12 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        Log.v("Update intent received");
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         onUpdate(context, widgetManager, new int[0]);
     }
 
+    @TargetApi(19)
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds){
@@ -92,14 +96,17 @@ public class WidgetProvider extends AppWidgetProvider {
         DateTime now = new DateTime();
         DateMidnight tomorrow = new DateMidnight(now.plusDays(1));
         
-        Intent updateIntent = new Intent();
-        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        PendingIntent pending = PendingIntent.getBroadcast(context, 1, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, 0, 
+                new Intent(UPDATE_INTENT), PendingIntent.FLAG_UPDATE_CURRENT);
         
         //Adding 100msec to make sure its triggered after midnight
         Log.d("Scheduling update for "+tomorrow.getMillis() + 100);
-        alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+            alarmManager.setExact(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        } else {
+            alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        }
     }
     
     @Override
