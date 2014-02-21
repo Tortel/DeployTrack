@@ -19,14 +19,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * Class to assist with preferences
+ */
 public class Prefs {
 	public static final String KEY_ANIMATION = "pref_animate";
 	public static final String KEY_MAIN_VIEW = "pref_main_view";
 	public static final String KEY_HIDE_DATE = "pref_hide_date";
+	public static final String KEY_HIDE_PERCENT = "pref_hide_percent";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
 	private static boolean hideDate;
+	private static boolean hidePercent;
 	
 	public static void load(Context context){
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -34,6 +39,7 @@ public class Prefs {
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
 		mainDisplayType = Integer.valueOf(prefs.getString(KEY_MAIN_VIEW, "0"));
 		hideDate = prefs.getBoolean(KEY_HIDE_DATE, false);
+		hidePercent = prefs.getBoolean(KEY_HIDE_PERCENT, false);
 	}
 	
 	public static boolean isAnimationEnabled() {
@@ -46,6 +52,10 @@ public class Prefs {
 	
 	public static boolean hideDate(){
 	    return hideDate;
+	}
+	
+	public static boolean hidePercent(){
+		return hidePercent;
 	}
 	
 	public class ViewTypes{
