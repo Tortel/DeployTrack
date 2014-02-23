@@ -15,17 +15,25 @@
  */
 package com.tortel.deploytrack.service;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+
+import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Build;
@@ -41,6 +49,8 @@ public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 1234;
     private static final boolean DEBUG = true;
     private static final int SIZE = 250;
+    
+    private static final String UPDATE_INTENT = "com.tortel.deploytrack.update_notification";
 
     private int deploymentId;
     private NotificationManager notificationManager;
@@ -50,19 +60,29 @@ public class NotificationService extends Service {
         super.onCreate();
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         deploymentId = getSavedId(this);
+        
+        //Register receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UPDATE_INTENT);
+        registerReceiver(updateReceiver, filter);
+        
         showNotification();
-        if (DEBUG)
+        
+        if (DEBUG){
             Toast.makeText(this, "NotificationService onCreate", Toast.LENGTH_SHORT).show();
-        // TODO: Schedule a refresh of the notification at midnight
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         notificationManager.cancel(NOTIFICATION_ID);
+        
+        unregisterReceiver(updateReceiver);
 
-        if (DEBUG)
+        if (DEBUG){
             Toast.makeText(this, "NotificationService onDestroy", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -76,16 +96,15 @@ public class NotificationService extends Service {
 
     @SuppressLint("NewApi")
     private void showNotification() {
-        // Cancel any existing notifications
-        notificationManager.cancel(NOTIFICATION_ID);
         // If there isnt an ID saved, shut down the service
         if (deploymentId == -1) {
             stopSelf();
             return;
         }
-        if (DEBUG)
+        if (DEBUG){
             Toast.makeText(this, "NotificationService loading notification", Toast.LENGTH_SHORT)
                     .show();
+        }
 
         // Load the Deployment object
         Deployment deployment = DatabaseManager.getInstance(this).getDeployment(deploymentId);
@@ -130,6 +149,23 @@ public class NotificationService extends Service {
         }
 
         notificationManager.notify(NOTIFICATION_ID, notification);
+        
+        //Schedule an update at midnight
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        DateTime now = new DateTime();
+        DateMidnight tomorrow = new DateMidnight(now.plusDays(1));
+        
+        PendingIntent pending = PendingIntent.getBroadcast(getBaseContext(), 0, 
+                new Intent(UPDATE_INTENT), PendingIntent.FLAG_UPDATE_CURRENT);
+        
+        //Adding 100msec to make sure its triggered after midnight
+        Log.d("Scheduling notification update for "+tomorrow.getMillis() + 100);
+        
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+            alarmManager.setExact(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        } else {
+            alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        }
     }
 
     /**
@@ -166,4 +202,12 @@ public class NotificationService extends Service {
             return NotificationService.this;
         }
     }
+    
+    private final BroadcastReceiver updateReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Update the notification
+            showNotification();
+        }
+    };
 }
