@@ -54,12 +54,14 @@ limitations under the License.
                 <!-- Hidden options -->
                 <item 
                     android:id="@+id/menu_notification_show"
+                    android:visible="false"
                     android:showAsAction="never"
                     android:title="@string/show_notification"
                     />
                 
                 <item 
                     android:id="@+id/menu_notification_hide"
+                    android:visible="false"
                     android:showAsAction="never"
                     android:title="@string/hide_notification"
                     />
