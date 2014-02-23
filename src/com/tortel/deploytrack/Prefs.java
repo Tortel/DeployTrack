@@ -58,6 +58,10 @@ public class Prefs {
 		return hidePercent;
 	}
 	
+	public static boolean hideAll(){
+	    return hidePercent && hideDate;
+	}
+	
 	public class ViewTypes{
 		public static final int PERCENT = 0;
 		public static final int COMPLETE = 1;

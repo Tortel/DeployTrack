@@ -85,7 +85,7 @@ limitations under the License.
     <string name="prefs_main_view_default">Percent (Default)</string>
     <string name="prefs_customization">Customization</string>
     <string name="prefs_hide_date">Hide Dates</string>
-    <string name="prefs_hide_date_summary">Hide all full dates from being shown</string>
+    <string name="prefs_hide_date_summary">Hide all dates, days left, and days completed from being shown</string>
     <string name="prefs_hide_percentage">Hide Percentage</string>
     <string name="prefs_hide_percentage_summary">Hide all percentage from being shown</string>
     <string name="other">Other</string>

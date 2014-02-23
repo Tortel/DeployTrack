@@ -21,6 +21,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
 
@@ -41,6 +42,7 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
@@ -128,6 +130,7 @@ public class WidgetProvider extends AppWidgetProvider {
     public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews, WidgetInfo info){
         Deployment deployment = info.getDeployment();
         Resources resources = context.getResources();
+        Prefs.load(context);
         
         // Set the text
         remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage()+"%");
@@ -138,6 +141,15 @@ public class WidgetProvider extends AppWidgetProvider {
                         deployment.getRemaining(), deployment.getRemaining()));
         remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, DEFAULT_SIZE));
 
+        // Apply hide preferences
+        if(Prefs.hideDate()){
+            remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
+        }
+        
+        if(Prefs.hidePercent()){
+            remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
+        }
+        
         // Register an onClickListener
         Intent intent = new Intent(context, WidgetProvider.class);
 
