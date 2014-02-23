@@ -144,10 +144,14 @@ public class WidgetProvider extends AppWidgetProvider {
         // Apply hide preferences
         if(Prefs.hideDate()){
             remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_info, View.VISIBLE);
         }
         
         if(Prefs.hidePercent()){
             remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_percent, View.VISIBLE);
         }
         
         // Register an onClickListener
