@@ -54,7 +54,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	 * @return
 	 */
 	public int getId(int position){
-		if(deployments.size() == 0){
+		if(position >= deployments.size()){
 			return -1;
 		}
 
@@ -63,7 +63,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		if(deployments.size() == position){
+		if(position >= deployments.size()){
 			return new NoDataFragment();
 		}
 		if(fragmentList.get(position) == null){
