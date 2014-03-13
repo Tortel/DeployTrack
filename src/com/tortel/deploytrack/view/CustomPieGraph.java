@@ -26,12 +26,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.graphics.Path.Direction;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.echo.holographlibrary.PieSlice;
@@ -47,9 +44,7 @@ public class CustomPieGraph extends View {
 	private Paint paint = new Paint();
 	private Path path = new Path();
 	
-	private int indexSelected = -1;
 	private int thickness = 50;
-	private OnSliceClickedListener listener;
 	private float percent = 1;
 	
 	// Drawing Variables
@@ -109,7 +104,6 @@ public class CustomPieGraph extends View {
 			totalValue += slice.getValue();
 		}
 		
-		int count = 0;
 		for (PieSlice slice : slices){
 			p.reset();
 			paint.setColor(slice.getColor());
@@ -128,62 +122,8 @@ public class CustomPieGraph extends View {
 			slice.setRegion(region);
 			canvas.drawPath(p, paint);
 			
-			if (indexSelected == count && listener != null){
-				path.reset();
-				paint.setColor(slice.getColor());
-				paint.setColor(Color.parseColor("#33B5E5"));
-				paint.setAlpha(100);
-				
-				if (slices.size() > 1) {
-				    rect.set(midX-radius-(PADDING*2), midY-radius-(PADDING*2), midX+radius+(PADDING*2), midY+radius+(PADDING*2));
-					path.arcTo(rect, currentAngle, percentSweep+PADDING);
-					
-					rect.set(midX-innerRadius+(PADDING*2), midY-innerRadius+(PADDING*2), midX+innerRadius-(PADDING*2), midY+innerRadius-(PADDING*2));
-					path.arcTo(rect, currentAngle + percentSweep + PADDING, -(currentSweep + PADDING));
-					path.close();
-				} else {
-					path.addCircle(midX, midY, radius+PADDING, Direction.CW);
-				}
-				
-				canvas.drawPath(path, paint);
-				paint.setAlpha(255);
-			}
-			
 			currentAngle = currentAngle+currentSweep;
-			
-			count++;
 		}
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-	    Point point = new Point();
-	    point.x = (int) event.getX();
-	    point.y = (int) event.getY();
-	    
-	    int count = 0;
-	    for (PieSlice slice : slices){
-	    	Region r = new Region();
-	    	r.setPath(slice.getPath(), slice.getRegion());
-	    	if (r.contains((int)point.x,(int) point.y) && event.getAction() == MotionEvent.ACTION_DOWN){
-	    		indexSelected = count;
-	    	} else if (event.getAction() == MotionEvent.ACTION_UP){
-	    		if (r.contains((int)point.x,(int) point.y) && listener != null){
-	    			if (indexSelected > -1){
-		    			listener.onClick(indexSelected);
-	    			}
-	    			indexSelected = -1;
-	    		}
-	    		
-	    	}
-		    count++;
-	    }
-	    
-	    if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_UP){
-	    	postInvalidate();
-	    }
-	    
-	    return true;
 	}
 	
 	public ArrayList<PieSlice> getSlices() {
@@ -199,9 +139,6 @@ public class CustomPieGraph extends View {
 	public void addSlice(PieSlice slice) {
 		this.slices.add(slice);
 		postInvalidate();
-	}
-	public void setOnSliceClickedListener(OnSliceClickedListener listener) {
-		this.listener = listener;
 	}
 	
 	public int getThickness() {
@@ -234,9 +171,5 @@ public class CustomPieGraph extends View {
 		int widthSize = MeasureSpec.getSize(size);
 		int graphThickness = widthSize / 3;
 		setThickness(graphThickness);
-	}
-
-	public static interface OnSliceClickedListener {
-		public abstract void onClick(int index);
 	}
 }
