@@ -46,13 +46,16 @@ public class DatabaseManager {
     public Deployment saveDeployment(Deployment deployment){
         try{
             helper.getDeploymentDao().createOrUpdate(deployment);
-            for(int i =0; i < deploymentCache.size(); i++){
-                if(deploymentCache.get(i).getId() == deployment.getId()){
-                    deploymentCache.set(i, deployment);
-                    return deployment;
+            
+            if(deploymentCache != null){
+                for(int i =0; i < deploymentCache.size(); i++){
+                    if(deploymentCache.get(i).getId() == deployment.getId()){
+                        deploymentCache.set(i, deployment);
+                        return deployment;
+                    }
                 }
+                deploymentCache.add(deployment);
             }
-            deploymentCache.add(deployment);
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
         }
