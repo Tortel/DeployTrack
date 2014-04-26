@@ -154,6 +154,16 @@ public class WidgetProvider extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.widget_percent, View.VISIBLE);
         }
         
+        // Apply text color
+
+        
+        if(!info.isLightText()){
+            remoteViews.setTextColor(R.id.widget_info, Color.DKGRAY);
+            remoteViews.setTextColor(R.id.widget_name, Color.DKGRAY);
+            remoteViews.setTextColor(R.id.widget_percent, Color.DKGRAY);
+            
+        }
+        
         // Register an onClickListener
         Intent intent = new Intent(context, WidgetProvider.class);
 

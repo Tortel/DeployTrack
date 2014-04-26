@@ -32,7 +32,7 @@ import java.sql.SQLException;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
@@ -58,6 +58,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             if(newVersion == 2 && oldVersion == 1){
                 //For version 2, I added the WidgetInfo table
                 TableUtils.createTable(connectionSource, WidgetInfo.class);
+                oldVersion = 2;
+            } else if(newVersion == 3 && oldVersion == 2){
+                // Add the lightText field
+                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN lightText BOOLEAN DEFAULT 1");
+                oldVersion = 3;
             } else {
                 TableUtils.dropTable(connectionSource, Deployment.class, true);
                 TableUtils.dropTable(connectionSource, WidgetInfo.class, true);

@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RemoteViews;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -36,13 +37,18 @@ public class WidgetPickerActivity extends SherlockFragmentActivity {
     private DeploymentFragmentAdapter adapter;
     private ViewPager pager;
     private PageIndicator indicator;
+    private boolean lightText = true;
     
     private int currentPosition = 0;
+    
+    private Button textColorButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
+        
+        textColorButton = (Button) findViewById(R.id.button_text);
         
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -71,32 +77,41 @@ public class WidgetPickerActivity extends SherlockFragmentActivity {
     
     public void onClick(View v){
         int id = adapter.getId(currentPosition);
-        if(v.getId() == R.id.button_save &&  id != -1){
-            DatabaseManager db = DatabaseManager.getInstance(this);
-
-            //Get the data
-            Deployment deployment = db.getDeployment(id);
-
-            //Save it
-            WidgetInfo info = new WidgetInfo(widgetId, deployment);
-            db.saveWidgetInfo(info);
-            
-            RemoteViews remoteView = new RemoteViews(getPackageName(), R.layout.widget_layout);
-            
-            //Set it all up
-            remoteView = WidgetProvider.updateWidgetView(this, remoteView, info);
-            
-            widgetManager.updateAppWidget(widgetId, remoteView);
-            resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            setResult(RESULT_OK, resultIntent);
-            
-            Log.d("WidgetPicker ending for widgetId "+widgetId
-                    +" with deployment "+id);
-        } else {
-            //TODO: Toast or something?
+        switch(v.getId()){
+        case R.id.button_save:
+            if(id != -1){
+                DatabaseManager db = DatabaseManager.getInstance(this);
+    
+                //Get the data
+                Deployment deployment = db.getDeployment(id);
+    
+                //Save it
+                WidgetInfo info = new WidgetInfo(widgetId, deployment);
+                info.setLightText(lightText);
+                db.saveWidgetInfo(info);
+                
+                RemoteViews remoteView = new RemoteViews(getPackageName(), R.layout.widget_layout);
+                
+                //Set it all up
+                remoteView = WidgetProvider.updateWidgetView(this, remoteView, info);
+                
+                widgetManager.updateAppWidget(widgetId, remoteView);
+                resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                setResult(RESULT_OK, resultIntent);
+                
+                Log.d("WidgetPicker ending for widgetId "+widgetId
+                        +" with deployment "+id);
+            }
+            finish();
+            return;
+        case R.id.button_cancel:
+            finish();
+            return;
+        case R.id.button_text:
+            lightText = !lightText;
+            textColorButton.setText(lightText ? R.string.text_light : R.string.text_dark);
+            return;
         }
-        
-        finish();
     }
     
     /**

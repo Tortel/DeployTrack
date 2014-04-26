@@ -45,6 +45,21 @@ limitations under the License.
         android:layout_height="2dip"
         android:background="@drawable/dialog_divider_horizontal_holo_dark"
         android:paddingBottom="5dip" />
+    
+       <Button
+           android:id="@+id/button_text"
+           style="@style/Widget.Sherlock.ActionButton"
+           android:textColor="@android:color/white"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:onClick="onClick"
+           android:text="@string/text_light" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:background="@drawable/dialog_divider_horizontal_holo_dark"
+        android:paddingBottom="5dip" />
 
    <LinearLayout
        android:layout_width="match_parent"

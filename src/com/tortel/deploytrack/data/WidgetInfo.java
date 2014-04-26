@@ -27,6 +27,8 @@ public class WidgetInfo {
     private int id;
     @DatabaseField(canBeNull = false, foreign=true)
     private Deployment deployment;
+    @DatabaseField(defaultValue="false")
+    private boolean lightText;
     
     public WidgetInfo(){
         //For ORMLite
@@ -56,5 +58,13 @@ public class WidgetInfo {
         }
         WidgetInfo other = (WidgetInfo) o;
         return other.id == id;
+    }
+
+    public boolean isLightText() {
+        return lightText;
+    }
+
+    public void setLightText(boolean lightText) {
+        this.lightText = lightText;
     }
 }
