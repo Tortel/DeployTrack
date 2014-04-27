@@ -50,7 +50,6 @@ public class WidgetProvider extends AppWidgetProvider {
     
     private static final int DEFAULT_SIZE = 200;
     private static final float PADDING = 0.5f;
-    private static final int THICKNESS = 75;
     
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -71,8 +70,16 @@ public class WidgetProvider extends AppWidgetProvider {
 
             Log.d("Updating widget "+widgetId);
             
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                    R.layout.widget_layout);
+            RemoteViews remoteViews;
+            
+            if(info.isWide()){
+                Log.v("Using wide layout");
+                remoteViews = new RemoteViews(context.getPackageName(),
+                    R.layout.widget_wide_layout);
+            } else {
+                remoteViews = new RemoteViews(context.getPackageName(),
+                        R.layout.widget_layout);
+            }
 
             Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getId());
 
@@ -111,6 +118,32 @@ public class WidgetProvider extends AppWidgetProvider {
         }
     }
     
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void onAppWidgetOptionsChanged(Context context,
+            AppWidgetManager appWidgetManager, int appWidgetId,
+            Bundle newOptions) {
+        DatabaseManager db = DatabaseManager.getInstance(context);
+        WidgetInfo widgetInfo = db.getWidgetInfo(appWidgetId);
+        
+        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        
+        Log.v("Widget size: "+minWidth+"/"+maxWidth+" W, "+minHeight+"/"+maxHeight+"H");
+        
+        widgetInfo.setMinWidth(minWidth);
+        widgetInfo.setMaxWidth(maxWidth);
+        widgetInfo.setMinHeight(minHeight);
+        widgetInfo.setMaxHeight(maxHeight);
+        
+        // Save it
+        db.saveWidgetInfo(widgetInfo);
+        
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,
+                newOptions);
+    }
+    
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         //Remove them from the database
@@ -139,7 +172,14 @@ public class WidgetProvider extends AppWidgetProvider {
                 R.id.widget_info,
                 resources.getQuantityString(R.plurals.days_remaining,
                         deployment.getRemaining(), deployment.getRemaining()));
-        remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, DEFAULT_SIZE));
+        
+        int size = DEFAULT_SIZE;
+        if(info.getMinHeight() > 0){
+            size = info.getMaxWidth();
+            Log.v("Using chart size "+size);
+        }
+        
+        remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, size));
 
         // Apply hide preferences
         if(Prefs.hideDate()){
@@ -155,8 +195,6 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         
         // Apply text color
-
-        
         if(!info.isLightText()){
             remoteViews.setTextColor(R.id.widget_info, Color.DKGRAY);
             remoteViews.setTextColor(R.id.widget_name, Color.DKGRAY);
@@ -198,6 +236,7 @@ public class WidgetProvider extends AppWidgetProvider {
 	    float currentAngle = 270;
 	    float currentSweep = 0;
 	    float totalLength = deployment.getCompleted() + deployment.getRemaining();
+	    int thickness = size / 3;
 		
 		float midX = size / 2f;
 		float midY = size / 2f;
@@ -208,7 +247,7 @@ public class WidgetProvider extends AppWidgetProvider {
 			radius = midY;
 		}
 		radius -= PADDING;
-		float innerRadius = radius - THICKNESS;
+		float innerRadius = radius - thickness;
 		
 		// Draw completed
 		if(deployment.getCompleted() > 0){
@@ -249,13 +288,4 @@ public class WidgetProvider extends AppWidgetProvider {
 		return bmp;
     }
 
-    
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void onAppWidgetOptionsChanged(Context context,
-            AppWidgetManager appWidgetManager, int appWidgetId,
-            Bundle newOptions) {
-        // TODO Auto-generated method stub
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,
-                newOptions);
-    }
 }

@@ -29,6 +29,15 @@ public class WidgetInfo {
     private Deployment deployment;
     @DatabaseField(defaultValue="false")
     private boolean lightText;
+    @DatabaseField(defaultValue="0")
+    private int minWidth;
+    @DatabaseField(defaultValue="0")
+    private int minHeight;
+    //TODO: Add these to the SQL
+    @DatabaseField(defaultValue="0")
+    private int maxWidth;
+    @DatabaseField(defaultValue="0")
+    private int maxHeight;
     
     public WidgetInfo(){
         //For ORMLite
@@ -37,6 +46,21 @@ public class WidgetInfo {
     public WidgetInfo(int id, Deployment deployment){
         this.id = id;
         this.deployment = deployment;
+    }
+    
+    public boolean isWide(){
+        if(minWidth > 0 && minHeight > 0){
+            return (double) minWidth / (double) minHeight > 1.25;
+        }
+        return false;
+    }
+    
+    public boolean equals(Object o){
+        if(o == null || !o.getClass().equals(getClass())){
+            return false;
+        }
+        WidgetInfo other = (WidgetInfo) o;
+        return other.id == id;
     }
     
     public int getId() {
@@ -51,20 +75,34 @@ public class WidgetInfo {
     public void setDeployment(Deployment deployment) {
         this.deployment = deployment;
     }
-
-    public boolean equals(Object o){
-        if(o == null || !o.getClass().equals(getClass())){
-            return false;
-        }
-        WidgetInfo other = (WidgetInfo) o;
-        return other.id == id;
-    }
-
     public boolean isLightText() {
         return lightText;
     }
-
     public void setLightText(boolean lightText) {
         this.lightText = lightText;
+    }
+    public int getMinWidth() {
+        return minWidth;
+    }
+    public void setMinWidth(int minWidth) {
+        this.minWidth = minWidth;
+    }
+    public int getMinHeight() {
+        return minHeight;
+    }
+    public void setMinHeight(int minHeight) {
+        this.minHeight = minHeight;
+    }
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+    public void setMaxWidth(int maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
     }
 }
