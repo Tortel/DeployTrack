@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RemoteViews;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -40,15 +39,11 @@ public class WidgetPickerActivity extends SherlockFragmentActivity {
     private boolean lightText = true;
     
     private int currentPosition = 0;
-    
-    private Button textColorButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_widget_config);
-        
-        textColorButton = (Button) findViewById(R.id.button_text);
         
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -107,9 +102,11 @@ public class WidgetPickerActivity extends SherlockFragmentActivity {
         case R.id.button_cancel:
             finish();
             return;
-        case R.id.button_text:
-            lightText = !lightText;
-            textColorButton.setText(lightText ? R.string.text_light : R.string.text_dark);
+        case R.id.widget_dark_text:
+            lightText = false;
+            return;
+        case R.id.widget_light_text:
+            lightText = true;
             return;
         }
     }

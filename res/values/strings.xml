@@ -52,8 +52,9 @@ limitations under the License.
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>
-    <string name="text_light">Light Color Text</string>
-    <string name="text_dark">Dark Color Text</string>
+    <string name="text_color">Text Color</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
     
     <!-- Create strings -->
     <string name="name">Name: (15 Character Limit)</string>
