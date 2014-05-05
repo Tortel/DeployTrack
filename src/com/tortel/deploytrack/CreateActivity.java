@@ -166,15 +166,17 @@ public class CreateActivity extends SherlockFragmentActivity {
 		
 		remainingPicker.setOldCenterColor(remainingColor);
 		remainingPicker.setNewCenterColor(remainingColor);
+		remainingPicker.addSVBar(remainingBar);
+		remainingBar.setColor(remainingColor);
 		remainingPicker.setColor(remainingColor);
 		remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
-		remainingPicker.addSVBar(remainingBar);
 		
 		completedPicker.setOldCenterColor(completedColor);
 		completedPicker.setNewCenterColor(completedColor);
+		completedPicker.addSVBar(completedBar);
+		completedBar.setColor(completedColor);
 		completedPicker.setColor(completedColor);
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
-		completedPicker.addSVBar(completedBar);
 	}
 	
 	@Override
