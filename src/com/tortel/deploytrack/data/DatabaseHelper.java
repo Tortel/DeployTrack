@@ -55,19 +55,25 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion){
         try{
-            if(newVersion == 2){
+            // Drop everything
+            if(oldVersion == 0){
+                TableUtils.dropTable(connectionSource, Deployment.class, true);
+                TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
+                return;
+            }
+            if(oldVersion == 1){
                 //For version 2, I added the WidgetInfo table
                 TableUtils.createTable(connectionSource, WidgetInfo.class);
-            } else if(newVersion == 3){
+                oldVersion = 2;
+            }
+            if(oldVersion == 2){
                 // Add the lightText field
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN lightText BOOLEAN DEFAULT 1");
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN minWidth INTEGER DEFAULT 0");
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN maxWidth INTEGER DEFAULT 0");
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN minHeight INTEGER DEFAULT 0");
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN maxHeight INTEGER DEFAULT 0");
-            } else {
-                TableUtils.dropTable(connectionSource, Deployment.class, true);
-                TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
+                oldVersion = 3;
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);
