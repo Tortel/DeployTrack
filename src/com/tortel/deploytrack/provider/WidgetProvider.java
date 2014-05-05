@@ -48,7 +48,7 @@ import android.widget.RemoteViews;
 public class WidgetProvider extends AppWidgetProvider {
     private static final String UPDATE_INTENT = "com.tortel.deploytrack.WIDGET_UPDATE";
     
-    private static final int DEFAULT_SIZE = 200;
+    private static final int DEFAULT_SIZE = 190;
     private static final float PADDING = 0.5f;
     
     @Override
