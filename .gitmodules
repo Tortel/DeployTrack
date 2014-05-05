@@ -13,3 +13,6 @@
 [submodule "HoloColorPicker"]
 	path = HoloColorPicker
 	url = https://github.com/LarsWerkman/HoloColorPicker.git
+[submodule "NineOldAndroids"]
+	path = NineOldAndroids
+	url = https://github.com/JakeWharton/NineOldAndroids.git
