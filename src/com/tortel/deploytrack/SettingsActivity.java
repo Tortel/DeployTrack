@@ -15,6 +15,7 @@
  */
 package com.tortel.deploytrack;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -40,5 +41,17 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void onStop(){
+	    super.onStop();
+	    sendWidgetUpdateBroadcast();
+	}
+	
+	private void sendWidgetUpdateBroadcast(){
+	    Log.v("Sending widget update broadcast");
+	    // Force the widgets to update
+        Intent updateWidgetIntent = new Intent("com.tortel.deploytrack.WIDGET_UPDATE");
+        sendBroadcast(updateWidgetIntent);
 	}
 }
