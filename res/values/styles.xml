@@ -13,11 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Use a theme based on the ABS theme, and add ViewPagerIndicator customizations to make it pretty -->
     <style name="Theme.DeployTheme" parent="Theme.Sherlock">
-	    <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
+	    <item name="buttonTextColor">@android:color/white</item>
     </style>
+    
+    <style name="Theme.DeployThemeLight" parent="Theme.Sherlock.Light">
+	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
+	    <item name="buttonTextColor">@android:color/black</item>
+    </style>
+    
+    <style name="TabStyle" parent="Widget.TabPageIndicator">
+        <item name="android:textColor">@attr/buttonTextColor</item>
+    </style>
+    
     <!-- Style for the percentage -->
     <style name="BasePercentage">
         <item name="android:textSize">25sp</item>

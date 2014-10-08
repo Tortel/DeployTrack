@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,6 +25,8 @@ limitations under the License.
         android:padding="2dip"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:textColor="?attr/buttonTextColor"
+        app:selectedColor="?attr/buttonTextColor"
         />
 
     <android.support.v4.view.ViewPager

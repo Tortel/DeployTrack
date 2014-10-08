@@ -28,7 +28,7 @@ limitations under the License.
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.DeployTheme" >
+        android:theme="@style/Theme.DeployThemeLight" >
         
         <!-- Main activity -->
         <activity
