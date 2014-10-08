@@ -26,13 +26,13 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		
         // Check for light theme
         Prefs.load(this);
         if(Prefs.useLightTheme()){
             setTheme(R.style.Theme_DeployThemeLight);
         }
+        
+		super.onCreate(savedInstanceState);
         
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		//Deprecated, schreprecated.
