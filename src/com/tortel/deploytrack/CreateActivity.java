@@ -123,8 +123,8 @@ public class CreateActivity extends SherlockFragmentActivity {
 			getSupportActionBar().setTitle(R.string.edit);
 		} else {
 			deployment = new Deployment();
-			disableButton(endButton);
-			disableButton(saveButton);
+			endButton.setEnabled(false);
+			saveButton.setEnabled(false);
 			
 			start = Calendar.getInstance();
 			end = (Calendar) start.clone();
@@ -154,13 +154,13 @@ public class CreateActivity extends SherlockFragmentActivity {
 			if(startSet){
 				startButton.setText(getResources().getString(R.string.start_date)+
 						"\n"+format.format(start.getTime()));
-				enableButton(endButton);
+				endButton.setEnabled(true);
 			}
 			
 			if(endSet && end.after(start)){
 				endButton.setText(getResources().getString(R.string.end_date)+
 						"\n"+format.format(end.getTime()));
-				enableButton(saveButton);
+				saveButton.setEnabled(true);
 			}
 		}
 		
@@ -207,26 +207,6 @@ public class CreateActivity extends SherlockFragmentActivity {
 	}
 	
 	/**
-	 * Method to both disable a button, and set
-	 * the text color to gray
-	 * @param button
-	 */
-	private void disableButton(Button button){
-		button.setEnabled(false);
-		button.setTextColor(Color.DKGRAY);
-	}
-	
-	/**
-	 * Method to both enable the button and set the
-	 * text color to white
-	 * @param button
-	 */
-	private void enableButton(Button button){
-		button.setEnabled(true);
-		button.setTextColor(Color.WHITE);
-	}
-	
-	/**
 	 * Method called when the buttons are clicked
 	 * @param v
 	 */
@@ -265,12 +245,12 @@ public class CreateActivity extends SherlockFragmentActivity {
 					start.set(year, month, day, 0, 0);
 					if(!endSet || start.before(end)){
 						startSet = true;
-						enableButton(endButton);
+						endButton.setEnabled(true);
 						startButton.setText(getResources().getString(R.string.start_date)+
 								"\n"+format.format(start.getTime())); 
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-						disableButton(saveButton);
+						saveButton.setEnabled(false);
 					}
 				}
 			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
@@ -283,12 +263,12 @@ public class CreateActivity extends SherlockFragmentActivity {
 					end.set(year, month, day, 0, 0);
 					if(end.after(start)){
 						endSet = true;
-						enableButton(saveButton);
+						saveButton.setEnabled(true);
 						endButton.setText(getResources().getString(R.string.end_date)+
 								"\n"+format.format(end.getTime())); 
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-						disableButton(saveButton);
+						saveButton.setEnabled(false);
 					}
 				}
 			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
