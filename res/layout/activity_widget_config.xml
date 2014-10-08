@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,6 +32,8 @@ limitations under the License.
         android:padding="2dip"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:textColor="?attr/buttonTextColor"
+        app:selectedColor="?attr/buttonTextColor"
         />
 
     <android.support.v4.view.ViewPager
@@ -43,7 +46,7 @@ limitations under the License.
     <View
         android:layout_width="match_parent"
         android:layout_height="2dip"
-        android:background="@drawable/dialog_divider_horizontal_holo_dark"
+        android:background="?attr/divideHorizontal"
         android:paddingBottom="5dip" />
     
     <TextView
@@ -79,7 +82,7 @@ limitations under the License.
     <View
         android:layout_width="match_parent"
         android:layout_height="2dip"
-        android:background="@drawable/dialog_divider_horizontal_holo_dark"
+        android:background="?attr/divideHorizontal"
         android:paddingBottom="5dip" />
 
    <LinearLayout
@@ -90,7 +93,7 @@ limitations under the License.
        <Button
            android:id="@+id/button_cancel"
            style="@style/Widget.Sherlock.ActionButton"
-           android:textColor="@android:color/white"
+           android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"
            android:layout_weight="0.45"
@@ -100,12 +103,12 @@ limitations under the License.
        <View
            android:layout_width="2dip"
            android:layout_height="match_parent"
-           android:background="@drawable/divider_vertical_holo_dark" />
+           android:background="?attr/divideVertical" />
 
        <Button
            android:id="@+id/button_save"
            style="@style/Widget.Sherlock.ActionButton"
-           android:textColor="@android:color/white"
+           android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"
            android:layout_weight="0.45"
