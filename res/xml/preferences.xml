@@ -30,6 +30,11 @@ limitations under the License.
 		    android:entryValues="@array/prefs_main_view_values"
 		    android:defaultValue="0"
 		    />
+		<CheckBoxPreference
+		    android:key="pref_light_theme"
+		    android:title="@string/prefs_light_theme"
+		    android:summary="@string/prefs_light_theme_summary"
+		    android:defaultValue="false" />
 	</PreferenceCategory>
 	<PreferenceCategory
 	    android:title="@string/prefs_customization">

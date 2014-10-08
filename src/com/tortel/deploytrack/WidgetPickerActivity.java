@@ -43,6 +43,13 @@ public class WidgetPickerActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Check for light theme
+        Prefs.load(this);
+        if(Prefs.useLightTheme()){
+            setTheme(R.style.Theme_DeployThemeLight);
+        }
+        
         setContentView(R.layout.activity_widget_config);
         
         Bundle extras = getIntent().getExtras();

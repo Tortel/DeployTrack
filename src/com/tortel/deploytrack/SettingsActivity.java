@@ -27,6 +27,13 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+        // Check for light theme
+        Prefs.load(this);
+        if(Prefs.useLightTheme()){
+            setTheme(R.style.Theme_DeployThemeLight);
+        }
+        
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		//Deprecated, schreprecated.
 		addPreferencesFromResource(R.xml.preferences);

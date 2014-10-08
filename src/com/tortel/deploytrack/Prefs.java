@@ -27,11 +27,13 @@ public class Prefs {
 	public static final String KEY_MAIN_VIEW = "pref_main_view";
 	public static final String KEY_HIDE_DATE = "pref_hide_date";
 	public static final String KEY_HIDE_PERCENT = "pref_hide_percent";
+	public static final String KEY_LIGHT_THEME = "pref_light_theme";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
 	private static boolean hideDate;
 	private static boolean hidePercent;
+	private static boolean lightTheme;
 	
 	public static void load(Context context){
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -40,6 +42,7 @@ public class Prefs {
 		mainDisplayType = Integer.valueOf(prefs.getString(KEY_MAIN_VIEW, "0"));
 		hideDate = prefs.getBoolean(KEY_HIDE_DATE, false);
 		hidePercent = prefs.getBoolean(KEY_HIDE_PERCENT, false);
+		lightTheme = prefs.getBoolean(KEY_LIGHT_THEME, false);
 	}
 	
 	public static boolean isAnimationEnabled() {
@@ -62,7 +65,11 @@ public class Prefs {
 	    return hidePercent && hideDate;
 	}
 	
-	public class ViewTypes{
+	public static boolean useLightTheme() {
+        return lightTheme;
+    }
+
+    public class ViewTypes{
 		public static final int PERCENT = 0;
 		public static final int COMPLETE = 1;
 		public static final int REMAINING = 2;
