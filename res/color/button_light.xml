@@ -13,16 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<resources>
-    <!-- Everything here needs to be theme specific -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:color="@android:color/secondary_text_dark" />
     
-    <!-- Button text color -->
-    <attr name="buttonTextColor" format="color"/>
-    
-    <!-- Overflow button image -->
-    <attr name="overflowButton" format="reference" />
-    
-    <!-- Dividers -->
-    <attr name="divideHorizontal" format="reference" />
-    <attr name="divideVertical" format="reference" />
-</resources>
+    <item android:color="@android:color/black" />
+</selector>

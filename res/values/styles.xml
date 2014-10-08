@@ -14,16 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Use a theme based on the ABS theme, and add ViewPagerIndicator customizations to make it pretty -->
-    <style name="Theme.DeployTheme" parent="Theme.Sherlock">
+    <!-- Dark theme -->
+    <style name="Theme.DeployThemeDark" parent="Theme.Sherlock">
 	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
-	    <item name="buttonTextColor">@android:color/white</item>
+	    
+	    <!-- Theme specific stuff -->
+	    <item name="buttonTextColor">@color/button_dark</item>
+	    <item name="overflowButton">@drawable/abs__ic_menu_moreoverflow_holo_dark</item>
+	    
+	    <item name="divideVertical">@drawable/divider_vertical_holo_dark</item>
+	    <item name="divideHorizontal">@drawable/dialog_divider_horizontal_holo_dark</item>
     </style>
     
+    <!--  Light theme -->
     <style name="Theme.DeployThemeLight" parent="Theme.Sherlock.Light">
 	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
-	    <item name="buttonTextColor">@android:color/black</item>
+	    
+	    <!-- Theme-specific stuff -->
+	    <item name="buttonTextColor">@color/button_light</item>
+	    
+	    <item name="overflowButton">@drawable/abs__ic_menu_moreoverflow_holo_light</item>
+	    <item name="divideVertical">@drawable/divider_vertical_holo_light</item>
+	    <item name="divideHorizontal">@drawable/dialog_divider_horizontal_holo_light</item>
     </style>
+    
     
     <style name="TabStyle" parent="Widget.TabPageIndicator">
         <item name="android:textColor">@attr/buttonTextColor</item>

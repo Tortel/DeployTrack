@@ -22,7 +22,7 @@ limitations under the License.
          />
     <item
         android:id="@+id/full_menu_settings"
-        android:icon="@drawable/abs__ic_menu_moreoverflow_holo_dark"
+        android:icon="?attr/overflowButton"
         android:showAsAction="always"
         android:title="@string/settings">
         <menu xmlns:android="http://schemas.android.com/apk/res/android" >
