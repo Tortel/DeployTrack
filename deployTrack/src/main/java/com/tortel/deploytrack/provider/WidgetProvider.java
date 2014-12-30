@@ -17,7 +17,6 @@ package com.tortel.deploytrack.provider;
 
 import java.util.List;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import com.tortel.deploytrack.Log;
@@ -103,7 +102,7 @@ public class WidgetProvider extends AppWidgetProvider {
         //Schedule an update at midnight
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         DateTime now = new DateTime();
-        DateMidnight tomorrow = new DateMidnight(now.plusDays(1));
+        DateTime tomorrow = new DateTime(now.plusDays(1)).withTimeAtStartOfDay();
         
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, 
                 new Intent(UPDATE_INTENT), PendingIntent.FLAG_UPDATE_CURRENT);

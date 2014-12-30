@@ -15,7 +15,6 @@
  */
 package com.tortel.deploytrack.service;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import com.tortel.deploytrack.Log;
@@ -153,7 +152,7 @@ public class NotificationService extends Service {
         //Schedule an update at midnight
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         DateTime now = new DateTime();
-        DateMidnight tomorrow = new DateMidnight(now.plusDays(1));
+        DateTime tomorrow = new DateTime(now.plusDays(1)).withTimeAtStartOfDay();
         
         PendingIntent pending = PendingIntent.getBroadcast(getBaseContext(), 0, 
                 new Intent(UPDATE_INTENT), PendingIntent.FLAG_UPDATE_CURRENT);
