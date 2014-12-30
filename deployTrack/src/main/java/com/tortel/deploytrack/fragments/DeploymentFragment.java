@@ -18,13 +18,13 @@ package com.tortel.deploytrack.fragments;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.echo.holographlibrary.PieSlice;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -38,7 +38,7 @@ import com.tortel.deploytrack.view.CustomPieGraph;
 /**
  * Fragment that displays the fancy deployment graph and info
  */
-public class DeploymentFragment extends SherlockFragment {
+public class DeploymentFragment extends Fragment {
 	private static final boolean DEBUG = false;
 	
 	private Deployment deployment;

@@ -18,10 +18,6 @@ limitations under the License.
     android:versionCode="17"
     android:versionName="1.5.0" >
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="20" />
-    
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -52,7 +48,8 @@ limitations under the License.
         <activity android:name="com.tortel.deploytrack.CreateActivity" />
         
         <!-- Settings activity -->
-        <activity android:name="com.tortel.deploytrack.SettingsActivity" />
+        <activity android:name="com.tortel.deploytrack.SettingsActivity"
+            android:label="@string/settings" />
         
         <!-- Notification service -->
         <service android:name="com.tortel.deploytrack.service.NotificationService" />

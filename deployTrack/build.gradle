@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
-        minSdkVersion 8
-        targetSdkVersion 20
+        minSdkVersion 14
+        targetSdkVersion 21
     }
 
     buildTypes {
@@ -26,14 +26,15 @@ repositories {
 }
 
 dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
+    compile "com.android.support:appcompat-v7:21.0.+"
+
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'com.larswerkman:HoloColorPicker:1.4'
-    compile 'com.android.support:support-v4:19.1.0'
+
     compile 'joda-time:joda-time:2.6'
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:18.0.0'
+
+    // File-based deps
     compile files('libs/ormlite-android-4.45.jar')
     compile files('libs/ormlite-core-4.45.jar')
     compile(name:'HoloGraphLibrary', ext:'aar')

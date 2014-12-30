@@ -19,16 +19,16 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-public class WidgetPickerActivity extends SherlockFragmentActivity {
+public class WidgetPickerActivity extends ActionBarActivity {
     private Intent resultIntent;
     private AppWidgetManager widgetManager;
     private int widgetId;

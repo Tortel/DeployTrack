@@ -23,12 +23,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.fragments.AboutDialogFragment;
 import com.tortel.deploytrack.service.NotificationService;
@@ -39,10 +40,8 @@ import com.viewpagerindicator.TitlePageIndicator;
  * The main activity that contains the fragments that show the graphs.
  * Also handles the options menu
  */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends ActionBarActivity {
 	private static String KEY_POSITION = "position";
-	
-	private Menu settingsMenu;
 	
 	private DeploymentFragmentAdapter adapter;
 	private ViewPager pager;
@@ -92,13 +91,12 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.main, menu);
-		settingsMenu = menu;
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
 		final int id = adapter.getId(currentPosition);
 		
@@ -144,8 +142,10 @@ public class MainActivity extends SherlockFragmentActivity {
 			dialog.show();
 			return true;
 		case R.id.menu_about:
-			AboutDialogFragment about = new AboutDialogFragment();
-			about.show(getSupportFragmentManager(), "about");
+			Fragment about = new AboutDialogFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(about, "about");
+            transaction.commit();
 			return true;
 		case R.id.menu_notification_show:
 			if(id == -1){
@@ -174,7 +174,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			startActivity(intent);
 			return true;
 		}
-		return super.onMenuItemSelected(featureId, item);
+		return super.onOptionsItemSelected(item);
 	}
 	
     private boolean isAvailable(Intent intent) {
@@ -188,16 +188,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(KEY_POSITION, currentPosition);
-	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent e){
-		switch(keyCode){
-		case KeyEvent.KEYCODE_MENU:
-			settingsMenu.performIdentifierAction(R.id.full_menu_settings, 0);
-			return true; 
-		}
-		return super.onKeyUp(keyCode, e);
 	}
 	
 	/**

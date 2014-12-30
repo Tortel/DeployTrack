@@ -15,15 +15,16 @@
  */
 package com.tortel.deploytrack;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
 
-public class SettingsActivity extends SherlockPreferenceActivity {
-	
-	@SuppressWarnings("deprecation")
+public class SettingsActivity extends ActionBarActivity {
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
         // Check for light theme
@@ -31,12 +32,16 @@ public class SettingsActivity extends SherlockPreferenceActivity {
         if(Prefs.useLightTheme()){
             setTheme(R.style.Theme_DeployThemeLight);
         }
-        
 		super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_settings);
         
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		//Deprecated, schreprecated.
-		addPreferencesFromResource(R.xml.preferences);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, new SettingsFragment());
+        transaction.commit();
+
 	}
 	
 	@Override
@@ -61,4 +66,13 @@ public class SettingsActivity extends SherlockPreferenceActivity {
         Intent updateWidgetIntent = new Intent("com.tortel.deploytrack.WIDGET_UPDATE");
         sendBroadcast(updateWidgetIntent);
 	}
+
+    public static class SettingsFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            addPreferencesFromResource(R.xml.preferences);
+        }
+    }
 }

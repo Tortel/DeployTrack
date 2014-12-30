@@ -13,67 +13,59 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
      <item
          android:id="@+id/menu_create_new"
-         android:showAsAction="always"
+         app:showAsAction="always"
          android:title="@string/add_new"
          android:icon="@drawable/ic_menu_add"
          />
+
     <item
-        android:id="@+id/full_menu_settings"
-        android:icon="?attr/overflowButton"
-        android:showAsAction="always"
-        android:title="@string/settings">
-        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-            <group android:id="@+id/group_popupmenu" >
-                <item
-                    android:id="@+id/menu_edit"
-                    android:showAsAction="never"
-                    android:title="@string/edit"
-                    />
+        android:id="@+id/menu_edit"
+        app:showAsAction="never"
+        android:title="@string/edit"
+        />
 
-                <item
-                    android:id="@+id/menu_delete"
-                    android:showAsAction="never"
-                    android:title="@string/delete"
-                    />
+    <item
+        android:id="@+id/menu_delete"
+        app:showAsAction="never"
+        android:title="@string/delete"
+        />
 
-                <item
-                    android:id="@+id/menu_about"
-                    android:showAsAction="never"
-                    android:title="@string/about"
-                    />
+    <item
+        android:id="@+id/menu_about"
+        app:showAsAction="never"
+        android:title="@string/about"
+        />
 
-                <item 
-                    android:id="@+id/menu_settings"
-                    android:showAsAction="never"
-                    android:title="@string/settings"
-                    />
+    <item
+        android:id="@+id/menu_settings"
+        app:showAsAction="never"
+        android:title="@string/settings"
+        />
 
-                <!-- Hidden options -->
-                <item 
-                    android:id="@+id/menu_notification_show"
-                    android:visible="false"
-                    android:showAsAction="never"
-                    android:title="@string/show_notification"
-                    />
-                
-                <item 
-                    android:id="@+id/menu_notification_hide"
-                    android:visible="false"
-                    android:showAsAction="never"
-                    android:title="@string/hide_notification"
-                    />
+    <!-- Hidden options -->
+    <item
+        android:id="@+id/menu_notification_show"
+        android:visible="false"
+        app:showAsAction="never"
+        android:title="@string/show_notification"
+        />
 
-                <item 
-                    android:id="@+id/menu_feedback"
-                    android:visible="false"
-                    android:showAsAction="never"
-                    android:title="@string/send_feedback"
-                    />
-            </group>
-        </menu>
-    </item>
+    <item
+        android:id="@+id/menu_notification_hide"
+        android:visible="false"
+        app:showAsAction="never"
+        android:title="@string/hide_notification"
+        />
+
+    <item
+        android:id="@+id/menu_feedback"
+        android:visible="false"
+        app:showAsAction="never"
+        android:title="@string/send_feedback"
+        />
 
 </menu>

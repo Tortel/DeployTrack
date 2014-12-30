@@ -92,7 +92,7 @@ limitations under the License.
 
        <Button
            android:id="@+id/button_cancel"
-           style="@style/Widget.Sherlock.ActionButton"
+           style="@style/no_border"
            android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"
@@ -107,7 +107,7 @@ limitations under the License.
 
        <Button
            android:id="@+id/button_save"
-           style="@style/Widget.Sherlock.ActionButton"
+           style="@style/no_border"
            android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"

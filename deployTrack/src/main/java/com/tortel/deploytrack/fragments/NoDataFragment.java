@@ -16,19 +16,19 @@
 package com.tortel.deploytrack.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.tortel.deploytrack.R;
 
 /**
  * A fragment that is shown if there is no other data
  */
-public class NoDataFragment extends SherlockFragment {
+public class NoDataFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

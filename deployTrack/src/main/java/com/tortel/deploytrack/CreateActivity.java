@@ -22,13 +22,13 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -39,7 +39,7 @@ import com.tortel.deploytrack.data.*;
 /**
  * Activity for creating and editing a Deployment
  */
-public class CreateActivity extends SherlockFragmentActivity {
+public class CreateActivity extends ActionBarActivity {
 	private static final String KEY_TIME_START = "start";
 	private static final String KEY_TIME_END = "end";
 	private static final String KEY_SET_START = "startset";
