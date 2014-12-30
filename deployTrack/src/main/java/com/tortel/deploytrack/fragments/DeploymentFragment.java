@@ -15,6 +15,8 @@
  */
 package com.tortel.deploytrack.fragments;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -26,8 +28,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.echo.holographlibrary.PieSlice;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
