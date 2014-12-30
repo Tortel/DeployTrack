@@ -116,10 +116,10 @@ public class CustomPieGraph extends View {
 			p.arcTo(rect, (currentAngle+PADDING) + (percentSweep - PADDING), -(percentSweep-PADDING));
 			p.close();
 			
-			slice.setPath(p);
+			//slice.setPath(p);
 			
 			region.set((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius));
-			slice.setRegion(region);
+			//slice.setRegion(region);
 			canvas.drawPath(p, paint);
 			
 			currentAngle = currentAngle+currentSweep;
