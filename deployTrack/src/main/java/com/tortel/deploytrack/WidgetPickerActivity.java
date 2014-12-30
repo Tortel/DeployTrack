@@ -23,10 +23,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
-import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 public class WidgetPickerActivity extends ActionBarActivity {
     private Intent resultIntent;
@@ -35,7 +34,7 @@ public class WidgetPickerActivity extends ActionBarActivity {
     
     private DeploymentFragmentAdapter adapter;
     private ViewPager pager;
-    private PageIndicator indicator;
+    private PagerSlidingTabStrip indicator;
     private boolean lightText = true;
     
     private int currentPosition = 0;
@@ -67,7 +66,7 @@ public class WidgetPickerActivity extends ActionBarActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         
-        indicator = (TitlePageIndicator) findViewById(R.id.indicator);
+        indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new PageChangeListener());
         

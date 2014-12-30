@@ -30,11 +30,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.fragments.AboutDialogFragment;
 import com.tortel.deploytrack.service.NotificationService;
-import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 /**
  * The main activity that contains the fragments that show the graphs.
@@ -45,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	private DeploymentFragmentAdapter adapter;
 	private ViewPager pager;
-	private PageIndicator indicator;
+	private PagerSlidingTabStrip indicator;
 	
 	private int currentPosition;
 
@@ -77,11 +76,11 @@ public class MainActivity extends ActionBarActivity {
 	private void reload(){
 		Log.v("Reloading activity");
 		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
-		
+
 		pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
-		
-		indicator = (TitlePageIndicator) findViewById(R.id.indicator);
+
+		indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
 		
@@ -189,7 +188,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onSaveInstanceState(outState);
 		outState.putInt(KEY_POSITION, currentPosition);
 	}
-	
+
 	/**
 	 * Class to listen for page changes.
 	 * The page number is used for editing and deleting data
@@ -201,7 +200,7 @@ public class MainActivity extends ActionBarActivity {
 			adapter.getItem(currentPosition).onResume();
 			Log.v("Page changed to "+position);
 		}
-		
+
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			//Ignore

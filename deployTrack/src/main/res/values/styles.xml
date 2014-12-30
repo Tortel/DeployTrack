@@ -16,30 +16,22 @@ limitations under the License.
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Dark theme -->
     <style name="Theme.DeployThemeDark" parent="Theme.AppCompat">
-	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
 
 	    <!-- Theme specific stuff -->
-	    <item name="buttonTextColor">@color/button_dark</item>
+	    <item name="buttonTextColor">@color/button_light</item>
 	    
 	    <item name="divideVertical">@drawable/divider_vertical_holo_dark</item>
 	    <item name="divideHorizontal">@drawable/dialog_divider_horizontal_holo_dark</item>
     </style>
-    
-    <!--  Light theme -->
-    <style name="Theme.DeployThemeLight" parent="Theme.AppCompat.Light">
-	    <item name="vpiTabPageIndicatorStyle">@style/TabStyle</item>
-	    
-	    <!-- Theme-specific stuff -->
-	    <item name="buttonTextColor">@color/button_light</item>
 
-	    <item name="divideVertical">@drawable/divider_vertical_holo_light</item>
-	    <item name="divideHorizontal">@drawable/dialog_divider_horizontal_holo_light</item>
+    <style name="Theme.DeployThemeLight" parent="Theme.DeployThemeDark">
     </style>
 
     <style name="no_border" parent="@android:style/Widget.Holo.Light.Button.Borderless.Small">
-    </style>
-    
-    <style name="TabStyle" parent="Widget.TabPageIndicator">
     </style>
     
     <!-- Style for the percentage -->
