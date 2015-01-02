@@ -84,7 +84,7 @@ limitations under the License.
     <string name="prefs_main_view_summary">Choose what to display as the bold text</string>
     <string name="prefs_main_view_default">Percent (Default)</string>
     <string name="prefs_light_theme">Use a light theme</string>
-    <string name="prefs_light_theme_summary">You will need to exit the app using the back button to apply</string>
+    <string name="prefs_light_theme_summary">Changing this will restart the app with the new theme</string>
     <string name="prefs_customization">Customization</string>
     <string name="prefs_hide_date">Hide Dates</string>
     <string name="prefs_hide_date_summary">Hide all dates, days left, and days completed from being shown</string>
