@@ -22,7 +22,6 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-    maven { url "http://dl.bintray.com/populov/maven" }
 }
 
 dependencies {
