@@ -20,25 +20,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.tortel.deploytrack.R;
 
 public class AboutDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		LayoutInflater inflater = getActivity().getLayoutInflater();
+        final Context wrappedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_DeployThemeLight);
+
+		MaterialDialog.Builder builder = new MaterialDialog.Builder(wrappedContext);
+
+		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
 		View view = inflater.inflate(R.layout.about, null);
 		TextView text = (TextView) view.findViewById(R.id.about_view);
 		
@@ -46,11 +51,11 @@ public class AboutDialogFragment extends DialogFragment {
 		Linkify.addLinks(text, Linkify.ALL);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
 		
-		builder.setView(view);
-		builder.setTitle(R.string.about);
-		builder.setPositiveButton(R.string.close, null);
+		builder.customView(view, false);
+		builder.title(R.string.app_name);
+		builder.positiveText(R.string.close);
 		
-		return builder.create();
+		return builder.build();
 	}
 	
 	private String readRawTextFile(int id) {
