@@ -14,15 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources>
-    <!-- Everything here needs to be theme specific -->
-    
-    <!-- Button text color -->
-    <attr name="buttonTextColor" format="color"/>
-    
-    <!-- Overflow button image -->
-    <attr name="overflowButton" format="reference" />
-    
-    <!-- Dividers -->
-    <attr name="divideHorizontal" format="reference" />
-    <attr name="divideVertical" format="reference" />
+    <!-- Tab style stuff -->
+    <attr name="tabIndicatorColor" format="color" />
 </resources>
