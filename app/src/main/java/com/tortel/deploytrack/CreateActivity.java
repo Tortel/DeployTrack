@@ -75,13 +75,13 @@ public class CreateActivity extends ActionBarActivity {
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		
-		// Check for light theme
-		Prefs.load(this);
+        // Check for light theme
+        Prefs.load(this);
         if(Prefs.useLightTheme()){
             setTheme(R.style.Theme_DeployThemeLight);
         }
+
+		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_create);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

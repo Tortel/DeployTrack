@@ -35,11 +35,6 @@ limitations under the License.
             android:padding="5dip"
             android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences"
             />
-       
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dip"
-            android:background="?attr/divideHorizontal" />
     
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,35 +43,20 @@ limitations under the License.
     
             <Button
                 android:id="@+id/button_start"
-                style="@style/no_border"
-                android:textColor="?attr/buttonTextColor"
                 android:layout_width="0dip"
                 android:layout_height="75dip"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
                 android:text="@string/start_date" />
     
-            <View
-                android:layout_width="2dip"
-                android:layout_height="match_parent"
-                android:background="?attr/divideVertical" />
-    
             <Button
                 android:id="@+id/button_end"
-                style="@style/no_border"
-                android:textColor="?attr/buttonTextColor"
                 android:layout_width="0dip"
                 android:layout_height="75dip"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
                 android:text="@string/end_date" />
         </LinearLayout>
-    
-	    <View
-	        android:layout_width="match_parent"
-	        android:layout_height="2dip"
-	        android:background="?attr/divideHorizontal"
-	        android:paddingBottom="5dip" />
 	    
 	    <LinearLayout
 	        android:layout_width="match_parent"
@@ -138,12 +118,6 @@ limitations under the License.
 			    
 		    </LinearLayout>
 	    </LinearLayout>
-	    
-	    <View
-	        android:layout_width="match_parent"
-	        android:layout_height="2dip"
-	        android:background="?attr/divideHorizontal"
-	        android:paddingBottom="5dip" />
     
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,35 +126,20 @@ limitations under the License.
     
             <Button
                 android:id="@+id/button_cancel"
-                style="@style/no_border"
-                android:textColor="?attr/buttonTextColor"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
                 android:text="@string/cancel" />
-
-            <View
-                android:layout_width="2dip"
-                android:layout_height="match_parent"
-                android:background="?attr/divideVertical" />
     
             <Button
                 android:id="@+id/button_save"
-                style="@style/no_border"
-                android:textColor="?attr/buttonTextColor"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
                 android:onClick="onClick"
                 android:text="@string/save" />
         </LinearLayout>
-        
-	    <View
-	        android:layout_width="match_parent"
-	        android:layout_height="2dip"
-	        android:background="?attr/divideHorizontal"
-	        android:paddingBottom="5dip" />
     
     </LinearLayout>
 </ScrollView>

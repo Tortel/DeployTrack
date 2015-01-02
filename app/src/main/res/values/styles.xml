@@ -19,19 +19,18 @@ limitations under the License.
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-
-
-	    <!-- Theme specific stuff -->
-	    <item name="buttonTextColor">@color/button_light</item>
 	    
-	    <item name="divideVertical">@drawable/divider_vertical_holo_dark</item>
-	    <item name="divideHorizontal">@drawable/dialog_divider_horizontal_holo_dark</item>
+	    <item name="divideVertical">@color/divider</item>
+	    <item name="divideHorizontal">@color/divider</item>
     </style>
 
-    <style name="Theme.DeployThemeLight" parent="Theme.DeployThemeDark">
-    </style>
+    <style name="Theme.DeployThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
 
-    <style name="no_border" parent="@android:style/Widget.Holo.Light.Button.Borderless.Small">
+        <item name="divideVertical">@color/divider</item>
+        <item name="divideHorizontal">@color/divider</item>
     </style>
     
     <!-- Style for the percentage -->

@@ -51,35 +51,29 @@ limitations under the License.
         android:text="@string/text_color"
         style="?android:attr/listSeparatorTextViewStyle" />
 
-       <RadioGroup
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal" >
+   <RadioGroup
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal" >
 
-           <RadioButton
-              android:id="@+id/widget_light_text"
-              android:checked="true"
-              android:layout_weight="1"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:text="@string/light"
-              android:onClick="onClick" />
+       <RadioButton
+          android:id="@+id/widget_light_text"
+          android:checked="true"
+          android:layout_weight="1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/light"
+          android:onClick="onClick" />
 
-           <RadioButton
-              android:id="@+id/widget_dark_text"
-              android:layout_weight="1"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:text="@string/dark"
-              android:onClick="onClick" />
+       <RadioButton
+          android:id="@+id/widget_dark_text"
+          android:layout_weight="1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/dark"
+          android:onClick="onClick" />
 
-       </RadioGroup>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dip"
-        android:background="?attr/divideHorizontal"
-        android:paddingBottom="5dip" />
+   </RadioGroup>
 
    <LinearLayout
        android:layout_width="match_parent"
@@ -88,23 +82,14 @@ limitations under the License.
 
        <Button
            android:id="@+id/button_cancel"
-           style="@style/no_border"
-           android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"
            android:layout_weight="0.45"
            android:onClick="onClick"
            android:text="@string/cancel" />
 
-       <View
-           android:layout_width="2dip"
-           android:layout_height="match_parent"
-           android:background="?attr/divideVertical" />
-
        <Button
            android:id="@+id/button_save"
-           style="@style/no_border"
-           android:textColor="?attr/buttonTextColor"
            android:layout_width="0dip"
            android:layout_height="wrap_content"
            android:layout_weight="0.45"
