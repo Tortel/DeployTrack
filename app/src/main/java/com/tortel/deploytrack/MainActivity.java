@@ -27,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -84,6 +85,12 @@ public class MainActivity extends ActionBarActivity {
 		indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
+
+        // Set the tab text color
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.tabTextColor, typedValue, true);
+        int color = typedValue.data;
+        indicator.setTextColor(color);
 		
 		pager.setCurrentItem(currentPosition);
 		indicator.notifyDataSetChanged();
