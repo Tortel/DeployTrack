@@ -49,7 +49,7 @@ limitations under the License.
     <string name="info">Info</string>
     <string name="pie">Mmm, pie</string>
     <string name="comma">", "</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>
@@ -84,7 +84,7 @@ limitations under the License.
     <string name="prefs_main_view_summary">Choose what to display as the bold text</string>
     <string name="prefs_main_view_default">Percent (Default)</string>
     <string name="prefs_light_theme">Use a light theme</string>
-    <string name="prefs_light_theme_summary">Changing this will restart the app with the new theme</string>
+    <string name="prefs_light_theme_summary">The app will restart to apply the new theme</string>
     <string name="prefs_customization">Customization</string>
     <string name="prefs_hide_date">Hide Dates</string>
     <string name="prefs_hide_date_summary">Hide all dates, days left, and days completed from being shown</string>
