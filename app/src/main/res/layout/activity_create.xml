@@ -32,7 +32,6 @@ limitations under the License.
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="15"
             android:padding="5dip"
             android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences"
             />
