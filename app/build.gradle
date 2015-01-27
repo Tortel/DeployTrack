@@ -32,8 +32,6 @@ dependencies {
     compile 'com.larswerkman:HoloColorPicker:1.4'
     compile 'com.afollestad:material-dialogs:0.6.2.+'
 
-    compile 'com.nineoldandroids:library:2.4.0'
-
     compile 'joda-time:joda-time:2.6'
 
     // File-based deps
