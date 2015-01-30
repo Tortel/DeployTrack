@@ -23,6 +23,13 @@ limitations under the License.
          />
 
     <item
+        android:id="@+id/menu_screenshot"
+        app:showAsAction="always"
+        android:title="@string/menu_screenshot"
+        android:icon="@drawable/ic_action_camera"
+        />
+
+    <item
         android:id="@+id/menu_edit"
         app:showAsAction="never"
         android:title="@string/edit"

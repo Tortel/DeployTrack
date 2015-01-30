@@ -92,5 +92,6 @@ limitations under the License.
     <string name="prefs_hide_percentage_summary">Hide all percentage from being shown</string>
     <string name="other">Other</string>
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
-    
+    <string name="menu_screenshot">Toggle Screenshot Mode</string>
+
 </resources>
