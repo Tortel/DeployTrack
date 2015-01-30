@@ -41,14 +41,14 @@ import com.tortel.deploytrack.view.CustomPieGraph;
 public class DeploymentFragment extends Fragment {
 	private static final boolean DEBUG = false;
 	
-	private Deployment deployment;
-	private TextView percentage;
-	private TextView completed;
-	private TextView dateRange;
-	private TextView remaining;
-	private TextView comma;
-	private Resources resources;
-	private CustomPieGraph pie;
+	private Deployment mDeployment;
+	private TextView mPercentView;
+	private TextView mCompletedView;
+	private TextView mDateRangeView;
+	private TextView mRemainingView;
+	private TextView mCommaView;
+	private Resources mResources;
+	private CustomPieGraph mPieView;
 	
 	/**
 	 * Creates a new DeploymentFragment with the provided
@@ -58,7 +58,7 @@ public class DeploymentFragment extends Fragment {
 	 */
 	public static DeploymentFragment newInstance(Deployment deployment){
 		DeploymentFragment fragment = new DeploymentFragment();
-		fragment.deployment = deployment;
+		fragment.mDeployment = deployment;
 		if(DEBUG){
 			fragment.printAllInfo();
 		}
@@ -66,59 +66,59 @@ public class DeploymentFragment extends Fragment {
 	}
 	
 	private void printAllInfo(){
-		Log.v("Deployment id "+deployment.getId());
-		Log.v("Start date: "+deployment.getFormattedStart());
-		Log.v("End date: "+deployment.getFormattedEnd());
-		Log.v("Days complete: "+deployment.getCompleted());
-		Log.v("Days left: "+deployment.getRemaining());
-		Log.v("Percentage: "+deployment.getPercentage());
+		Log.v("Deployment id " + mDeployment.getId());
+		Log.v("Start date: "+ mDeployment.getFormattedStart());
+		Log.v("End date: " + mDeployment.getFormattedEnd());
+		Log.v("Days complete: "+ mDeployment.getCompleted());
+		Log.v("Days left: " + mDeployment.getRemaining());
+		Log.v("Percentage: "+ mDeployment.getPercentage());
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
-		resources = getActivity().getResources();
+		mResources = getActivity().getResources();
 		
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
 
         // Set up the views
         setUpTextViews(view);
 
-		dateRange.setText(resources.getString(R.string.date_range,
-						deployment.getFormattedStart(), deployment.getFormattedEnd()));
-		completed.setText(resources.getQuantityString(R.plurals.days_complete, deployment.getCompleted(), deployment.getCompleted()));
-        remaining.setText(resources.getQuantityString(R.plurals.days_remaining, deployment.getRemaining(), deployment.getRemaining()));
+		mDateRangeView.setText(mResources.getString(R.string.date_range,
+                mDeployment.getFormattedStart(), mDeployment.getFormattedEnd()));
+		mCompletedView.setText(mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted()));
+        mRemainingView.setText(mResources.getQuantityString(R.plurals.days_remaining, mDeployment.getRemaining(), mDeployment.getRemaining()));
 		
 		// Hide or display percent
 		if(Prefs.hidePercent()){
-		    percentage.setVisibility(View.GONE);
+		    mPercentView.setVisibility(View.GONE);
 		} else {
-		    percentage.setText(deployment.getPercentage()+"%");
+		    mPercentView.setText(mDeployment.getPercentage() + "%");
 		}
 		
 		// If everything is hidden, show the title to fill space
 		if(Prefs.hideAll()){
 		    // Use the comma view, because it isn't touched by any animators
-		    comma.setText(deployment.getName());
-		    comma.setVisibility(View.VISIBLE);
+		    mCommaView.setText(mDeployment.getName());
+		    mCommaView.setVisibility(View.VISIBLE);
 		    // Apply the main styling
-		    comma.setTextAppearance(getActivity(), R.style.Percentage);
+		    mCommaView.setTextAppearance(getActivity(), R.style.Percentage);
 		}
 		
 		//Fill the graph
-		pie = (CustomPieGraph) view.findViewById(R.id.graph);
+		mPieView = (CustomPieGraph) view.findViewById(R.id.graph);
 		
 		PieSlice completedSlice = new PieSlice();
-		completedSlice.setColor(deployment.getCompletedColor());
-		completedSlice.setValue(deployment.getCompleted());
-		if(deployment.getCompleted() > 0){
-			pie.addSlice(completedSlice);
+		completedSlice.setColor(mDeployment.getCompletedColor());
+		completedSlice.setValue(mDeployment.getCompleted());
+		if(mDeployment.getCompleted() > 0){
+			mPieView.addSlice(completedSlice);
 		}
 		PieSlice togoSlice = new PieSlice();
-		togoSlice.setColor(deployment.getRemainingColor());
-		togoSlice.setValue(deployment.getRemaining());
-		if(deployment.getRemaining() > 0){
-			pie.addSlice(togoSlice);
+		togoSlice.setColor(mDeployment.getRemainingColor());
+		togoSlice.setValue(mDeployment.getRemaining());
+		if(mDeployment.getRemaining() > 0){
+			mPieView.addSlice(togoSlice);
 		}
 		
 		return view;
@@ -127,58 +127,58 @@ public class DeploymentFragment extends Fragment {
 	@SuppressLint("CutPasteId")
 	private void setUpTextViews(View view){
 		float density = getResources().getDisplayMetrics().density;
-		comma = (TextView) view.findViewById(R.id.comma);
-		dateRange = (TextView) view.findViewById(R.id.daterange);
+		mCommaView = (TextView) view.findViewById(R.id.comma);
+		mDateRangeView = (TextView) view.findViewById(R.id.daterange);
 		
 		switch(Prefs.getMainDisplayType()){
 		case Prefs.ViewTypes.PERCENT:
-			percentage = (TextView) view.findViewById(R.id.main);
-			completed = (TextView) view.findViewById(R.id.second);
-			remaining = (TextView) view.findViewById(R.id.third);
+			mPercentView = (TextView) view.findViewById(R.id.main);
+			mCompletedView = (TextView) view.findViewById(R.id.second);
+			mRemainingView = (TextView) view.findViewById(R.id.third);
 			if(Prefs.hideDate()){
-			    comma.setVisibility(View.GONE);
-		        dateRange.setVisibility(View.GONE);
-		        completed.setVisibility(View.GONE);
-		        remaining.setVisibility(View.GONE);
+			    mCommaView.setVisibility(View.GONE);
+		        mDateRangeView.setVisibility(View.GONE);
+		        mCompletedView.setVisibility(View.GONE);
+		        mRemainingView.setVisibility(View.GONE);
 			}
 			return;
 		case Prefs.ViewTypes.COMPLETE:
-			completed = (TextView) view.findViewById(R.id.main);
-			completed.setTextSize(TypedValue.COMPLEX_UNIT_PX, completed.getTextSize() - density * 20f);
-			percentage = (TextView) view.findViewById(R.id.second);
-			remaining = (TextView) view.findViewById(R.id.third);
+			mCompletedView = (TextView) view.findViewById(R.id.main);
+			mCompletedView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCompletedView.getTextSize() - density * 20f);
+			mPercentView = (TextView) view.findViewById(R.id.second);
+			mRemainingView = (TextView) view.findViewById(R.id.third);
 			if(Prefs.hidePercent()){
-			    comma.setVisibility(View.GONE);
+			    mCommaView.setVisibility(View.GONE);
 			}
 			return;	
 		case Prefs.ViewTypes.REMAINING:
-			remaining = (TextView) view.findViewById(R.id.main);
-			remaining.setTextSize(TypedValue.COMPLEX_UNIT_PX, remaining.getTextSize() - density * 10f);
-			percentage = (TextView) view.findViewById(R.id.second);
-			completed = (TextView) view.findViewById(R.id.third);
+			mRemainingView = (TextView) view.findViewById(R.id.main);
+			mRemainingView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRemainingView.getTextSize() - density * 10f);
+			mPercentView = (TextView) view.findViewById(R.id.second);
+			mCompletedView = (TextView) view.findViewById(R.id.third);
 	        if(Prefs.hidePercent()){
-	            comma.setVisibility(View.GONE);
+	            mCommaView.setVisibility(View.GONE);
 	        }
 			return;
 		}
 		
 		// If hide dates, make sure that the percent is the main view
 		if(Prefs.hideDate()){
-		    percentage = (TextView) view.findViewById(R.id.main);
-            completed = (TextView) view.findViewById(R.id.second);
-            remaining = (TextView) view.findViewById(R.id.third);
+		    mPercentView = (TextView) view.findViewById(R.id.main);
+            mCompletedView = (TextView) view.findViewById(R.id.second);
+            mRemainingView = (TextView) view.findViewById(R.id.third);
 		}
 	}
 	
 	private ObjectAnimator getFragmentAnimator(){
 		switch(Prefs.getMainDisplayType()){
 		case Prefs.ViewTypes.REMAINING:
-			return ObjectAnimator.ofInt(this, "remaining", deployment.getLength(), deployment.getRemaining());
+			return ObjectAnimator.ofInt(this, "remaining", mDeployment.getLength(), mDeployment.getRemaining());
 		case Prefs.ViewTypes.COMPLETE:
-			return ObjectAnimator.ofInt(this, "completed", 0, deployment.getCompleted());
+			return ObjectAnimator.ofInt(this, "completed", 0, mDeployment.getCompleted());
 		}
 		//Default is to return percent
-		return ObjectAnimator.ofInt(this, "percent", 0, deployment.getPercentage());
+		return ObjectAnimator.ofInt(this, "percent", 0, mDeployment.getPercentage());
 	}
 	
 	@Override
@@ -190,19 +190,19 @@ public class DeploymentFragment extends Fragment {
 	@Override
 	public void onPause(){
 		super.onPause();
-		if(pie != null){
-			pie.setPercent(0);
+		if(mPieView != null){
+			mPieView.setPercent(0);
 		}
 	}
 	
 	public void animate(){
-		if(pie == null || !Prefs.isAnimationEnabled()){
-			setPercent(deployment.getPercentage());
+		if(mPieView == null || !Prefs.isAnimationEnabled()){
+			setPercent(mDeployment.getPercentage());
 			return;
 		}
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(
-				ObjectAnimator.ofFloat(pie, "percent", 0, 100),
+				ObjectAnimator.ofFloat(mPieView, "percent", 0, 100),
 				getFragmentAnimator()
 		);
 		set.setDuration(1000);
@@ -210,20 +210,20 @@ public class DeploymentFragment extends Fragment {
 	}
 	
 	public void setCompleted(int days){
-		if(completed != null && resources != null){
-			completed.setText(resources.getQuantityString(R.plurals.days_complete, days, days));
+		if(mCompletedView != null && mResources != null){
+			mCompletedView.setText(mResources.getQuantityString(R.plurals.days_complete, days, days));
 		}
 	}
 	
 	public void setRemaining(int days){
-		if(remaining != null && resources != null){
-			remaining.setText(resources.getQuantityString(R.plurals.days_remaining, days, days));
+		if(mRemainingView != null && mResources != null){
+			mRemainingView.setText(mResources.getQuantityString(R.plurals.days_remaining, days, days));
 		}
 	}
 	
 	public void setPercent(int percent){
-		if(percentage != null){
-			percentage.setText(percent+"%");
+		if(mPercentView != null){
+			mPercentView.setText(percent+"%");
 		}
 	}
 
@@ -232,13 +232,13 @@ public class DeploymentFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState != null){
 			int id = savedInstanceState.getInt("id");
-			deployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
+			mDeployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("id", deployment.getId());
+		outState.putInt("id", mDeployment.getId());
 	}
 }

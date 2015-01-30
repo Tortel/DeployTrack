@@ -28,22 +28,22 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 
 public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
-	private List<Deployment> deployments;
-	private DatabaseManager db;
-	private Context context;
-	SparseArray<Fragment> fragmentList;
+	private List<Deployment> mDeploymentList;
+	private DatabaseManager mDb;
+	private Context mContext;
+	SparseArray<Fragment> mFragmentList;
 	
-	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
+	public DeploymentFragmentAdapter(Context mContext, FragmentManager fm){
 		super(fm);
-		this.context = context.getApplicationContext();
-		db = DatabaseManager.getInstance(context);
-		deployments = db.getAllDeployments();
-		fragmentList = new SparseArray<Fragment>();
+		this.mContext = mContext.getApplicationContext();
+		mDb = DatabaseManager.getInstance(mContext);
+		mDeploymentList = mDb.getAllDeployments();
+		mFragmentList = new SparseArray<Fragment>();
 	}
 	
 	public void reload(){
 		Log.d("Reloading data");
-		deployments = db.getAllDeployments();
+		mDeploymentList = mDb.getAllDeployments();
 		notifyDataSetChanged();
 	}
 	
@@ -54,38 +54,38 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	 * @return
 	 */
 	public int getId(int position){
-		if(position >= deployments.size()){
+		if(position >= mDeploymentList.size()){
 			return -1;
 		}
 
-		return deployments.get(position).getId();
+		return mDeploymentList.get(position).getId();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		if(position >= deployments.size()){
+		if(position >= mDeploymentList.size()){
 			return new NoDataFragment();
 		}
-		if(fragmentList.get(position) == null){
-			fragmentList.put(position, DeploymentFragment.newInstance(deployments.get(position)));
+		if(mFragmentList.get(position) == null){
+			mFragmentList.put(position, DeploymentFragment.newInstance(mDeploymentList.get(position)));
 		}
-		return fragmentList.get(position);
+		return mFragmentList.get(position);
 	}
 
 	@Override
 	public int getCount() {
-		if(deployments.size() == 0){
+		if(mDeploymentList.size() == 0){
 			return 1;
 		}
-		return deployments.size();
+		return mDeploymentList.size();
 	}
 	
 	@Override
 	public CharSequence getPageTitle(int position){
-		if(deployments.size() == 0){
-			return context.getText(R.string.info);
+		if(mDeploymentList.size() == 0){
+			return mContext.getText(R.string.info);
 		}
-		return deployments.get(position).getName();
+		return mDeploymentList.get(position).getName();
 	}
 
 }

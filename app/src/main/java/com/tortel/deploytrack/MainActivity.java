@@ -44,12 +44,10 @@ public class MainActivity extends ActionBarActivity {
 	private static final String KEY_POSITION = "position";
     private static final String KEY_SCREENSHOT = "screenshot";
 	
-	private DeploymentFragmentAdapter adapter;
-	private ViewPager pager;
-	private PagerSlidingTabStrip indicator;
+	private DeploymentFragmentAdapter mAdapter;
 	
-	private int currentPosition;
-    private boolean screenshotMode = false;
+	private int mCurrentPosition;
+    private boolean mScreenshotMode = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +62,13 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		
 		if(savedInstanceState != null){
-			currentPosition = savedInstanceState.getInt(KEY_POSITION);
-            screenshotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
-            if(screenshotMode){
-                Prefs.setScreenshotMode(screenshotMode, getApplicationContext());
+			mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
+            mScreenshotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
+            if(mScreenshotMode){
+                Prefs.setScreenshotMode(mScreenshotMode, getApplicationContext());
             }
 		} else {
-			currentPosition = 0;
+			mCurrentPosition = 0;
 		}
 	}
 	
@@ -83,12 +81,12 @@ public class MainActivity extends ActionBarActivity {
 	
 	private void reload(){
 		Log.v("Reloading activity");
-		adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		mAdapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
 
-		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setAdapter(adapter);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(mAdapter);
 
-		indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
+        PagerSlidingTabStrip indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
 
@@ -98,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
         int color = typedValue.data;
         indicator.setTextColor(color);
 		
-		pager.setCurrentItem(currentPosition);
+		pager.setCurrentItem(mCurrentPosition);
 		indicator.notifyDataSetChanged();
 	}
 
@@ -111,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
-		final int id = adapter.getId(currentPosition);
+		final int id = mAdapter.getId(mCurrentPosition);
 		
 		switch (item.getItemId()) {
 		case R.id.menu_create_new:
@@ -183,8 +181,8 @@ public class MainActivity extends ActionBarActivity {
 		    }
 		    return true;
         case R.id.menu_screenshot:
-            screenshotMode = !screenshotMode;
-            Prefs.setScreenshotMode(screenshotMode, getApplicationContext());
+            mScreenshotMode = !mScreenshotMode;
+            Prefs.setScreenshotMode(mScreenshotMode, getApplicationContext());
             reload();
             return true;
 		case R.id.menu_settings:
@@ -205,8 +203,8 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(KEY_POSITION, currentPosition);
-        outState.putBoolean(KEY_SCREENSHOT, screenshotMode);
+		outState.putInt(KEY_POSITION, mCurrentPosition);
+        outState.putBoolean(KEY_SCREENSHOT, mScreenshotMode);
 	}
 
 	/**
@@ -216,8 +214,8 @@ public class MainActivity extends ActionBarActivity {
 	private class PageChangeListener implements ViewPager.OnPageChangeListener{
 		@Override
 		public void onPageSelected(int position) {
-			currentPosition = position;
-			adapter.getItem(currentPosition).onResume();
+			mCurrentPosition = position;
+			mAdapter.getItem(mCurrentPosition).onResume();
 			Log.v("Page changed to "+position);
 		}
 

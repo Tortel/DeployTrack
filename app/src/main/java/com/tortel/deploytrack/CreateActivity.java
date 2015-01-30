@@ -48,27 +48,27 @@ public class CreateActivity extends ActionBarActivity {
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
 	
-	private EditText nameEdit;
-	private Button startButton;
-	private Button endButton;
-	private Button saveButton;
+	private EditText mNameEdit;
+	private Button mStartButton;
+	private Button mEndButton;
+	private Button mSaveButton;
 	
-	private SimpleDateFormat format;
+	private SimpleDateFormat mDateFormat;
 	
 	//Colors
-	private int completedColor;
-	private int remainingColor;
+	private int mCompletedColor;
+	private int mRemainingColor;
 	
 	//Date range
-	private Calendar start;
-	private Calendar end;
+	private Calendar mStartDate;
+	private Calendar mEndDate;
 	
 	//Flags for dates
-	private boolean startSet;
-	private boolean endSet;
+	private boolean mStartSet;
+	private boolean mEndSet;
 	
 	//The data to save;
-	private Deployment deployment;
+	private Deployment mDeployment;
 	
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -84,12 +84,12 @@ public class CreateActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_create);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		format = new SimpleDateFormat("MMM dd, yyyy");
+		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
-		nameEdit = (EditText) findViewById(R.id.name);
-		startButton = (Button) findViewById(R.id.button_start);
-		endButton = (Button) findViewById(R.id.button_end);
-		saveButton = (Button) findViewById(R.id.button_save);
+		mNameEdit = (EditText) findViewById(R.id.name);
+		mStartButton = (Button) findViewById(R.id.button_start);
+		mEndButton = (Button) findViewById(R.id.button_end);
+		mSaveButton = (Button) findViewById(R.id.button_save);
 		
 		//Color pickers
 		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
@@ -101,85 +101,85 @@ public class CreateActivity extends ActionBarActivity {
 		int id = getIntent().getIntExtra("id", -1);
 		if(id >= 0){
 			//Starting in edit mode, load the old data
-			deployment = DatabaseManager.getInstance(this).getDeployment(id);
+			mDeployment = DatabaseManager.getInstance(this).getDeployment(id);
 			
 			//Set the colors
-			completedColor = deployment.getCompletedColor();
-			remainingColor = deployment.getRemainingColor();
+			mCompletedColor = mDeployment.getCompletedColor();
+			mRemainingColor = mDeployment.getRemainingColor();
 			
 			//Set the dates
-			start = Calendar.getInstance();
-			end = Calendar.getInstance();
+			mStartDate = Calendar.getInstance();
+			mEndDate = Calendar.getInstance();
 			
-			start.setTimeInMillis(deployment.getStartDate().getTime());
-			end.setTimeInMillis(deployment.getEndDate().getTime());
-			startSet = true;
-			endSet = true;
+			mStartDate.setTimeInMillis(mDeployment.getStartDate().getTime());
+			mEndDate.setTimeInMillis(mDeployment.getEndDate().getTime());
+			mStartSet = true;
+			mEndSet = true;
 			
 			//Set the buttons
-			startButton.setText(getResources().getString(R.string.start_date)+
-					"\n"+format.format(start.getTime()));
-			endButton.setText(getResources().getString(R.string.end_date)+
-					"\n"+format.format(end.getTime()));
+			mStartButton.setText(getResources().getString(R.string.start_date) +
+                    "\n" + mDateFormat.format(mStartDate.getTime()));
+			mEndButton.setText(getResources().getString(R.string.end_date) +
+                    "\n" + mDateFormat.format(mEndDate.getTime()));
 			
 			//Set the name
-			nameEdit.setText(deployment.getName());
+			mNameEdit.setText(mDeployment.getName());
 			
 			getSupportActionBar().setTitle(R.string.edit);
 		} else {
-			deployment = new Deployment();
-			endButton.setEnabled(false);
-			saveButton.setEnabled(false);
+			mDeployment = new Deployment();
+			mEndButton.setEnabled(false);
+			mSaveButton.setEnabled(false);
 			
-			start = Calendar.getInstance();
-			end = (Calendar) start.clone();
-			startSet = false;
-			endSet = false;
+			mStartDate = Calendar.getInstance();
+			mEndDate = (Calendar) mStartDate.clone();
+			mStartSet = false;
+			mEndSet = false;
 			
-			completedColor = Color.GREEN;
-			remainingColor = Color.RED;
+			mCompletedColor = Color.GREEN;
+			mRemainingColor = Color.RED;
 			
 			getSupportActionBar().setTitle(R.string.add_new);
 		}
 		
 		//If restore from rotation
 		if(savedInstanceState != null){
-			start.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
-			end.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
+			mStartDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
+			mEndDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
 			
-			startSet = savedInstanceState.getBoolean(KEY_SET_START);
-			endSet = savedInstanceState.getBoolean(KEY_SET_END);
+			mStartSet = savedInstanceState.getBoolean(KEY_SET_START);
+			mEndSet = savedInstanceState.getBoolean(KEY_SET_END);
 			
-			nameEdit.setText(savedInstanceState.getString(KEY_NAME));
+			mNameEdit.setText(savedInstanceState.getString(KEY_NAME));
 			
-			completedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
-			remainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
+			mCompletedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
+			mRemainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
 			
 			//Set the date buttons, if set
-			if(startSet){
-				startButton.setText(getResources().getString(R.string.start_date)+
-						"\n"+format.format(start.getTime()));
-				endButton.setEnabled(true);
+			if(mStartSet){
+				mStartButton.setText(getResources().getString(R.string.start_date) +
+                        "\n" + mDateFormat.format(mStartDate.getTime()));
+				mEndButton.setEnabled(true);
 			}
 			
-			if(endSet && end.after(start)){
-				endButton.setText(getResources().getString(R.string.end_date)+
-						"\n"+format.format(end.getTime()));
-				saveButton.setEnabled(true);
+			if(mEndSet && mEndDate.after(mStartDate)){
+				mEndButton.setText(getResources().getString(R.string.end_date) +
+                        "\n" + mDateFormat.format(mEndDate.getTime()));
+				mSaveButton.setEnabled(true);
 			}
 		}
 		
-		remainingPicker.setOldCenterColor(remainingColor);
-		remainingPicker.setNewCenterColor(remainingColor);
+		remainingPicker.setOldCenterColor(mRemainingColor);
+		remainingPicker.setNewCenterColor(mRemainingColor);
 		remainingPicker.addSVBar(remainingBar);
-		remainingPicker.setColor(remainingColor);
+		remainingPicker.setColor(mRemainingColor);
 		remainingPicker.setShowOldCenterColor(false);
 		remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
 		
-		completedPicker.setOldCenterColor(completedColor);
-		completedPicker.setNewCenterColor(completedColor);
+		completedPicker.setOldCenterColor(mCompletedColor);
+		completedPicker.setNewCenterColor(mCompletedColor);
 		completedPicker.addSVBar(completedBar);
-		completedPicker.setColor(completedColor);
+		completedPicker.setColor(mCompletedColor);
 		completedPicker.setShowOldCenterColor(false);
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
 	}
@@ -188,16 +188,16 @@ public class CreateActivity extends ActionBarActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		//Save everything
-		outState.putLong(KEY_TIME_START, start.getTimeInMillis());
-		outState.putLong(KEY_TIME_END, end.getTimeInMillis());
+		outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
+		outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
 		
-		outState.putBoolean(KEY_SET_START, startSet);
-		outState.putBoolean(KEY_SET_END, endSet);
+		outState.putBoolean(KEY_SET_START, mStartSet);
+		outState.putBoolean(KEY_SET_END, mEndSet);
 		
-		outState.putString(KEY_NAME, nameEdit.getText().toString());
+		outState.putString(KEY_NAME, mNameEdit.getText().toString());
 		
-		outState.putInt(KEY_COLOR_COMPLETED, completedColor);
-		outState.putInt(KEY_COLOR_REMAINING, remainingColor);
+		outState.putInt(KEY_COLOR_COMPLETED, mCompletedColor);
+		outState.putInt(KEY_COLOR_REMAINING, mRemainingColor);
 	}
 	
 	@Override
@@ -223,19 +223,19 @@ public class CreateActivity extends ActionBarActivity {
 			this.finish();
 			return;
 		case R.id.button_save:
-			String name = nameEdit.getText().toString().trim();
+			String name = mNameEdit.getText().toString().trim();
 			if("".equals(name)){
 				Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
 				return;
 			}
 			//Set the values
-			deployment.setStartDate(start.getTime());
-			deployment.setEndDate(end.getTime());
-			deployment.setName(name);
-			deployment.setCompletedColor(completedColor);
-			deployment.setRemainingColor(remainingColor);
+			mDeployment.setStartDate(mStartDate.getTime());
+			mDeployment.setEndDate(mEndDate.getTime());
+			mDeployment.setName(name);
+			mDeployment.setCompletedColor(mCompletedColor);
+			mDeployment.setRemainingColor(mRemainingColor);
 			//Save it
-			DatabaseManager.getInstance(this).saveDeployment(deployment);
+			DatabaseManager.getInstance(this).saveDeployment(mDeployment);
 			//End
 			finish();
 			return;
@@ -243,36 +243,36 @@ public class CreateActivity extends ActionBarActivity {
 			DatePickerDialog startPicker = new DatePickerDialog();
 			startPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-					start.set(year, month, day, 0, 0);
-					if(!endSet || start.before(end)){
-						startSet = true;
-						endButton.setEnabled(true);
-						startButton.setText(getResources().getString(R.string.start_date)+
-								"\n"+format.format(start.getTime())); 
+					mStartDate.set(year, month, day, 0, 0);
+					if(!mEndSet || mStartDate.before(mEndDate)){
+						mStartSet = true;
+						mEndButton.setEnabled(true);
+						mStartButton.setText(getResources().getString(R.string.start_date) +
+                                "\n" + mDateFormat.format(mStartDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-						saveButton.setEnabled(false);
+						mSaveButton.setEnabled(false);
 					}
 				}
-			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
+			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
 			startPicker.show(fm, "startPicker");
 			return;
 		case R.id.button_end:
 			DatePickerDialog endPicker = new DatePickerDialog();
 			endPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-					end.set(year, month, day, 0, 0);
-					if(end.after(start)){
-						endSet = true;
-						saveButton.setEnabled(true);
-						endButton.setText(getResources().getString(R.string.end_date)+
-								"\n"+format.format(end.getTime())); 
+					mEndDate.set(year, month, day, 0, 0);
+					if(mEndDate.after(mStartDate)){
+						mEndSet = true;
+						mSaveButton.setEnabled(true);
+						mEndButton.setText(getResources().getString(R.string.end_date) +
+                                "\n" + mDateFormat.format(mEndDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-						saveButton.setEnabled(false);
+						mSaveButton.setEnabled(false);
 					}
 				}
-			}, start.get(Calendar.YEAR), start.get(Calendar.MONTH), start.get(Calendar.DAY_OF_MONTH), true);
+			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
 			endPicker.show(fm, "endPicker");
 			return;
 		}
@@ -284,14 +284,14 @@ public class CreateActivity extends ActionBarActivity {
 	private class CompletedColorChangeListener implements OnColorChangedListener{
 		@Override
 		public void onColorChanged(int color) {
-			completedColor = color;
+			mCompletedColor = color;
 		}
 	}
 	
 	private class RemainingColorChangeListener implements OnColorChangedListener{
 		@Override
 		public void onColorChanged(int color) {
-			remainingColor = color;
+			mRemainingColor = color;
 		}
 	}
 }

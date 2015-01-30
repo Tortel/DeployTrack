@@ -28,16 +28,14 @@ import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 public class WidgetPickerActivity extends ActionBarActivity {
-    private Intent resultIntent;
-    private AppWidgetManager widgetManager;
-    private int widgetId;
+    private Intent mResultIntent;
+    private AppWidgetManager mWidgetManager;
+    private int mWidgetId;
     
-    private DeploymentFragmentAdapter adapter;
-    private ViewPager pager;
-    private PagerSlidingTabStrip indicator;
-    private boolean lightText = true;
+    private DeploymentFragmentAdapter mAdapter;
+    private boolean mUseLightText = true;
     
-    private int currentPosition = 0;
+    private int mCurrentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,31 +51,31 @@ public class WidgetPickerActivity extends ActionBarActivity {
         
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        resultIntent = new Intent();
+        mResultIntent = new Intent();
         //Set it to cancelled until explicitly told to save
-        setResult(RESULT_CANCELED, resultIntent);
+        setResult(RESULT_CANCELED, mResultIntent);
         
-        widgetManager = AppWidgetManager.getInstance(this);
+        mWidgetManager = AppWidgetManager.getInstance(this);
         
-        adapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+        mAdapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
         
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
-        
-        indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(mAdapter);
+
+        PagerSlidingTabStrip indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new PageChangeListener());
         
-        pager.setCurrentItem(currentPosition);
+        pager.setCurrentItem(mCurrentPosition);
         indicator.notifyDataSetChanged();
         
-        Log.d("WidgetPicker started with widgetId "+widgetId);
+        Log.d("WidgetPicker started with mWidgetId "+ mWidgetId);
     }
     
     public void onClick(View v){
-        int id = adapter.getId(currentPosition);
+        int id = mAdapter.getId(mCurrentPosition);
         switch(v.getId()){
         case R.id.button_save:
             if(id != -1){
@@ -87,8 +85,8 @@ public class WidgetPickerActivity extends ActionBarActivity {
                 Deployment deployment = db.getDeployment(id);
     
                 //Save it
-                WidgetInfo info = new WidgetInfo(widgetId, deployment);
-                info.setLightText(lightText);
+                WidgetInfo info = new WidgetInfo(mWidgetId, deployment);
+                info.setLightText(mUseLightText);
                 db.saveWidgetInfo(info);
                 
                 RemoteViews remoteView = new RemoteViews(getPackageName(), R.layout.widget_layout);
@@ -96,11 +94,11 @@ public class WidgetPickerActivity extends ActionBarActivity {
                 //Set it all up
                 remoteView = WidgetProvider.updateWidgetView(this, remoteView, info);
                 
-                widgetManager.updateAppWidget(widgetId, remoteView);
-                resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                setResult(RESULT_OK, resultIntent);
+                mWidgetManager.updateAppWidget(mWidgetId, remoteView);
+                mResultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
+                setResult(RESULT_OK, mResultIntent);
                 
-                Log.d("WidgetPicker ending for widgetId "+widgetId
+                Log.d("WidgetPicker ending for widgetId "+ mWidgetId
                         +" with deployment "+id);
             }
             finish();
@@ -109,10 +107,10 @@ public class WidgetPickerActivity extends ActionBarActivity {
             finish();
             return;
         case R.id.widget_dark_text:
-            lightText = false;
+            mUseLightText = false;
             return;
         case R.id.widget_light_text:
-            lightText = true;
+            mUseLightText = true;
             return;
         }
     }
@@ -124,7 +122,7 @@ public class WidgetPickerActivity extends ActionBarActivity {
     private class PageChangeListener implements ViewPager.OnPageChangeListener{
         @Override
         public void onPageSelected(int position) {
-            currentPosition = position;
+            mCurrentPosition = position;
         }
         
         @Override
