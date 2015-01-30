@@ -37,6 +37,18 @@ import com.tortel.deploytrack.R;
 
 public class AboutDialogFragment extends DialogFragment {
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance())
+            getDialog().setDismissMessage(null);
+        super.onDestroyView();
+    }
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context wrappedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_DeployThemeLight);
