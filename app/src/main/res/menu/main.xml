@@ -24,7 +24,7 @@ limitations under the License.
 
     <item
         android:id="@+id/menu_screenshot"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/menu_screenshot"
         android:icon="@drawable/ic_action_camera"
         />

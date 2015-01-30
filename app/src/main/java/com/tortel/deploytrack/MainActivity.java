@@ -41,13 +41,15 @@ import com.tortel.deploytrack.service.NotificationService;
  * Also handles the options menu
  */
 public class MainActivity extends ActionBarActivity {
-	private static String KEY_POSITION = "position";
+	private static final String KEY_POSITION = "position";
+    private static final String KEY_SCREENSHOT = "screenshot";
 	
 	private DeploymentFragmentAdapter adapter;
 	private ViewPager pager;
 	private PagerSlidingTabStrip indicator;
 	
 	private int currentPosition;
+    private boolean screenshotMode = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,10 @@ public class MainActivity extends ActionBarActivity {
 		
 		if(savedInstanceState != null){
 			currentPosition = savedInstanceState.getInt(KEY_POSITION);
+            screenshotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
+            if(screenshotMode){
+                Prefs.setScreenshotMode(screenshotMode, getApplicationContext());
+            }
 		} else {
 			currentPosition = 0;
 		}
@@ -176,6 +182,11 @@ public class MainActivity extends ActionBarActivity {
 		        startActivity(intent);
 		    }
 		    return true;
+        case R.id.menu_screenshot:
+            screenshotMode = !screenshotMode;
+            Prefs.setScreenshotMode(screenshotMode, getApplicationContext());
+            reload();
+            return true;
 		case R.id.menu_settings:
 			intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
@@ -195,6 +206,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(KEY_POSITION, currentPosition);
+        outState.putBoolean(KEY_SCREENSHOT, screenshotMode);
 	}
 
 	/**

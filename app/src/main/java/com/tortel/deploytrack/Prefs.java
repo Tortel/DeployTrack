@@ -69,6 +69,15 @@ public class Prefs {
         return lightTheme;
     }
 
+    public static void setScreenshotMode(boolean screenshotMode, Context context){
+        if(screenshotMode){
+            hideDate = true;
+            mainDisplayType = ViewTypes.PERCENT;
+        } else {
+            load(context);
+        }
+    }
+
     public class ViewTypes{
 		public static final int PERCENT = 0;
 		public static final int COMPLETE = 1;
