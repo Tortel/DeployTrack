@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack.fragments;
+package com.tortel.deploytrack.dialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.tortel.deploytrack.R;
 
-public class AboutDialogFragment extends DialogFragment {
+public class AboutDialog extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

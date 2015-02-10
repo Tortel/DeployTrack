@@ -17,23 +17,26 @@ package com.tortel.deploytrack;
 
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.tortel.deploytrack.data.DatabaseManager;
-import com.tortel.deploytrack.fragments.AboutDialogFragment;
+import com.tortel.deploytrack.dialog.AboutDialog;
+import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.service.NotificationService;
 
 /**
@@ -41,6 +44,8 @@ import com.tortel.deploytrack.service.NotificationService;
  * Also handles the options menu
  */
 public class MainActivity extends ActionBarActivity {
+    public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
+
 	private static final String KEY_POSITION = "position";
     private static final String KEY_SCREENSHOT = "screenshot";
 	
@@ -70,9 +75,19 @@ public class MainActivity extends ActionBarActivity {
 		} else {
 			mCurrentPosition = 0;
 		}
+
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
+        lbm.registerReceiver(mDeleteListener, new IntentFilter(DATA_DELETED));
 	}
-	
-	@Override
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
+        lbm.unregisterReceiver(mDeleteListener);
+    }
+
+    @Override
 	public void onResume(){
 		super.onResume();
 		Prefs.load(this);
@@ -98,6 +113,12 @@ public class MainActivity extends ActionBarActivity {
 		
 		pager.setCurrentItem(mCurrentPosition);
 		indicator.notifyDataSetChanged();
+
+        if(mScreenshotMode){
+            indicator.setVisibility(View.INVISIBLE);
+        } else {
+            indicator.setVisibility(View.VISIBLE);
+        }
 	}
 
 	@Override
@@ -108,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent = null;
+		Intent intent;
 		final int id = mAdapter.getId(mCurrentPosition);
 		
 		switch (item.getItemId()) {
@@ -130,30 +151,14 @@ public class MainActivity extends ActionBarActivity {
 			if(id == -1){
 				return true;
 			}
-			//show a nice confirmation dialog
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.confirm);
-			builder.setTitle(R.string.delete);
-			builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Log.v("Deleting "+id);
-					//Delete it
-					DatabaseManager.getInstance(getApplicationContext()).deleteDeployment(id);
-					reload();
-				}
-			});
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// No op
-				}
-			});
-			AlertDialog dialog = builder.create();
-			dialog.show();
+            DeleteDialog dialog = new DeleteDialog();
+            Bundle args = new Bundle();
+            args.putInt(DeleteDialog.KEY_ID, id);
+            dialog.setArguments(args);
+            dialog.show(getSupportFragmentManager(), "delete");
 			return true;
 		case R.id.menu_about:
-			Fragment about = new AboutDialogFragment();
+			Fragment about = new AboutDialog();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(about, "about");
             transaction.commit();
@@ -228,4 +233,11 @@ public class MainActivity extends ActionBarActivity {
 			//Ignore
 		}
 	}
+
+    private BroadcastReceiver mDeleteListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            reload();
+        }
+    };
 }
