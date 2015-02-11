@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.RawRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -59,13 +61,13 @@ public class AboutDialog extends DialogFragment {
 		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = (TextView) view.findViewById(R.id.about_view);
 		
-		text.setText(Html.fromHtml(readRawTextFile(R.raw.about)));
+		text.setText(Html.fromHtml(readRawTextFile(getContent())));
 		Linkify.addLinks(text, Linkify.ALL);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		builder.customView(view, false);
-		builder.title(R.string.app_name);
-		builder.positiveText(R.string.close);
+		builder.title(getTitleString());
+		builder.positiveText(getButtonString());
 		
 		return builder.build();
 	}
@@ -85,5 +87,17 @@ public class AboutDialog extends DialogFragment {
 		}
 		return text.toString();
 	}
+
+    protected @StringRes int getTitleString(){
+        return R.string.app_name;
+    }
+
+    protected @StringRes int getButtonString(){
+        return R.string.close;
+    }
+
+    protected @RawRes int getContent(){
+        return R.raw.about;
+    }
 
 }
