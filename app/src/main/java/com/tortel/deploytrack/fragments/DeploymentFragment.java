@@ -96,15 +96,6 @@ public class DeploymentFragment extends Fragment {
 		    mPercentView.setText(mDeployment.getPercentage() + "%");
 		}
 		
-		// If everything is hidden, show the title to fill space
-		if(Prefs.hideAll()){
-		    // Use the comma view, because it isn't touched by any animators
-		    mCommaView.setText(mDeployment.getName());
-		    mCommaView.setVisibility(View.VISIBLE);
-		    // Apply the main styling
-		    mCommaView.setTextAppearance(getActivity(), R.style.Percentage);
-		}
-		
 		//Fill the graph
 		mPieView = (CustomPieGraph) view.findViewById(R.id.graph);
 		

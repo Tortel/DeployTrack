@@ -36,6 +36,7 @@ public class Prefs {
 	private static boolean lightTheme;
 	
 	public static void load(Context context){
+        context = context.getApplicationContext();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
@@ -61,18 +62,14 @@ public class Prefs {
 		return hidePercent;
 	}
 	
-	public static boolean hideAll(){
-	    return hidePercent && hideDate;
-	}
-	
 	public static boolean useLightTheme() {
         return lightTheme;
     }
 
-    public static void setScreenshotMode(boolean screenshotMode, Context context){
-        if(screenshotMode){
+    public static void setScreenShotMode(boolean screenShotMode, Context context){
+        if(screenShotMode){
             hideDate = true;
-            mainDisplayType = ViewTypes.PERCENT;
+            hidePercent = true;
         } else {
             load(context);
         }

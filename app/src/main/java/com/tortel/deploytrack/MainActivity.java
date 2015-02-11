@@ -52,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
 	private DeploymentFragmentAdapter mAdapter;
 	
 	private int mCurrentPosition;
-    private boolean mScreenshotMode = false;
+    private boolean mScreenShotMode = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +68,9 @@ public class MainActivity extends ActionBarActivity {
 		
 		if(savedInstanceState != null){
 			mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
-            mScreenshotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
-            if(mScreenshotMode){
-                Prefs.setScreenshotMode(mScreenshotMode, getApplicationContext());
+            mScreenShotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
+            if(mScreenShotMode){
+                Prefs.setScreenShotMode(mScreenShotMode, this);
             }
 		} else {
 			mCurrentPosition = 0;
@@ -90,7 +90,10 @@ public class MainActivity extends ActionBarActivity {
     @Override
 	public void onResume(){
 		super.onResume();
-		Prefs.load(this);
+        Prefs.load(this);
+        if(mScreenShotMode) {
+            Prefs.setScreenShotMode(mScreenShotMode, this);
+        }
 		reload();
 	}
 	
@@ -114,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
 		pager.setCurrentItem(mCurrentPosition);
 		indicator.notifyDataSetChanged();
 
-        if(mScreenshotMode){
+        if(mScreenShotMode){
             indicator.setVisibility(View.INVISIBLE);
         } else {
             indicator.setVisibility(View.VISIBLE);
@@ -186,8 +189,8 @@ public class MainActivity extends ActionBarActivity {
 		    }
 		    return true;
         case R.id.menu_screenshot:
-            mScreenshotMode = !mScreenshotMode;
-            Prefs.setScreenshotMode(mScreenshotMode, getApplicationContext());
+            mScreenShotMode = !mScreenShotMode;
+            Prefs.setScreenShotMode(mScreenShotMode, getApplicationContext());
             reload();
             return true;
 		case R.id.menu_settings:
@@ -209,7 +212,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(KEY_POSITION, mCurrentPosition);
-        outState.putBoolean(KEY_SCREENSHOT, mScreenshotMode);
+        outState.putBoolean(KEY_SCREENSHOT, mScreenShotMode);
 	}
 
 	/**
