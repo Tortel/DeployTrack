@@ -18,13 +18,11 @@ package com.tortel.deploytrack;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
@@ -117,11 +115,7 @@ public class SettingsActivity extends ActionBarActivity {
             // For theme changes, restart the app to apply it right away
             if(key.equals(KEY_THEME)){
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
-                    intent.setFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                } else {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getActivity().startActivity(intent);
             }
         }
