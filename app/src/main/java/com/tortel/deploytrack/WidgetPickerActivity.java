@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -67,6 +68,12 @@ public class WidgetPickerActivity extends ActionBarActivity {
         PagerSlidingTabStrip indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new PageChangeListener());
+
+        // Set the tab text color
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.tabTextColor, typedValue, true);
+        int color = typedValue.data;
+        indicator.setTextColor(color);
         
         pager.setCurrentItem(mCurrentPosition);
         indicator.notifyDataSetChanged();
