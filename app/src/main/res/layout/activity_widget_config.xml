@@ -30,7 +30,10 @@ limitations under the License.
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/indicator"
         android:layout_width="match_parent"
-        android:layout_height="48dip" />
+        android:layout_height="48dip"
+        app:pstsDividerColor="@color/divider"
+        app:pstsUnderlineColor="?attr/tabIndicatorColor"
+        app:pstsIndicatorColor="?attr/tabIndicatorColor" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
