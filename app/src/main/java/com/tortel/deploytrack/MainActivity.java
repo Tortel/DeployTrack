@@ -37,6 +37,7 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
+import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.service.NotificationService;
 
 /**
@@ -78,6 +79,12 @@ public class MainActivity extends ActionBarActivity {
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         lbm.registerReceiver(mDeleteListener, new IntentFilter(DATA_DELETED));
+
+        if(!Prefs.isWelcomeShown()){
+            Prefs.setWelcomeShown(this);
+            WelcomeDialog dialog = new WelcomeDialog();
+            dialog.show(getSupportFragmentManager(), "welcome");
+        }
 	}
 
     @Override

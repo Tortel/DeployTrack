@@ -21,5 +21,5 @@ limitations under the License.
         android:id="@+id/about_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dip" />
+        android:padding="10dp" />
 </ScrollView>

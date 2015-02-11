@@ -28,12 +28,14 @@ public class Prefs {
 	public static final String KEY_HIDE_DATE = "pref_hide_date";
 	public static final String KEY_HIDE_PERCENT = "pref_hide_percent";
 	public static final String KEY_LIGHT_THEME = "pref_light_theme";
+    private static final String KEY_WELCOME = "welcome_2.0";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
 	private static boolean hideDate;
 	private static boolean hidePercent;
 	private static boolean lightTheme;
+    private static boolean welcomeShown;
 	
 	public static void load(Context context){
         context = context.getApplicationContext();
@@ -44,6 +46,7 @@ public class Prefs {
 		hideDate = prefs.getBoolean(KEY_HIDE_DATE, false);
 		hidePercent = prefs.getBoolean(KEY_HIDE_PERCENT, false);
 		lightTheme = prefs.getBoolean(KEY_LIGHT_THEME, false);
+        welcomeShown = prefs.getBoolean(KEY_WELCOME, false);
 	}
 	
 	public static boolean isAnimationEnabled() {
@@ -64,6 +67,16 @@ public class Prefs {
 	
 	public static boolean useLightTheme() {
         return lightTheme;
+    }
+
+    public static boolean isWelcomeShown(){
+        return welcomeShown;
+    }
+
+    public static void setWelcomeShown(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putBoolean(KEY_WELCOME, true).apply();
+        welcomeShown = true;
     }
 
     public static void setScreenShotMode(boolean screenShotMode, Context context){
