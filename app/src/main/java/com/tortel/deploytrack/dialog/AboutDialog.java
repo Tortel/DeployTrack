@@ -56,7 +56,7 @@ public class AboutDialog extends DialogFragment {
 		MaterialDialog.Builder builder = new MaterialDialog.Builder(wrappedContext);
 
 		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
-		View view = inflater.inflate(R.layout.about, null);
+		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = (TextView) view.findViewById(R.id.about_view);
 		
 		text.setText(Html.fromHtml(readRawTextFile(R.raw.about)));

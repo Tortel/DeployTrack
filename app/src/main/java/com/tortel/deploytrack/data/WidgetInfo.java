@@ -19,7 +19,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * Class to save info about a homescreen widget
+ * Class to save info dialog_about a homescreen widget
  */
 @DatabaseTable
 public class WidgetInfo {
