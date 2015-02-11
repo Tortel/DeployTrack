@@ -26,7 +26,7 @@ limitations under the License.
         
         <!-- Main activity -->
         <activity
-            android:name="com.tortel.deploytrack.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,25 +36,25 @@ limitations under the License.
         </activity>
         
         <!-- Widget config activity -->
-        <activity android:name="com.tortel.deploytrack.WidgetPickerActivity">
+        <activity android:name=".WidgetPickerActivity">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
 		    </intent-filter>
         </activity>
         
         <!-- Create/edit activity -->
-        <activity android:name="com.tortel.deploytrack.CreateActivity" />
+        <activity android:name=".CreateActivity" />
         
         <!-- Settings activity -->
-        <activity android:name="com.tortel.deploytrack.SettingsActivity"
+        <activity android:name=".SettingsActivity"
             android:label="@string/settings" />
         
         <!-- Notification service -->
-        <service android:name="com.tortel.deploytrack.service.NotificationService" />
+        <service android:name=".service.NotificationService" />
         
         <!-- Widget receiver -->
         <receiver
-            android:name="com.tortel.deploytrack.provider.WidgetProvider" >
+            android:name=".provider.WidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.tortel.deploytrack.WIDGET_UPDATE" />
