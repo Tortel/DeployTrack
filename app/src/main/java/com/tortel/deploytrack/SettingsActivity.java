@@ -20,14 +20,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.tortel.deploytrack.dialog.WelcomeDialog;
+
 
 public class SettingsActivity extends ActionBarActivity {
     private static final String KEY_THEME = "pref_light_theme";
+    private static final String KEY_WELCOME = "pref_show_welcome";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -93,6 +99,17 @@ public class SettingsActivity extends ActionBarActivity {
             getPreferenceScreen().getSharedPreferences()
                     .unregisterOnSharedPreferenceChangeListener(this);
 
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+            if(KEY_WELCOME.equals(preference.getKey())){
+                WelcomeDialog dialog = new WelcomeDialog();
+                FragmentManager fragMan = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+                dialog.show(fragMan, "welcome");
+                return true;
+            }
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
 
         @Override

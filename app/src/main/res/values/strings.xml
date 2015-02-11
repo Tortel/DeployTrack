@@ -94,5 +94,7 @@ limitations under the License.
     <string name="other">Other</string>
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
     <string name="menu_screenshot">Toggle Screenshot Mode</string>
+    <string name="show_welcome">Show Welcome</string>
+    <string name="show_welcome_simmary">Show the welcome dialog again</string>
 
 </resources>

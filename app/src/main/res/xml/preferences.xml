@@ -58,5 +58,9 @@ limitations under the License.
 	            android:data="mailto:Swarner.dev@gmail.com?subject=Deployment Tracker Feedback"
 	            />
 	    </Preference>
+        <Preference
+            android:key="pref_show_welcome"
+            android:title="@string/show_welcome"
+            android:summary="@string/show_welcome_simmary" />
 	</PreferenceCategory>
 </PreferenceScreen>
