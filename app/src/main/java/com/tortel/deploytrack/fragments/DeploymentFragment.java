@@ -49,7 +49,9 @@ public class DeploymentFragment extends Fragment {
 	private TextView mCommaView;
 	private Resources mResources;
 	private CustomPieGraph mPieView;
-	
+
+    private int mAnimatorType;
+
 	/**
 	 * Creates a new DeploymentFragment with the provided
 	 * Deployment
@@ -120,49 +122,72 @@ public class DeploymentFragment extends Fragment {
 		float density = getResources().getDisplayMetrics().density;
 		mCommaView = (TextView) view.findViewById(R.id.comma);
 		mDateRangeView = (TextView) view.findViewById(R.id.daterange);
+
+        TextView main = (TextView) view.findViewById(R.id.main);
+        TextView second = (TextView) view.findViewById(R.id.second);
+        TextView third = (TextView) view.findViewById(R.id.third);
 		
 		switch(Prefs.getMainDisplayType()){
 		case Prefs.ViewTypes.PERCENT:
-			mPercentView = (TextView) view.findViewById(R.id.main);
-			mCompletedView = (TextView) view.findViewById(R.id.second);
-			mRemainingView = (TextView) view.findViewById(R.id.third);
-			if(Prefs.hideDate()){
-			    mCommaView.setVisibility(View.GONE);
-		        mDateRangeView.setVisibility(View.GONE);
-		        mCompletedView.setVisibility(View.GONE);
-		        mRemainingView.setVisibility(View.GONE);
-			}
-			return;
+            mAnimatorType = Prefs.ViewTypes.PERCENT;
+			mPercentView = main;
+			mCompletedView = second;
+			mRemainingView = third;
+			break;
 		case Prefs.ViewTypes.COMPLETE:
-			mCompletedView = (TextView) view.findViewById(R.id.main);
+            mAnimatorType = Prefs.ViewTypes.COMPLETE;
+			mCompletedView = main;
 			mCompletedView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCompletedView.getTextSize() - density * 20f);
-			mPercentView = (TextView) view.findViewById(R.id.second);
-			mRemainingView = (TextView) view.findViewById(R.id.third);
-			if(Prefs.hidePercent()){
-			    mCommaView.setVisibility(View.GONE);
-			}
-			return;	
+			mPercentView = second;
+			mRemainingView = third;
+			break;
 		case Prefs.ViewTypes.REMAINING:
-			mRemainingView = (TextView) view.findViewById(R.id.main);
+            mAnimatorType = Prefs.ViewTypes.REMAINING;
+			mRemainingView = main;
 			mRemainingView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRemainingView.getTextSize() - density * 10f);
-			mPercentView = (TextView) view.findViewById(R.id.second);
-			mCompletedView = (TextView) view.findViewById(R.id.third);
-	        if(Prefs.hidePercent()){
-	            mCommaView.setVisibility(View.GONE);
-	        }
-			return;
+			mPercentView = second;
+			mCompletedView = third;
+			break;
 		}
-		
-		// If hide dates, make sure that the percent is the main view
-		if(Prefs.hideDate()){
-		    mPercentView = (TextView) view.findViewById(R.id.main);
-            mCompletedView = (TextView) view.findViewById(R.id.second);
-            mRemainingView = (TextView) view.findViewById(R.id.third);
-		}
+
+        // Just hide dates
+		if(Prefs.hideDate() && !Prefs.hidePercent()){
+            mPercentView = main;
+            mAnimatorType = Prefs.ViewTypes.PERCENT;
+
+            // Make sure nothing else is set to main
+            mCompletedView = second;
+            mRemainingView = second;
+            mDateRangeView.setVisibility(View.GONE);
+            second.setVisibility(View.GONE);
+            third.setVisibility(View.GONE);
+            mCommaView.setVisibility(View.GONE);
+            return;
+        }
+
+        // Just hide percent
+        if(Prefs.hidePercent() && !Prefs.hideDate()){
+            mPercentView.setVisibility(View.GONE);
+            if(Prefs.getMainDisplayType() != Prefs.ViewTypes.PERCENT){
+                // Hide the comma too
+                mCommaView.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        // If both are hidden, hide it all
+        if(Prefs.hideDate() && Prefs.hidePercent()){
+            mCommaView.setVisibility(View.GONE);
+            mDateRangeView.setVisibility(View.GONE);
+            main.setVisibility(View.GONE);
+            second.setVisibility(View.GONE);
+            third.setVisibility(View.GONE);
+            return;
+        }
 	}
 	
 	private ObjectAnimator getFragmentAnimator(){
-		switch(Prefs.getMainDisplayType()){
+		switch(mAnimatorType){
 		case Prefs.ViewTypes.REMAINING:
 			return ObjectAnimator.ofInt(this, "remaining", mDeployment.getLength(), mDeployment.getRemaining());
 		case Prefs.ViewTypes.COMPLETE:
