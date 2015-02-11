@@ -67,7 +67,7 @@ public class WelcomeDialog extends DialogFragment {
         text.setMovementMethod(LinkMovementMethod.getInstance());
 
         builder.customView(view, false);
-        builder.title(R.string.app_name);
+        builder.title(R.string.welcome);
         builder.positiveText(R.string.close);
 
         return builder.build();

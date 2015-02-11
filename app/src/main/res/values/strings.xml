@@ -50,6 +50,7 @@ limitations under the License.
     <string name="pie">Mmm, pie</string>
     <string name="comma">", "</string>
     <string name="loading">Loading…</string>
+    <string name="welcome">Welcome</string>
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>
