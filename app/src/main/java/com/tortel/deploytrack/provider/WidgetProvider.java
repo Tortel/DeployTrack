@@ -15,6 +15,7 @@
  */
 package com.tortel.deploytrack.provider;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -58,12 +59,17 @@ public class WidgetProvider extends AppWidgetProvider {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+        // The standard widget intents are handled in the super call
+        if(UPDATE_INTENT.equals(intent.getAction())) {
+            mScreenShotMode = intent.getBooleanExtra(KEY_SCREENSHOT_MODE, false);
+            Log.v("Update intent received");
+            AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+            onUpdate(context, widgetManager, new int[0]);
+
+            return;
+        }
+
         super.onReceive(context, intent);
-        // TODO - Check if the super.onReceive() calls onUpdate
-        mScreenShotMode = intent.getBooleanExtra(KEY_SCREENSHOT_MODE, false);
-        Log.v("Update intent received");
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        onUpdate(context, widgetManager, new int[0]);
     }
 
     @Override
@@ -105,37 +111,42 @@ public class WidgetProvider extends AppWidgetProvider {
             	Log.e("Uhoh!",e);
             }
         }
-        
-        //Schedule an update at midnight
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        DateTime now = new DateTime();
-        DateTime tomorrow = new DateTime(now.plusDays(1)).withTimeAtStartOfDay();
-        
-        PendingIntent pending = PendingIntent.getBroadcast(context, 0, 
-                new Intent(UPDATE_INTENT), PendingIntent.FLAG_UPDATE_CURRENT);
-        
-        //Adding 100msec to make sure its triggered after midnight
-        Log.d("Scheduling update for "+tomorrow.getMillis() + 100);
-        
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
-            alarmManager.setExact(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
-        } else {
-            alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
-        }
 
-        // Time screenshot mode out in 3 min
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
         if(mScreenShotMode){
+            // Time screenshot mode out in 3 min
+
             Intent cancelScreenShotMode = new Intent(UPDATE_INTENT);
             cancelScreenShotMode.putExtra(KEY_SCREENSHOT_MODE, false);
 
             PendingIntent screenshotPending = PendingIntent.getBroadcast(context, 0,
-                    cancelScreenShotMode, PendingIntent.FLAG_UPDATE_CURRENT);
+                    cancelScreenShotMode, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            long triggerTime = new Date().getTime() + SCREENSHOT_TIMEOUT * MILIS_PER_MIN;
 
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
-                alarmManager.setExact(AlarmManager.RTC, SCREENSHOT_TIMEOUT * MILIS_PER_MIN, pending);
+                alarmManager.setExact(AlarmManager.RTC, triggerTime, screenshotPending);
             } else {
-                alarmManager.set(AlarmManager.RTC, SCREENSHOT_TIMEOUT * MILIS_PER_MIN, pending);
+                alarmManager.set(AlarmManager.RTC, triggerTime, screenshotPending);
             }
+        } else {
+            //Schedule an update at midnight
+            DateTime now = new DateTime();
+            DateTime tomorrow = new DateTime(now.plusDays(1)).withTimeAtStartOfDay();
+
+            PendingIntent pending = PendingIntent.getBroadcast(context, 0,
+                    new Intent(UPDATE_INTENT), PendingIntent.FLAG_CANCEL_CURRENT);
+
+            //Adding 100msec to make sure its triggered after midnight
+            Log.d("Scheduling update for "+tomorrow.getMillis() + 100);
+
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+                alarmManager.setExact(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+            } else {
+                alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+            }
+
         }
     }
     
@@ -200,6 +211,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         if(screenShotMode){
             // If screen shot mode is enabled, hide the details
+            Log.v("Screen shot mode enabled, hiding detail views");
             remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
             remoteViews.setViewVisibility(R.id.widget_name, View.GONE);
             remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
@@ -211,6 +223,21 @@ public class WidgetProvider extends AppWidgetProvider {
                     R.id.widget_info,
                     resources.getQuantityString(R.plurals.days_remaining,
                             deployment.getRemaining(), deployment.getRemaining()));
+
+            remoteViews.setViewVisibility(R.id.widget_name, View.VISIBLE);
+
+            // Apply hide preferences
+            if(Prefs.hideDate()){
+                remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
+            } else {
+                remoteViews.setViewVisibility(R.id.widget_info, View.VISIBLE);
+            }
+
+            if(Prefs.hidePercent()){
+                remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
+            } else {
+                remoteViews.setViewVisibility(R.id.widget_percent, View.VISIBLE);
+            }
         }
         
         int size = DEFAULT_SIZE;
@@ -220,19 +247,6 @@ public class WidgetProvider extends AppWidgetProvider {
         }
         
         remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, size));
-
-        // Apply hide preferences
-        if(Prefs.hideDate()){
-            remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
-        } else {
-            remoteViews.setViewVisibility(R.id.widget_info, View.VISIBLE);
-        }
-        
-        if(Prefs.hidePercent()){
-            remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
-        } else {
-            remoteViews.setViewVisibility(R.id.widget_percent, View.VISIBLE);
-        }
         
         // Apply text color
         if(!info.isLightText()){
