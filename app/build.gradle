@@ -36,8 +36,9 @@ dependencies {
 
     compile 'joda-time:joda-time:2.6'
 
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+
     // File-based deps
-    compile files('libs/ormlite-android-4.45.jar')
-    compile files('libs/ormlite-core-4.45.jar')
     compile(name:'HoloGraphLibrary', ext:'aar')
 }
