@@ -45,20 +45,27 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
-    private static final String UPDATE_INTENT = "com.tortel.deploytrack.WIDGET_UPDATE";
+    public static final String UPDATE_INTENT = "com.tortel.deploytrack.WIDGET_UPDATE";
+    public static final String KEY_SCREENSHOT_MODE = "screenshot";
     
     private static final int DEFAULT_SIZE = 190;
     private static final float PADDING = 0.5f;
+
+    private static final int SCREENSHOT_TIMEOUT = 3;
+    private static final int MILIS_PER_MIN = 60000;
+
+    private boolean mScreenShotMode = false;
     
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        // TODO - Check if the super.onReceive() calls onUpdate
+        mScreenShotMode = intent.getBooleanExtra(KEY_SCREENSHOT_MODE, false);
         Log.v("Update intent received");
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         onUpdate(context, widgetManager, new int[0]);
     }
 
-    @TargetApi(19)
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds){
@@ -83,7 +90,7 @@ public class WidgetProvider extends AppWidgetProvider {
             Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getId());
 
             //Draw everything
-            remoteViews = updateWidgetView(context, remoteViews, info);
+            remoteViews = updateWidgetView(context, remoteViews, info, mScreenShotMode);
 
             
             //Update it
@@ -114,6 +121,21 @@ public class WidgetProvider extends AppWidgetProvider {
             alarmManager.setExact(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
         } else {
             alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
+        }
+
+        // Time screenshot mode out in 3 min
+        if(mScreenShotMode){
+            Intent cancelScreenShotMode = new Intent(UPDATE_INTENT);
+            cancelScreenShotMode.putExtra(KEY_SCREENSHOT_MODE, false);
+
+            PendingIntent screenshotPending = PendingIntent.getBroadcast(context, 0,
+                    cancelScreenShotMode, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
+                alarmManager.setExact(AlarmManager.RTC, SCREENSHOT_TIMEOUT * MILIS_PER_MIN, pending);
+            } else {
+                alarmManager.set(AlarmManager.RTC, SCREENSHOT_TIMEOUT * MILIS_PER_MIN, pending);
+            }
         }
     }
     
@@ -152,7 +174,7 @@ public class WidgetProvider extends AppWidgetProvider {
         
         super.onDeleted(context, appWidgetIds);
     }
-    
+
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
      * @param context
@@ -160,17 +182,36 @@ public class WidgetProvider extends AppWidgetProvider {
      * @param info
      */
     public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews, WidgetInfo info){
+        return updateWidgetView(context, remoteViews, info, false);
+    }
+
+    /**
+     * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
+     * @param context
+     * @param remoteViews
+     * @param info
+     * @param screenShotMode
+     */
+    public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews,
+                                               WidgetInfo info, boolean screenShotMode){
         Deployment deployment = info.getDeployment();
         Resources resources = context.getResources();
         Prefs.load(context);
-        
-        // Set the text
-        remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage()+"%");
-        remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
-        remoteViews.setTextViewText(
-                R.id.widget_info,
-                resources.getQuantityString(R.plurals.days_remaining,
-                        deployment.getRemaining(), deployment.getRemaining()));
+
+        if(screenShotMode){
+            // If screen shot mode is enabled, hide the details
+            remoteViews.setViewVisibility(R.id.widget_percent, View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_name, View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_info, View.GONE);
+        } else {
+            // Set the text
+            remoteViews.setTextViewText(R.id.widget_percent, deployment.getPercentage() + "%");
+            remoteViews.setTextViewText(R.id.widget_name, deployment.getName());
+            remoteViews.setTextViewText(
+                    R.id.widget_info,
+                    resources.getQuantityString(R.plurals.days_remaining,
+                            deployment.getRemaining(), deployment.getRemaining()));
+        }
         
         int size = DEFAULT_SIZE;
         if(info.getMinHeight() > 0){
@@ -280,8 +321,6 @@ public class WidgetProvider extends AppWidgetProvider {
 			
 			region.set((int)(midX-radius), (int)(midY-radius), (int)(midX+radius), (int)(midY+radius));
 			canvas.drawPath(p, paint);
-			
-			currentAngle = currentAngle+currentSweep;
 		}
 
 		return bmp;

@@ -38,6 +38,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
+import com.tortel.deploytrack.provider.WidgetProvider;
 import com.tortel.deploytrack.service.NotificationService;
 
 /**
@@ -198,6 +199,12 @@ public class MainActivity extends ActionBarActivity {
         case R.id.menu_screenshot:
             mScreenShotMode = !mScreenShotMode;
             Prefs.setScreenShotMode(mScreenShotMode, getApplicationContext());
+
+            // Propagate screen shot mode to the widgets
+            Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+            updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
+            sendBroadcast(updateWidgetIntent);
+
             reload();
             return true;
 		case R.id.menu_settings:

@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.tortel.deploytrack.dialog.WelcomeDialog;
+import com.tortel.deploytrack.provider.WidgetProvider;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -71,7 +72,7 @@ public class SettingsActivity extends ActionBarActivity {
 	private void sendWidgetUpdateBroadcast(){
 	    Log.v("Sending widget update broadcast");
 	    // Force the widgets to update
-        Intent updateWidgetIntent = new Intent("com.tortel.deploytrack.WIDGET_UPDATE");
+        Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
         sendBroadcast(updateWidgetIntent);
 	}
 
