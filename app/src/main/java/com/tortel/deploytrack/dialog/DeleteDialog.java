@@ -26,13 +26,16 @@ import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.data.Deployment;
 
 /**
  * Dialog confirming deletion
  */
 public class DeleteDialog extends DialogFragment {
     public static final String KEY_ID = "id";
+
     private int mId;
+    private String mName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class DeleteDialog extends DialogFragment {
         setRetainInstance(true);
 
         mId = getArguments().getInt(KEY_ID);
+        Deployment deployment = DatabaseManager.getInstance(getActivity()).getDeployment(mId);
+        mName = deployment.getName();
     }
     @Override
     public void onDestroyView() {
@@ -51,7 +56,7 @@ public class DeleteDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        builder.content(R.string.confirm);
+        builder.content(R.string.confirm, mName);
         builder.title(R.string.delete);
         builder.positiveText(R.string.delete);
         builder.negativeText(R.string.cancel);

@@ -68,7 +68,7 @@ limitations under the License.
     <string name="color_remaining">Remaining color:</string>
     
     <!-- Confirmation Dialog -->
-    <string name="confirm">Are you sure?</string>
+    <string name="confirm">Are you sure you want to delete \'%1$s\'?</string>
     <string name="close">Close</string>
     
     <!-- Error Strings -->
