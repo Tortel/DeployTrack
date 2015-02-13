@@ -61,6 +61,10 @@ limitations under the License.
         <Preference
             android:key="pref_show_welcome"
             android:title="@string/show_welcome"
-            android:summary="@string/show_welcome_simmary" />
+            android:summary="@string/show_welcome_summary" />
+        <Preference
+            android:key="pref_show_about_screenshot"
+            android:title="@string/show_about_screenshot"
+            android:summary="@string/show_about_screenshot_summary" />
 	</PreferenceCategory>
 </PreferenceScreen>

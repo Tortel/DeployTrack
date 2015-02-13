@@ -37,6 +37,7 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
+import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 import com.tortel.deploytrack.service.NotificationService;
@@ -197,6 +198,12 @@ public class MainActivity extends ActionBarActivity {
 		    }
 		    return true;
         case R.id.menu_screenshot:
+            if(!Prefs.isAboutScreenShotShown()){
+                ScreenShotModeDialog aboutDialog = new ScreenShotModeDialog();
+                aboutDialog.show(getSupportFragmentManager(), "screenshot");
+                Prefs.setAboutScreenShotShown(getApplicationContext());
+            }
+
             mScreenShotMode = !mScreenShotMode;
             Prefs.setScreenShotMode(mScreenShotMode, getApplicationContext());
 

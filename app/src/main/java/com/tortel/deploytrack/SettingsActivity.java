@@ -22,10 +22,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
@@ -33,6 +35,7 @@ import com.tortel.deploytrack.provider.WidgetProvider;
 public class SettingsActivity extends ActionBarActivity {
     private static final String KEY_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "pref_show_welcome";
+    private static final String KEY_ABOUT_SCREENSHOT = "pref_show_about_screenshot";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -102,10 +105,15 @@ public class SettingsActivity extends ActionBarActivity {
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+            DialogFragment dialog;
+            FragmentManager fragMan = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
             if(KEY_WELCOME.equals(preference.getKey())){
-                WelcomeDialog dialog = new WelcomeDialog();
-                FragmentManager fragMan = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+                dialog = new WelcomeDialog();
                 dialog.show(fragMan, "welcome");
+                return true;
+            } else if(KEY_ABOUT_SCREENSHOT.equals(preference.getKey())){
+                dialog = new ScreenShotModeDialog();
+                dialog.show(fragMan, "screenshot");
                 return true;
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);

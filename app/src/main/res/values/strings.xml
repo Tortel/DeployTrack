@@ -25,6 +25,7 @@ limitations under the License.
     <string name="show_notification">Show as notification</string>
     <string name="hide_notification">Hide notification</string>
     <string name="send_feedback">Send Feedback</string>
+    <string name="menu_screenshot">Toggle Screen Shot Mode</string>
     
     <!-- Display fragment strings -->
     <string name="date_range">%1$s to %2$s</string>
@@ -51,6 +52,7 @@ limitations under the License.
     <string name="comma">", "</string>
     <string name="loading">Loading…</string>
     <string name="welcome">Welcome</string>
+    <string name="about_screenshot">About Screen Shot Mode</string>
     
     <!-- Widget Configuration Strings -->
     <string name="widget_pick">Pick an item to use for the widget</string>
@@ -93,8 +95,9 @@ limitations under the License.
     <string name="prefs_hide_percentage_summary">Hide all percentage from being shown</string>
     <string name="other">Other</string>
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
-    <string name="menu_screenshot">Toggle Screenshot Mode</string>
     <string name="show_welcome">Show Welcome</string>
-    <string name="show_welcome_simmary">Show the welcome dialog again</string>
+    <string name="show_welcome_summary">Show the welcome dialog again</string>
+    <string name="show_about_screenshot">Shot About Screen Shot Mode</string>
+    <string name="show_about_screenshot_summary">Show the about screen shot mode dialog again</string>
 
 </resources>
