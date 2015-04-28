@@ -23,11 +23,11 @@ import android.preference.PreferenceManager;
  * Class to assist with preferences
  */
 public class Prefs {
-	public static final String KEY_ANIMATION = "pref_animate";
-	public static final String KEY_MAIN_VIEW = "pref_main_view";
-	public static final String KEY_HIDE_DATE = "pref_hide_date";
-	public static final String KEY_HIDE_PERCENT = "pref_hide_percent";
-	public static final String KEY_LIGHT_THEME = "pref_light_theme";
+    private static final String KEY_ANIMATION = "pref_animate";
+    private static final String KEY_MAIN_VIEW = "pref_main_view";
+    private static final String KEY_HIDE_DATE = "pref_hide_date";
+    private static final String KEY_HIDE_PERCENT = "pref_hide_percent";
+    private static final String KEY_LIGHT_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "welcome_2.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
 	

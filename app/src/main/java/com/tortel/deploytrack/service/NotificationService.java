@@ -64,6 +64,8 @@ public class NotificationService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(UPDATE_INTENT);
         registerReceiver(updateReceiver, filter);
+
+        Prefs.load(this);
         
         showNotification();
         
@@ -120,7 +122,7 @@ public class NotificationService extends Service {
                 getResources().getString(R.string.small_notification, deployment.getPercentage(),
                         deployment.getCompleted(), deployment.getLength()));
 
-        if(prefs.getBoolean(Prefs.KEY_HIDE_DATE, false)){
+        if(Prefs.hideDate()){
             view.setViewVisibility(R.id.notification_daterange, View.GONE);
         } else {
             view.setTextViewText(
