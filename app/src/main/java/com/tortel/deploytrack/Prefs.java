@@ -26,6 +26,7 @@ public class Prefs {
     private static final String KEY_ANIMATION = "pref_animate";
     private static final String KEY_MAIN_VIEW = "pref_main_view";
     private static final String KEY_HIDE_DATE = "pref_hide_date";
+    private static final String KEY_HIDE_DAYS = "pref_hide_days";
     private static final String KEY_HIDE_PERCENT = "pref_hide_percent";
     private static final String KEY_LIGHT_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "welcome_2.0";
@@ -34,6 +35,7 @@ public class Prefs {
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
 	private static boolean hideDate;
+    private static boolean hideDays;
 	private static boolean hidePercent;
 	private static boolean lightTheme;
     private static boolean welcomeShown;
@@ -46,6 +48,7 @@ public class Prefs {
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
 		mainDisplayType = Integer.valueOf(prefs.getString(KEY_MAIN_VIEW, "0"));
 		hideDate = prefs.getBoolean(KEY_HIDE_DATE, false);
+        hideDays = prefs.getBoolean(KEY_HIDE_DAYS, false);
 		hidePercent = prefs.getBoolean(KEY_HIDE_PERCENT, false);
 		lightTheme = prefs.getBoolean(KEY_LIGHT_THEME, false);
         welcomeShown = prefs.getBoolean(KEY_WELCOME, false);
@@ -63,7 +66,11 @@ public class Prefs {
 	public static boolean hideDate(){
 	    return hideDate;
 	}
-	
+
+    public static boolean hideDays(){
+        return hideDays;
+    }
+
 	public static boolean hidePercent(){
 		return hidePercent;
 	}

@@ -43,6 +43,11 @@ limitations under the License.
 		    android:title="@string/prefs_hide_date"
 		    android:summary="@string/prefs_hide_date_summary"
 		    android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_hide_days"
+            android:title="@string/prefs_hide_days"
+            android:summary="@string/prefs_hide_days_summary"
+            android:defaultValue="false" />
 		<CheckBoxPreference 
 		    android:key="pref_hide_percent"
 		    android:title="@string/prefs_hide_percentage"

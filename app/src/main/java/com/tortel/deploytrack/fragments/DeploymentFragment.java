@@ -150,15 +150,18 @@ public class DeploymentFragment extends Fragment {
 			break;
 		}
 
-        // Just hide dates
-		if(Prefs.hideDate() && !Prefs.hidePercent()){
+        if(Prefs.hideDate()){
+            mDateRangeView.setVisibility(View.GONE);
+        }
+
+        // Just hide days
+		if(Prefs.hideDays() && !Prefs.hidePercent()){
             mPercentView = main;
             mAnimatorType = Prefs.ViewTypes.PERCENT;
 
             // Make sure nothing else is set to main
             mCompletedView = second;
             mRemainingView = second;
-            mDateRangeView.setVisibility(View.GONE);
             second.setVisibility(View.GONE);
             third.setVisibility(View.GONE);
             mCommaView.setVisibility(View.GONE);
@@ -166,7 +169,7 @@ public class DeploymentFragment extends Fragment {
         }
 
         // Just hide percent
-        if(Prefs.hidePercent() && !Prefs.hideDate()){
+        if(Prefs.hidePercent() && !Prefs.hideDays()){
             mPercentView.setVisibility(View.GONE);
             if(Prefs.getMainDisplayType() != Prefs.ViewTypes.PERCENT){
                 // Hide the comma too
@@ -176,9 +179,8 @@ public class DeploymentFragment extends Fragment {
         }
 
         // If both are hidden, hide it all
-        if(Prefs.hideDate() && Prefs.hidePercent()){
+        if(Prefs.hideDays() && Prefs.hidePercent()){
             mCommaView.setVisibility(View.GONE);
-            mDateRangeView.setVisibility(View.GONE);
             main.setVisibility(View.GONE);
             second.setVisibility(View.GONE);
             third.setVisibility(View.GONE);

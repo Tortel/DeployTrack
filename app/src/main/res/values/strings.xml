@@ -90,9 +90,11 @@ limitations under the License.
     <string name="prefs_light_theme_summary">The app will restart to apply the new theme</string>
     <string name="prefs_customization">Customization</string>
     <string name="prefs_hide_date">Hide Dates</string>
-    <string name="prefs_hide_date_summary">Hide all dates, days left, and days completed from being shown</string>
+    <string name="prefs_hide_date_summary">Hide the start and end dates</string>
+    <string name="prefs_hide_days">Hide Days Completed/Remaining</string>
+    <string name="prefs_hide_days_summary">Hide the days completed and remaining</string>
     <string name="prefs_hide_percentage">Hide Percentage</string>
-    <string name="prefs_hide_percentage_summary">Hide all percentage from being shown</string>
+    <string name="prefs_hide_percentage_summary">Hide the percent complete</string>
     <string name="other">Other</string>
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
     <string name="show_welcome">Show Welcome</string>
