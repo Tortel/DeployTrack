@@ -22,7 +22,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +39,7 @@ import com.tortel.deploytrack.data.*;
 /**
  * Activity for creating and editing a Deployment
  */
-public class CreateActivity extends ActionBarActivity {
+public class CreateActivity extends AppCompatActivity {
 	private static final String KEY_TIME_START = "start";
 	private static final String KEY_TIME_END = "end";
 	private static final String KEY_SET_START = "startset";

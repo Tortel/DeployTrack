@@ -28,7 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +46,7 @@ import com.tortel.deploytrack.service.NotificationService;
  * The main activity that contains the fragments that show the graphs.
  * Also handles the options menu
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
 
 	private static final String KEY_POSITION = "position";

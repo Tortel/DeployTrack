@@ -19,7 +19,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -28,7 +28,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
-public class WidgetPickerActivity extends ActionBarActivity {
+public class WidgetPickerActivity extends AppCompatActivity {
     private Intent mResultIntent;
     private AppWidgetManager mWidgetManager;
     private int mWidgetId;
