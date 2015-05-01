@@ -36,7 +36,7 @@ dependencies {
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
-    compile 'com.afollestad:material-dialogs:0.7.2.+'
+    compile 'com.afollestad:material-dialogs:0.7.3.+'
 
     // http://www.joda.org/joda-time/
     compile 'joda-time:joda-time:2.7'
