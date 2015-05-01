@@ -51,6 +51,8 @@ limitations under the License.
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
             android:layout_gravity="center"
             >
 
@@ -59,7 +61,6 @@ limitations under the License.
 	            android:layout_height="wrap_content"
 	            android:layout_width="wrap_content"
 	            android:paddingBottom="5dip"
-	            android:paddingLeft="5dip"
 	            android:gravity="center"
 	            />
 	        
@@ -67,7 +68,6 @@ limitations under the License.
                 android:id="@+id/comma"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:paddingBottom="5dip"
                 android:text="@string/comma"
                 android:gravity="center"
                 />
@@ -76,8 +76,6 @@ limitations under the License.
                 android:id="@+id/third"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:paddingBottom="5dip"
-                android:paddingRight="5dip"
                 android:gravity="center"
                 />
         
