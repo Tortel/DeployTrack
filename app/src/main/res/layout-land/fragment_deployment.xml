@@ -46,7 +46,8 @@ limitations under the License.
 	            android:id="@+id/daterange"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dip"
+	            android:paddingLeft="5dip"
+                android:paddingRight="5dip"
 	            android:textStyle="bold"
 	            android:gravity="center"
 	            />
@@ -55,6 +56,8 @@ limitations under the License.
 	            android:orientation="horizontal"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
 	            android:layout_gravity="center"
 	            >
 	
@@ -62,9 +65,6 @@ limitations under the License.
 	                android:id="@+id/second"
 	                android:layout_height="wrap_content"
 	                android:layout_width="wrap_content"
-	                android:paddingTop="5dip"
-	                android:paddingBottom="5dip"
-	                android:paddingLeft="5dip"
 	                android:gravity="center"
 	                />
 	            
@@ -72,8 +72,6 @@ limitations under the License.
 	                android:id="@+id/comma"
 	                android:layout_height="wrap_content"
 	                android:layout_width="wrap_content"
-	                android:paddingTop="5dip"
-	                android:paddingBottom="5dip"
 	                android:text="@string/comma"
 	                android:gravity="center"
 	                />
@@ -82,9 +80,6 @@ limitations under the License.
 	                android:id="@+id/third"
 	                android:layout_height="wrap_content"
 	                android:layout_width="wrap_content"
-	                android:paddingTop="5dip"
-	                android:paddingBottom="5dip"
-	                android:paddingRight="5dip"
 	                android:gravity="center"
 	                />
 	        
