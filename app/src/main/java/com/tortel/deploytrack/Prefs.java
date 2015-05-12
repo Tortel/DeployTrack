@@ -102,6 +102,7 @@ public class Prefs {
     public static void setScreenShotMode(boolean screenShotMode, Context context){
         if(screenShotMode){
             hideDate = true;
+            hideDays = true;
             hidePercent = true;
         } else {
             load(context);
