@@ -19,14 +19,14 @@ limitations under the License.
          android:id="@+id/menu_create_new"
          app:showAsAction="always"
          android:title="@string/add_new"
-         android:icon="@drawable/ic_menu_add"
+         android:icon="@drawable/ic_add_circle_outline_white_24dp"
          />
 
     <item
         android:id="@+id/menu_screenshot"
         app:showAsAction="ifRoom"
         android:title="@string/menu_screenshot"
-        android:icon="@drawable/ic_action_camera"
+        android:icon="@drawable/ic_camera_alt_white_24dp"
         />
 
     <item
