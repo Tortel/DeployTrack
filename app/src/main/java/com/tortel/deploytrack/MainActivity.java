@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.firebase.client.Firebase;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 		super.onCreate(savedInstanceState);
+
+		// Set up Firebase
+		Firebase.setAndroidContext(this);
 
 		setContentView(R.layout.activity_main);
 		

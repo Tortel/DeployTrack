@@ -18,6 +18,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 repositories {
@@ -44,6 +50,9 @@ dependencies {
     // http://ormlite.com/
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+
+    // Firebase
+    compile 'com.firebase:firebase-client-android:2.3.0+'
 
     // File-based deps
     compile(name:'HoloGraphLibrary', ext:'aar')
