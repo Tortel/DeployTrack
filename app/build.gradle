@@ -54,6 +54,10 @@ dependencies {
     // Firebase
     compile 'com.firebase:firebase-client-android:2.3.0+'
 
+    // Play Services
+    // https://developers.google.com/android/guides/setup
+    compile 'com.google.android.gms:play-services-plus:7.5.0'
+
     // File-based deps
     compile(name:'HoloGraphLibrary', ext:'aar')
 }
