@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.+'
+    compile 'com.android.support:appcompat-v7:23.3.+'
 
     // https://github.com/astuetz/PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -36,12 +36,12 @@ dependencies {
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.4@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
     }
 
     // http://www.joda.org/joda-time/
-    compile 'joda-time:joda-time:2.7'
+    compile 'joda-time:joda-time:2.9.3'
 
     // http://ormlite.com/
     compile 'com.j256.ormlite:ormlite-core:4.48'
