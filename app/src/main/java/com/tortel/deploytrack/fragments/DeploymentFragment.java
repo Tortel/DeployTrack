@@ -41,13 +41,24 @@ import com.tortel.deploytrack.data.Deployment;
  */
 public class DeploymentFragment extends Fragment {
 	private static final boolean DEBUG = false;
+	/**
+	 * Delay (In MS) before the circle starts its show animation
+	 */
+	private static final long ANI_SHOW_DELAY = 200;
+	/**
+	 * Length (In MS) of the show animation
+	 */
+	private static final long ANI_SHOW_DURATION = 500;
+	/**
+	 * Length (In MS) of the percent animation
+	 */
+	private static final long ANI_PERCENT_DURATION = 1000;
 	
 	private Deployment mDeployment;
 	private TextView mPercentView;
 	private TextView mCompletedView;
 	private TextView mDateRangeView;
 	private TextView mRemainingView;
-	private TextView mCommaView;
 	private Resources mResources;
 	private DecoView mArcView;
 	private SeriesItem mCompletedSeries;
@@ -153,7 +164,7 @@ public class DeploymentFragment extends Fragment {
 	@SuppressLint("CutPasteId")
 	private void setUpTextViews(View view){
 		float density = getResources().getDisplayMetrics().density;
-		mCommaView = (TextView) view.findViewById(R.id.comma);
+		TextView commaView = (TextView) view.findViewById(R.id.comma);
 		mDateRangeView = (TextView) view.findViewById(R.id.daterange);
 
         TextView main = (TextView) view.findViewById(R.id.main);
@@ -197,7 +208,7 @@ public class DeploymentFragment extends Fragment {
             mRemainingView = second;
             second.setVisibility(View.GONE);
             third.setVisibility(View.GONE);
-            mCommaView.setVisibility(View.GONE);
+            commaView.setVisibility(View.GONE);
             return;
         }
 
@@ -206,14 +217,14 @@ public class DeploymentFragment extends Fragment {
             mPercentView.setVisibility(View.GONE);
             if(Prefs.getMainDisplayType() != Prefs.ViewTypes.PERCENT){
                 // Hide the comma too
-                mCommaView.setVisibility(View.GONE);
+                commaView.setVisibility(View.GONE);
             }
             return;
         }
 
         // If both are hidden, hide it all
         if(Prefs.hideDays() && Prefs.hidePercent()){
-            mCommaView.setVisibility(View.GONE);
+            commaView.setVisibility(View.GONE);
             main.setVisibility(View.GONE);
             second.setVisibility(View.GONE);
             third.setVisibility(View.GONE);
@@ -245,14 +256,14 @@ public class DeploymentFragment extends Fragment {
 		mArcView.executeReset();
 
 		mArcView.addEvent(new DecoEvent.Builder(DecoEvent.EventType.EVENT_SHOW, true)
-				.setDelay(250)
-				.setDuration(1000)
+				.setDelay(ANI_SHOW_DELAY)
+				.setDuration(ANI_SHOW_DURATION)
 				.build());
 
 		mArcView.addEvent(new DecoEvent.Builder(mDeployment.getCompleted())
 				.setIndex(mCompletedIndex)
-				.setDelay(1250)
-				.setDuration(1500)
+				.setDelay(ANI_SHOW_DELAY + ANI_SHOW_DURATION)
+				.setDuration(ANI_PERCENT_DURATION)
 				.build());
 	}
 	
