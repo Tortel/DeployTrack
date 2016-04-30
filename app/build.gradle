@@ -29,6 +29,8 @@ repositories {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.3.+'
+    // https://github.com/bmarrdev/android-DecoView-charting
+    compile 'com.github.bmarrdev:android-DecoView-charting:v1.0.1'
 
     // https://github.com/astuetz/PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
