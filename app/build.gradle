@@ -28,8 +28,8 @@ dependencies {
 
     // https://github.com/astuetz/PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    // https://github.com/flavienlaurent/datetimepicker
-    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    // https://github.com/jaydeep17/datetimepicker
+    compile 'com.github.jaydeep17:datetimepicker:0.0.4'
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
