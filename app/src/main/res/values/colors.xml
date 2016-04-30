@@ -23,4 +23,8 @@ limitations under the License.
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+
+    <!-- Datepicker colors -->
+    <color name="datepicker_primary">@color/primary</color>
+    <color name="datepicker_primary_dark">@color/primary_dark</color>
 </resources>
