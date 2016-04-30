@@ -50,6 +50,7 @@ public class DeploymentFragment extends Fragment {
 	private TextView mCommaView;
 	private Resources mResources;
 	private DecoView mArcView;
+	private SeriesItem mCompletedSeries;
 	private int mCompletedIndex;
 
     private int mAnimatorType;
@@ -110,13 +111,40 @@ public class DeploymentFragment extends Fragment {
 
 		mArcView.addSeries(backgroundBuilder.build());
 
-		SeriesItem completedSeries  = new SeriesItem.Builder(mDeployment.getCompletedColor())
+		mCompletedSeries = new SeriesItem.Builder(mDeployment.getCompletedColor())
 				.setRange(0, mDeployment.getLength(), 0)
 				.setLineWidth(125f)
 				.setInitialVisibility(false)
 				.build();
 
-		mCompletedIndex = mArcView.addSeries(completedSeries);
+		// Set up the listener to animate everything else
+		mCompletedSeries.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
+			@Override
+			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
+				float progress =  ((currentPosition - mCompletedSeries.getMinValue()) / (mCompletedSeries.getMaxValue() - mCompletedSeries.getMinValue()));
+				switch (mAnimatorType) {
+					case Prefs.ViewTypes.REMAINING:
+						int remaining = mDeployment.getLength() - (int) (progress * mCompletedSeries.getMaxValue());
+						setRemaining(remaining);
+						break;
+					case Prefs.ViewTypes.COMPLETE:
+						int completed = (int) (progress * mCompletedSeries.getMaxValue());
+						setCompleted(completed);
+						break;
+					default:
+						int percent = (int) (progress * 100);
+						setPercent(percent);
+						break;
+				}
+			}
+
+			@Override
+			public void onSeriesItemDisplayProgress(float percentComplete) {
+				// Do nothing
+			}
+		});
+
+		mCompletedIndex = mArcView.addSeries(mCompletedSeries);
 
 		
 		return view;
@@ -193,17 +221,6 @@ public class DeploymentFragment extends Fragment {
         }
 	}
 	
-	private ObjectAnimator getFragmentAnimator(){
-		switch(mAnimatorType){
-		case Prefs.ViewTypes.REMAINING:
-			return ObjectAnimator.ofInt(this, "remaining", mDeployment.getLength(), mDeployment.getRemaining());
-		case Prefs.ViewTypes.COMPLETE:
-			return ObjectAnimator.ofInt(this, "completed", 0, mDeployment.getCompleted());
-		}
-		//Default is to return percent
-		return ObjectAnimator.ofInt(this, "percent", 0, mDeployment.getPercentage());
-	}
-	
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -214,7 +231,8 @@ public class DeploymentFragment extends Fragment {
 	public void onPause(){
 		super.onPause();
 		if(mArcView != null){
-			// TODO - Re-animate the view
+			// Clear all animations
+			mArcView.executeReset();
 		}
 	}
 	
@@ -236,14 +254,6 @@ public class DeploymentFragment extends Fragment {
 				.setDelay(1250)
 				.setDuration(1500)
 				.build());
-
-		AnimatorSet set = new AnimatorSet();
-		set.playTogether(
-				ObjectAnimator.ofFloat(mArcView, "percent", 0, 100),
-				getFragmentAnimator()
-		);
-		set.setDuration(1000);
-		set.start();
 	}
 	
 	public void setCompleted(int days){
