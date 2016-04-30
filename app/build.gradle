@@ -21,12 +21,6 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
     compile 'com.android.support:appcompat-v7:23.3.+'
     // https://github.com/bmarrdev/android-DecoView-charting
@@ -49,7 +43,4 @@ dependencies {
     // http://ormlite.com/
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-
-    // File-based deps
-    compile(name:'HoloGraphLibrary', ext:'aar')
 }
