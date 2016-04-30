@@ -25,10 +25,10 @@ limitations under the License.
         android:paddingRight="15dip"
         android:orientation="vertical" >
 
-        <com.hookedonplay.decoviewlib.DecoView
+        <com.tortel.deploytrack.view.SquareDecoView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:padding="5dip"
             />
         
