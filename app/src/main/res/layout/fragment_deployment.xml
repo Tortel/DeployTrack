@@ -24,11 +24,11 @@ limitations under the License.
         android:paddingLeft="15dip"
         android:paddingRight="15dip"
         android:orientation="vertical" >
-        
-        <com.tortel.deploytrack.view.CustomPieGraph
+
+        <com.hookedonplay.decoviewlib.DecoView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:padding="5dip"
             />
         

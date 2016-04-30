@@ -27,13 +27,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.echo.holographlibrary.PieSlice;
+import com.hookedonplay.decoviewlib.DecoView;
+import com.hookedonplay.decoviewlib.charts.SeriesItem;
+import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
-import com.tortel.deploytrack.view.CustomPieGraph;
 
 /**
  * Fragment that displays the fancy deployment graph and info
@@ -48,7 +49,8 @@ public class DeploymentFragment extends Fragment {
 	private TextView mRemainingView;
 	private TextView mCommaView;
 	private Resources mResources;
-	private CustomPieGraph mPieView;
+	private DecoView mArcView;
+	private int mCompletedIndex;
 
     private int mAnimatorType;
 
@@ -99,20 +101,23 @@ public class DeploymentFragment extends Fragment {
 		}
 		
 		//Fill the graph
-		mPieView = (CustomPieGraph) view.findViewById(R.id.graph);
-		
-		PieSlice completedSlice = new PieSlice();
-		completedSlice.setColor(mDeployment.getCompletedColor());
-		completedSlice.setValue(mDeployment.getCompleted());
-		if(mDeployment.getCompleted() > 0){
-			mPieView.addSlice(completedSlice);
-		}
-		PieSlice togoSlice = new PieSlice();
-		togoSlice.setColor(mDeployment.getRemainingColor());
-		togoSlice.setValue(mDeployment.getRemaining());
-		if(mDeployment.getRemaining() > 0){
-			mPieView.addSlice(togoSlice);
-		}
+		mArcView = (DecoView) view.findViewById(R.id.graph);
+
+		SeriesItem.Builder backgroundBuilder = new SeriesItem.Builder(mDeployment.getRemainingColor())
+			.setRange(0, mDeployment.getLength(), mDeployment.getLength())
+			.setLineWidth(100f)
+			.setInitialVisibility(false);
+
+		mArcView.addSeries(backgroundBuilder.build());
+
+		SeriesItem completedSeries  = new SeriesItem.Builder(mDeployment.getCompletedColor())
+				.setRange(0, mDeployment.getLength(), 0)
+				.setLineWidth(125f)
+				.setInitialVisibility(false)
+				.build();
+
+		mCompletedIndex = mArcView.addSeries(completedSeries);
+
 		
 		return view;
 	}
@@ -208,19 +213,33 @@ public class DeploymentFragment extends Fragment {
 	@Override
 	public void onPause(){
 		super.onPause();
-		if(mPieView != null){
-			mPieView.setPercent(0);
+		if(mArcView != null){
+			// TODO - Re-animate the view
 		}
 	}
 	
 	public void animate(){
-		if(mPieView == null || !Prefs.isAnimationEnabled()){
+		if(mArcView == null || !Prefs.isAnimationEnabled()){
 			setPercent(mDeployment.getPercentage());
 			return;
 		}
+		// Remove all animation events
+		mArcView.executeReset();
+
+		mArcView.addEvent(new DecoEvent.Builder(DecoEvent.EventType.EVENT_SHOW, true)
+				.setDelay(250)
+				.setDuration(1000)
+				.build());
+
+		mArcView.addEvent(new DecoEvent.Builder(mDeployment.getCompleted())
+				.setIndex(mCompletedIndex)
+				.setDelay(1250)
+				.setDuration(1500)
+				.build());
+
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(
-				ObjectAnimator.ofFloat(mPieView, "percent", 0, 100),
+				ObjectAnimator.ofFloat(mArcView, "percent", 0, 100),
 				getFragmentAnimator()
 		);
 		set.setDuration(1000);
