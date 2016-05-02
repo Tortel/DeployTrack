@@ -23,6 +23,10 @@ limitations under the License.
         <!-- Theme specific stuff -->
         <item name="tabIndicatorColor">@color/primary_dark</item>
         <item name="tabTextColor">@android:color/white</item>
+
+        <!-- Material text input text color -->
+        <item name="edittext_color">@android:color/primary_text_dark</item>
+        <item name="edittext_hint">@android:color/secondary_text_dark</item>
     </style>
 
     <style name="Theme.DeployThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -33,6 +37,10 @@ limitations under the License.
         <!-- Theme specific stuff -->
         <item name="tabIndicatorColor">@color/primary_light</item>
         <item name="tabTextColor">@color/secondary_text</item>
+
+        <!-- Material text input text color -->
+        <item name="edittext_color">@android:color/primary_text_light</item>
+        <item name="edittext_hint">@android:color/darker_gray</item>
     </style>
     
     <!-- Style for the percentage -->

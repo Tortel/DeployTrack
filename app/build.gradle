@@ -26,6 +26,8 @@ dependencies {
     // https://github.com/bmarrdev/android-DecoView-charting
     compile 'com.github.bmarrdev:android-DecoView-charting:v1.0.1'
 
+    // https://github.com/rengwuxian/MaterialEditText
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
     // https://github.com/astuetz/PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     // https://github.com/jaydeep17/datetimepicker

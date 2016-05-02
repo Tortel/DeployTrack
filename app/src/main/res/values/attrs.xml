@@ -17,4 +17,6 @@ limitations under the License.
     <!-- Tab style stuff -->
     <attr name="tabIndicatorColor" format="color" />
     <attr name="tabTextColor" format="color" />
+    <attr name="edittext_color" format="color" />
+    <attr name="edittext_hint" format="color" />
 </resources>
