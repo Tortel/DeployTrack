@@ -22,9 +22,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.3.+'
+    compile 'com.android.support:appcompat-v7:23.4.+'
     // https://github.com/bmarrdev/android-DecoView-charting
-    compile 'com.github.bmarrdev:android-DecoView-charting:v1.0.1'
+    compile 'com.github.bmarrdev:android-DecoView-charting:v1.1'
 
     // https://github.com/rengwuxian/MaterialEditText
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
@@ -35,9 +35,7 @@ dependencies {
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
-        transitive = true
-    }
+    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
 
     // http://www.joda.org/joda-time/
     compile 'joda-time:joda-time:2.9.3'
