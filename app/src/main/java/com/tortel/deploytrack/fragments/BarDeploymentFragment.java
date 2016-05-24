@@ -25,9 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hookedonplay.decoviewlib.DecoView;
-import com.hookedonplay.decoviewlib.charts.SeriesItem;
-import com.hookedonplay.decoviewlib.events.DecoEvent;
+import com.db.chart.Tools;
+import com.db.chart.model.BarSet;
+import com.db.chart.view.AxisController;
+import com.db.chart.view.HorizontalStackBarChartView;
+import com.db.chart.view.animation.Animation;
+import com.db.chart.view.animation.easing.ExpoEase;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
@@ -35,20 +38,13 @@ import com.tortel.deploytrack.data.Deployment;
 
 /**
  * Fragment that displays the fancy deployment graph and info
+ * with a bar graph
  */
-public class DeploymentFragment extends Fragment {
+public class BarDeploymentFragment extends Fragment {
 	/**
-	 * Delay (In MS) before the circle starts its show animation
+	 * Length (In MS) of the animation
 	 */
-	private static final long ANI_SHOW_DELAY = 200;
-	/**
-	 * Length (In MS) of the show animation
-	 */
-	private static final long ANI_SHOW_DURATION = 500;
-	/**
-	 * Length (In MS) of the percent animation
-	 */
-	private static final long ANI_PERCENT_DURATION = 1000;
+	private static final int ANI_DURATION = 1000;
 	
 	private Deployment mDeployment;
 	private TextView mPercentView;
@@ -56,9 +52,7 @@ public class DeploymentFragment extends Fragment {
 	private TextView mDateRangeView;
 	private TextView mRemainingView;
 	private Resources mResources;
-	private DecoView mArcView;
-	private SeriesItem mCompletedSeries;
-	private int mCompletedIndex;
+	private HorizontalStackBarChartView mBarChartView;
 
     private int mAnimatorType;
 
@@ -68,8 +62,8 @@ public class DeploymentFragment extends Fragment {
 	 * @param deployment
 	 * @return
 	 */
-	public static DeploymentFragment newInstance(Deployment deployment){
-		DeploymentFragment fragment = new DeploymentFragment();
+	public static BarDeploymentFragment newInstance(Deployment deployment){
+		BarDeploymentFragment fragment = new BarDeploymentFragment();
 		fragment.mDeployment = deployment;
 		return fragment;
 	}
@@ -79,7 +73,7 @@ public class DeploymentFragment extends Fragment {
 			Bundle savedInstanceState){
 		mResources = getActivity().getResources();
 		
-		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
+		View view = inflater.inflate(R.layout.fragment_bar_deployment, container, false);
 
         // Set up the views
         setUpTextViews(view);
@@ -97,49 +91,34 @@ public class DeploymentFragment extends Fragment {
 		}
 		
 		//Fill the graph
-		mArcView = (DecoView) view.findViewById(R.id.graph);
+		mBarChartView = (HorizontalStackBarChartView) view.findViewById(R.id.graph);
+        mBarChartView.setRoundCorners(Tools.fromDpToPx(15));
+        mBarChartView.setSetSpacing(Tools.fromDpToPx(10));
+        mBarChartView.setBorderSpacing(Tools.fromDpToPx(20))
+                .setYLabels(AxisController.LabelPosition.NONE)
+                .setXLabels(AxisController.LabelPosition.NONE)
+                .setXAxis(false)
+                .setYAxis(false);
 
-		SeriesItem.Builder backgroundBuilder = new SeriesItem.Builder(mDeployment.getRemainingColor())
-			.setRange(0, mDeployment.getLength(), mDeployment.getLength())
-			.setLineWidth(100f)
-			.setInitialVisibility(false);
+        String labels[] = {""};
+        float values[][] = {
+                {mDeployment.getCompleted()},
+                {mDeployment.getRemaining()}
+        };
 
-		mArcView.addSeries(backgroundBuilder.build());
+        BarSet completedBarSet = new BarSet(labels, values[0]);
+        completedBarSet.setColor(mDeployment.getCompletedColor());
+        BarSet remainingBarSet = new BarSet(labels, values[1]);
+        remainingBarSet.setColor(mDeployment.getRemainingColor());
 
-		mCompletedSeries = new SeriesItem.Builder(mDeployment.getCompletedColor())
-				.setRange(0, mDeployment.getLength(), 0)
-				.setLineWidth(125f)
-				.setInitialVisibility(false)
-				.build();
+        mBarChartView.addData(completedBarSet);
+        mBarChartView.addData(remainingBarSet);
 
-		// Set up the listener to animate everything else
-		mCompletedSeries.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
-			@Override
-			public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
-				float progress =  ((currentPosition - mCompletedSeries.getMinValue()) / (mCompletedSeries.getMaxValue() - mCompletedSeries.getMinValue()));
-				switch (mAnimatorType) {
-					case Prefs.ViewTypes.REMAINING:
-						int remaining = mDeployment.getLength() - (int) (progress * mCompletedSeries.getMaxValue());
-						setRemaining(remaining);
-						break;
-					case Prefs.ViewTypes.COMPLETE:
-						int completed = (int) (progress * mCompletedSeries.getMaxValue());
-						setCompleted(completed);
-						break;
-					default:
-						int percent = (int) (progress * 100);
-						setPercent(percent);
-						break;
-				}
-			}
+        Animation anim = new Animation()
+                .setEasing(new ExpoEase())
+                .setDuration(3000);
 
-			@Override
-			public void onSeriesItemDisplayProgress(float percentComplete) {
-				// Do nothing
-			}
-		});
-
-		mCompletedIndex = mArcView.addSeries(mCompletedSeries);
+        mBarChartView.show(anim);
 
 		return view;
 	}
@@ -223,30 +202,16 @@ public class DeploymentFragment extends Fragment {
 	@Override
 	public void onPause(){
 		super.onPause();
-		if(mArcView != null){
+		if(mBarChartView != null){
 			// Clear all animations
-			mArcView.executeReset();
 		}
 	}
 	
 	private void animate(){
-		if(mArcView == null || !Prefs.isAnimationEnabled()){
+		if(mBarChartView == null || !Prefs.isAnimationEnabled()){
 			setPercent(mDeployment.getPercentage());
 			return;
 		}
-		// Remove all animation events
-		mArcView.executeReset();
-
-		mArcView.addEvent(new DecoEvent.Builder(DecoEvent.EventType.EVENT_SHOW, true)
-				.setDelay(ANI_SHOW_DELAY)
-				.setDuration(ANI_SHOW_DURATION)
-				.build());
-
-		mArcView.addEvent(new DecoEvent.Builder(mDeployment.getCompleted())
-				.setIndex(mCompletedIndex)
-				.setDelay(ANI_SHOW_DELAY + ANI_SHOW_DURATION)
-				.setDuration(ANI_PERCENT_DURATION)
-				.build());
 	}
 	
 	private void setCompleted(int days){

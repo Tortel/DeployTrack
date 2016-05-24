@@ -18,6 +18,7 @@ package com.tortel.deploytrack;
 import java.util.List;
 
 import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.fragments.BarDeploymentFragment;
 import com.tortel.deploytrack.fragments.DeploymentFragment;
 import com.tortel.deploytrack.fragments.NoDataFragment;
 
@@ -67,7 +68,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 			return new NoDataFragment();
 		}
 		if(mFragmentList.get(position) == null){
-			mFragmentList.put(position, DeploymentFragment.newInstance(mDeploymentList.get(position)));
+			mFragmentList.put(position, BarDeploymentFragment.newInstance(mDeploymentList.get(position)));
 		}
 		return mFragmentList.get(position);
 	}

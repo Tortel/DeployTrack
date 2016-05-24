@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013-2015 Scott Warner
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:orientation="vertical" >
+
+        <com.db.chart.view.HorizontalStackBarChartView
+            xmlns:chart="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:padding="5dip"
+            chart:chart_barSpacing="5dp"
+            />
+        
+        <TextView 
+            android:id="@+id/main"
+            style="@style/Percentage"
+            />
+        
+        <TextView
+            android:id="@+id/daterange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+    
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:layout_gravity="center"
+            >
+
+	        <TextView
+	            android:id="@+id/second"
+	            android:layout_height="wrap_content"
+	            android:layout_width="wrap_content"
+	            android:paddingBottom="5dip"
+	            android:gravity="center"
+	            />
+	        
+            <TextView
+                android:id="@+id/comma"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/comma"
+                android:gravity="center"
+                />
+	        
+            <TextView
+                android:id="@+id/third"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                />
+        
+        </LinearLayout>
+        
+    </LinearLayout>
+</ScrollView>

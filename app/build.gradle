@@ -36,6 +36,8 @@ dependencies {
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
+    // https://github.com/diogobernardino/WilliamChart
+    compile 'com.diogobernardino:williamchart:2.2'
 
     // http://www.joda.org/joda-time/
     compile 'joda-time:joda-time:2.9.3'
