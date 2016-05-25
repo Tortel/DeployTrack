@@ -68,7 +68,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 			return new NoDataFragment();
 		}
 		if(mFragmentList.get(position) == null){
-			mFragmentList.put(position, BarDeploymentFragment.newInstance(mDeploymentList.get(position)));
+			mFragmentList.put(position, DeploymentFragment.newInstance(mDeploymentList.get(position)));
 		}
 		return mFragmentList.get(position);
 	}
