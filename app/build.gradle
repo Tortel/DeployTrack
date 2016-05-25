@@ -45,4 +45,13 @@ dependencies {
     // http://ormlite.com/
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+
+    // Firebase
+    compile 'com.google.firebase:firebase-auth:9.0.0'
+    compile 'com.google.android.gms:play-services-auth:9.0.0'
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
 }
+
+// For use with Firebase
+apply plugin: 'com.google.gms.google-services'
