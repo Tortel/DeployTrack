@@ -69,6 +69,12 @@ limitations under the License.
         />
 
     <item
+        android:id="@+id/menu_sync"
+        app:showAsAction="never"
+        android:title="@string/menu_sync"
+        />
+
+    <item
         android:id="@+id/menu_feedback"
         android:visible="false"
         app:showAsAction="never"
