@@ -94,28 +94,50 @@ limitations under the License.
             android:layout_gravity="center"
             android:paddingLeft="5dip"
 		    android:paddingRight="5dip" />
+
+		<RadioGroup
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<RadioButton
+				android:id="@+id/layout_bar"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:text="@string/bar_view" />
+
+			<RadioButton
+				android:id="@+id/layout_circle"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:checked="true"
+				android:text="@string/circle_view" />
+
+		</RadioGroup>
     
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-    
-            <Button
-                android:id="@+id/button_cancel"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.45"
-                android:onClick="onClick"
-                android:text="@string/cancel" />
-    
-            <Button
-                android:id="@+id/button_save"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.45"
-                android:onClick="onClick"
-                android:text="@string/save" />
-        </LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" >
+
+			<Button
+				android:id="@+id/button_cancel"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.45"
+				android:onClick="onClick"
+				android:text="@string/cancel" />
+
+			<Button
+				android:id="@+id/button_save"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.45"
+				android:onClick="onClick"
+				android:text="@string/save" />
+		</LinearLayout>
     
     </LinearLayout>
 </ScrollView>

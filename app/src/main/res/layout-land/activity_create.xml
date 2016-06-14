@@ -117,6 +117,28 @@ limitations under the License.
 			    
 		    </LinearLayout>
 	    </LinearLayout>
+
+		<RadioGroup
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<RadioButton
+				android:id="@+id/layout_bar"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:text="@string/bar_view" />
+
+			<RadioButton
+				android:id="@+id/layout_circle"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:checked="true"
+				android:text="@string/circle_view" />
+
+		</RadioGroup>
     
         <LinearLayout
             android:layout_width="match_parent"

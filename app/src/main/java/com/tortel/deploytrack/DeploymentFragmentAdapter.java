@@ -18,9 +18,7 @@ package com.tortel.deploytrack;
 import java.util.List;
 
 import com.tortel.deploytrack.data.*;
-import com.tortel.deploytrack.fragments.BarDeploymentFragment;
-import com.tortel.deploytrack.fragments.DeploymentFragment;
-import com.tortel.deploytrack.fragments.NoDataFragment;
+import com.tortel.deploytrack.fragments.*;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -68,7 +66,15 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 			return new NoDataFragment();
 		}
 		if(mFragmentList.get(position) == null){
-			mFragmentList.put(position, DeploymentFragment.newInstance(mDeploymentList.get(position)));
+			Deployment deployment = mDeploymentList.get(position);
+			Fragment fragment = null;
+			// Get the correct type of fragment
+			if(deployment.getDisplayType() == Deployment.DISPLAY_CIRCLE){
+				fragment = DeploymentFragment.newInstance(deployment);
+			} else {
+				fragment = BarDeploymentFragment.newInstance(deployment);
+			}
+			mFragmentList.put(position, fragment);
 		}
 		return mFragmentList.get(position);
 	}

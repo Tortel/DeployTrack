@@ -32,7 +32,7 @@ import java.sql.SQLException;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
@@ -74,6 +74,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN minHeight INTEGER DEFAULT 0");
                 db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN maxHeight INTEGER DEFAULT 0");
                 oldVersion = 3;
+            }
+            if(oldVersion == 3){
+                // Add the displayType field
+                db.execSQL("ALTER TABLE `deployment` ADD COLUMN displayType INTEGER DEFAULT 0");
+                oldVersion = 4;
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);

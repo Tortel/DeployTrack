@@ -27,6 +27,15 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Deployment {
+	/**
+	 * Use a circle-style display
+	 */
+	public static final int DISPLAY_CIRCLE = 0;
+	/**
+	 * Use a bar-style display
+	 */
+	public static final int DISPLAY_BAR = 1;
+
 	private static SimpleDateFormat format;
 	
 	@DatabaseField(generatedId = true)
@@ -41,6 +50,8 @@ public class Deployment {
 	private int completedColor;
 	@DatabaseField
 	private int remainingColor;
+	@DatabaseField
+	private int displayType;
 	
 	public String getFormattedStart(){
 		if(format == null){
@@ -143,5 +154,11 @@ public class Deployment {
 	}
 	public void setRemainingColor(int remainingColor) {
 		this.remainingColor = remainingColor;
+	}
+	public int getDisplayType() {
+		return displayType;
+	}
+	public void setDisplayType(int displayType) {
+		this.displayType = displayType;
 	}
 }

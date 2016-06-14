@@ -67,6 +67,8 @@ limitations under the License.
     <string name="end_date">End Date:</string>
     <string name="color_completed">Completed color:</string>
     <string name="color_remaining">Remaining color:</string>
+    <string name="circle_view">Circle View</string>
+    <string name="bar_view">Bar View</string>
 
     <!-- Confirmation Dialog -->
     <string name="confirm">Are you sure you want to delete \'%1$s\'?</string>

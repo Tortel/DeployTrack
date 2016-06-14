@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -47,11 +48,15 @@ public class CreateActivity extends AppCompatActivity {
 	private static final String KEY_NAME = "name";
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
+	private static final String KEY_DISPALY_TYPE = "display";
 	
 	private EditText mNameEdit;
 	private Button mStartButton;
 	private Button mEndButton;
 	private Button mSaveButton;
+
+	private RadioButton mBarButton;
+	private RadioButton mCircleButton;
 	
 	private SimpleDateFormat mDateFormat;
 	
@@ -90,6 +95,9 @@ public class CreateActivity extends AppCompatActivity {
 		mStartButton = (Button) findViewById(R.id.button_start);
 		mEndButton = (Button) findViewById(R.id.button_end);
 		mSaveButton = (Button) findViewById(R.id.button_save);
+
+		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
+		mCircleButton = (RadioButton) findViewById(R.id.layout_circle);
 		
 		//Color pickers
 		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
@@ -121,6 +129,13 @@ public class CreateActivity extends AppCompatActivity {
                     "\n" + mDateFormat.format(mStartDate.getTime()));
 			mEndButton.setText(getResources().getString(R.string.end_date) +
                     "\n" + mDateFormat.format(mEndDate.getTime()));
+
+			// Set circle/bar selected
+			if(mDeployment.getDisplayType() == Deployment.DISPLAY_BAR){
+				mBarButton.setChecked(true);
+			} else {
+				mCircleButton.setChecked(true);
+			}
 			
 			//Set the name
 			mNameEdit.setText(mDeployment.getName());
@@ -167,6 +182,13 @@ public class CreateActivity extends AppCompatActivity {
                         "\n" + mDateFormat.format(mEndDate.getTime()));
 				mSaveButton.setEnabled(true);
 			}
+
+			int viewType = savedInstanceState.getInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_CIRCLE);
+			if(viewType == Deployment.DISPLAY_BAR){
+				mBarButton.setChecked(true);
+			} else {
+				mCircleButton.setChecked(true);
+			}
 		}
 		
 		remainingPicker.setOldCenterColor(mRemainingColor);
@@ -198,6 +220,12 @@ public class CreateActivity extends AppCompatActivity {
 		
 		outState.putInt(KEY_COLOR_COMPLETED, mCompletedColor);
 		outState.putInt(KEY_COLOR_REMAINING, mRemainingColor);
+
+		if(mBarButton.isChecked()){
+			outState.putInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_BAR);
+		} else {
+			outState.putInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_CIRCLE);
+		}
 	}
 	
 	@Override
@@ -234,6 +262,12 @@ public class CreateActivity extends AppCompatActivity {
 			mDeployment.setName(name);
 			mDeployment.setCompletedColor(mCompletedColor);
 			mDeployment.setRemainingColor(mRemainingColor);
+			// Set the display type
+			if(mBarButton.isChecked()){
+				mDeployment.setDisplayType(Deployment.DISPLAY_BAR);
+			} else {
+				mDeployment.setDisplayType(Deployment.DISPLAY_CIRCLE);
+			}
 			//Save it
 			DatabaseManager.getInstance(this).saveDeployment(mDeployment);
 			//End
