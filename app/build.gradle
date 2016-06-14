@@ -50,7 +50,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.0.2'
     compile 'com.google.android.gms:play-services-auth:9.0.2'
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha3'
 }
 
 // For use with Firebase
