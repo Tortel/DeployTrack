@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,6 @@ public class CreateActivity extends AppCompatActivity {
 	private Button mSaveButton;
 
 	private RadioButton mBarButton;
-	private RadioButton mCircleButton;
 	
 	private SimpleDateFormat mDateFormat;
 	
@@ -97,7 +96,7 @@ public class CreateActivity extends AppCompatActivity {
 		mSaveButton = (Button) findViewById(R.id.button_save);
 
 		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
-		mCircleButton = (RadioButton) findViewById(R.id.layout_circle);
+		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
 		
 		//Color pickers
 		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
@@ -134,7 +133,7 @@ public class CreateActivity extends AppCompatActivity {
 			if(mDeployment.getDisplayType() == Deployment.DISPLAY_BAR){
 				mBarButton.setChecked(true);
 			} else {
-				mCircleButton.setChecked(true);
+				circleButton.setChecked(true);
 			}
 			
 			//Set the name
@@ -187,7 +186,7 @@ public class CreateActivity extends AppCompatActivity {
 			if(viewType == Deployment.DISPLAY_BAR){
 				mBarButton.setChecked(true);
 			} else {
-				mCircleButton.setChecked(true);
+				circleButton.setChecked(true);
 			}
 		}
 		
@@ -308,7 +307,6 @@ public class CreateActivity extends AppCompatActivity {
 				}
 			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
 			endPicker.show(fm, "endPicker");
-			return;
 		}
 	}
 	

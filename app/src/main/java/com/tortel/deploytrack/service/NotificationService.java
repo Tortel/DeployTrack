@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@ public class NotificationService extends Service {
      * Load the ID for the deployment to be shown as a notification. Returns -1
      * if one isn't saved yet
      */
-    public static int getSavedId(Context context) {
+    private static int getSavedId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(KEY_ID, -1);
     }
@@ -187,7 +187,7 @@ public class NotificationService extends Service {
      */
     public static void setSavedId(Context context, int id) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().putInt(KEY_ID, id).commit();
+        prefs.edit().putInt(KEY_ID, id).apply();
     }
 
     @Override
@@ -198,7 +198,7 @@ public class NotificationService extends Service {
     /**
      * Simple binder to get access to the service
      */
-    public class LocalBinder extends Binder {
+    private class LocalBinder extends Binder {
         NotificationService getService() {
             return NotificationService.this;
         }

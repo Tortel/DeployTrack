@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
@@ -51,6 +52,7 @@ public class AboutDialog extends DialogFragment {
         super.onDestroyView();
     }
 
+	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context wrappedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_DeployThemeLight);

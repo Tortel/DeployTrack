@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,6 @@ public class DatabaseManager {
     
     /**
      * Gets the widget information for the specified ID
-     * @param id
      * @return
      */
     public List<WidgetInfo> getAllWidgetInfo(){

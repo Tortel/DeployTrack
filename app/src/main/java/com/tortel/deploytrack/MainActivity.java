@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 			mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
             mScreenShotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false);
             if(mScreenShotMode){
-                Prefs.setScreenShotMode(mScreenShotMode, this);
+                Prefs.setScreenShotMode(true, this);
             }
 		} else {
 			mCurrentPosition = 0;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onResume();
         Prefs.load(this);
         if(mScreenShotMode) {
-            Prefs.setScreenShotMode(mScreenShotMode, this);
+            Prefs.setScreenShotMode(true, this);
         }
 		reload();
 	}

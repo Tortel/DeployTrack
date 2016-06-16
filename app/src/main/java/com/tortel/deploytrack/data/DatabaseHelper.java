@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.sql.SQLException;
 /**
  *
  */
-public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
     private static final int DATABASE_VERSION = 4;
@@ -37,7 +37,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
 
-    public DatabaseHelper(Context context){
+    DatabaseHelper(Context context){
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
     }
 
@@ -86,7 +86,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Dao<Deployment, Integer> getDeploymentDao(){
+    Dao<Deployment, Integer> getDeploymentDao(){
         if(deploymentDao == null){
             try{
             	deploymentDao = getDao(Deployment.class);
@@ -97,7 +97,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return deploymentDao;
     }
     
-    public Dao<WidgetInfo, Integer> getWidgetInfoDao(){
+    Dao<WidgetInfo, Integer> getWidgetInfoDao(){
         if(widgetInfoDao == null){
             try{
                 widgetInfoDao = getDao(WidgetInfo.class);

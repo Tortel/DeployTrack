@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Scott Warner
+ * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 
-public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
+class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private List<Deployment> mDeploymentList;
 	private DatabaseManager mDb;
 	private Context mContext;
-	SparseArray<Fragment> mFragmentList;
+	private SparseArray<Fragment> mFragmentList;
 	
-	public DeploymentFragmentAdapter(Context mContext, FragmentManager fm){
+	DeploymentFragmentAdapter(Context mContext, FragmentManager fm){
 		super(fm);
 		this.mContext = mContext.getApplicationContext();
 		mDb = DatabaseManager.getInstance(mContext);
