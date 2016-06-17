@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
+import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
@@ -96,19 +98,25 @@ public class DeploymentFragment extends Fragment {
 		    mPercentView.setText(mDeployment.getPercentage() + "%");
 		}
 		
-		//Fill the graph
+		// Fill the graph
 		mArcView = (DecoView) view.findViewById(R.id.graph);
+
+		// Get the metrics
+		DisplayMetrics metrics = new DisplayMetrics();
+		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		// Get the smaller dimension
+		float size = (float) Math.min(metrics.widthPixels, metrics.heightPixels);
 
 		SeriesItem.Builder backgroundBuilder = new SeriesItem.Builder(mDeployment.getRemainingColor())
 			.setRange(0, mDeployment.getLength(), mDeployment.getLength())
-			.setLineWidth(100f)
+			.setLineWidth(size / 6f)
 			.setInitialVisibility(false);
 
 		mArcView.addSeries(backgroundBuilder.build());
 
 		mCompletedSeries = new SeriesItem.Builder(mDeployment.getCompletedColor())
 				.setRange(0, mDeployment.getLength(), 0)
-				.setLineWidth(125f)
+				.setLineWidth(size / 5f)
 				.setInitialVisibility(false)
 				.build();
 
@@ -230,7 +238,22 @@ public class DeploymentFragment extends Fragment {
 	}
 	
 	private void animate(){
-		if(mArcView == null || !Prefs.isAnimationEnabled()){
+		if(mArcView == null){
+			return;
+		}
+
+		if(!Prefs.isAnimationEnabled()){
+			mArcView.addEvent(new DecoEvent.Builder(DecoEvent.EventType.EVENT_SHOW, true)
+					.setDelay(0)
+					.setDuration(0)
+					.build());
+
+			mArcView.addEvent(new DecoEvent.Builder(mDeployment.getCompleted())
+					.setIndex(mCompletedIndex)
+					.setDelay(0)
+					.setDuration(0)
+					.build());
+
 			setPercent(mDeployment.getPercentage());
 			return;
 		}

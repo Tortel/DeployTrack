@@ -174,6 +174,10 @@ public class BarDeploymentFragment extends Fragment {
 	}
 	
 	private void animate(){
+		if(mBarChartView == null){
+			return;
+		}
+
 		// No animation, set the value and be done
 		if(!Prefs.isAnimationEnabled()){
 			// Show the bar
