@@ -1,4 +1,4 @@
-package com.tortel.deploytrack;/*
+/*
  * Copyright (C) 2013-2016 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package com.tortel.deploytrack;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.tortel.deploytrack;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

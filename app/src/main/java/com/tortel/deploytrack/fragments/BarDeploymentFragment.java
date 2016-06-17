@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,9 @@ import com.db.chart.view.AxisController;
 import com.db.chart.view.HorizontalStackBarChartView;
 import com.db.chart.view.animation.Animation;
 import com.db.chart.view.animation.easing.ExpoEase;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.tortel.deploytrack.Prefs;
+import com.tortel.deploytrack.Prefs.ViewTypes;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
@@ -43,14 +46,15 @@ public class BarDeploymentFragment extends Fragment {
 	/**
 	 * Length (In MS) of the animation
 	 */
-	private static final int ANI_DURATION = 1000;
+	private static final int ANI_DURATION = 3000;
 	
 	private Deployment mDeployment;
-	private TextView mPercentView;
+	private TextView mMainView;
 	private TextView mDateRangeView;
 	private TextView mSecondRowView;
 	private Resources mResources;
 	private HorizontalStackBarChartView mBarChartView;
+	private ObjectAnimator mAnimator;
 
 	/**
 	 * Creates a new DeploymentFragment with the provided
@@ -74,15 +78,16 @@ public class BarDeploymentFragment extends Fragment {
         // Set up the views
         setUpTextViews(view);
 
+		// Display the information
 		mDateRangeView.setText(mResources.getString(R.string.date_range,
                 mDeployment.getFormattedStart(), mDeployment.getFormattedEnd()));
-		//mCompletedView.setText(mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted()));
+		fillSecondView();
 
 		// Hide or display percent
 		if(Prefs.hidePercent()){
-		    mPercentView.setVisibility(View.GONE);
+		    mMainView.setVisibility(View.GONE);
 		} else {
-		    mPercentView.setText(mDeployment.getPercentage() + "%");
+		    mMainView.setText(mDeployment.getPercentage() + "%");
 		}
 		
 		//Fill the graph
@@ -109,68 +114,44 @@ public class BarDeploymentFragment extends Fragment {
         mBarChartView.addData(completedBarSet);
         mBarChartView.addData(remainingBarSet);
 
-        Animation anim = new Animation()
-                .setEasing(new ExpoEase())
-                .setDuration(3000);
-
-        mBarChartView.show(anim);
-
 		return view;
 	}
 	
 	@SuppressLint("CutPasteId")
 	private void setUpTextViews(View view){
 		float density = getResources().getDisplayMetrics().density;
-		TextView commaView = (TextView) view.findViewById(R.id.comma);
 		mDateRangeView = (TextView) view.findViewById(R.id.daterange);
 
-        TextView main = (TextView) view.findViewById(R.id.main);
-        TextView second = (TextView) view.findViewById(R.id.second);
-        TextView third = (TextView) view.findViewById(R.id.third);
-		
+        mMainView = (TextView) view.findViewById(R.id.main);
+		mSecondRowView = (TextView) view.findViewById(R.id.second_row);
+
+		// Adjust the main view text size, if needed
 		switch(Prefs.getMainDisplayType()){
-		case Prefs.ViewTypes.PERCENT:
-			mPercentView = main;
+		case ViewTypes.PERCENT:
 			break;
-		case Prefs.ViewTypes.COMPLETE:
-			mPercentView = second;
+		case ViewTypes.COMPLETE:
+			mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 20f);
 			break;
-		case Prefs.ViewTypes.REMAINING:
-			mPercentView = second;
+		case ViewTypes.REMAINING:
+			mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 10f);
 			break;
 		}
 
+		// Hide the date range
         if(Prefs.hideDate()){
             mDateRangeView.setVisibility(View.GONE);
         }
 
-        // Just hide days
-		if(Prefs.hideDays() && !Prefs.hidePercent()){
-            mPercentView = main;
-
-            // Make sure nothing else is set to main
-            second.setVisibility(View.GONE);
-            third.setVisibility(View.GONE);
-            commaView.setVisibility(View.GONE);
-            return;
-        }
-
         // Just hide percent
         if(Prefs.hidePercent() && !Prefs.hideDays()){
-            mPercentView.setVisibility(View.GONE);
-            if(Prefs.getMainDisplayType() != Prefs.ViewTypes.PERCENT){
-                // Hide the comma too
-                commaView.setVisibility(View.GONE);
-            }
+            mMainView.setVisibility(View.GONE);
             return;
         }
 
-        // If both are hidden, hide it all
+        // Hide everything
         if(Prefs.hideDays() && Prefs.hidePercent()){
-            commaView.setVisibility(View.GONE);
-            main.setVisibility(View.GONE);
-            second.setVisibility(View.GONE);
-            third.setVisibility(View.GONE);
+            mMainView.setVisibility(View.GONE);
+            mSecondRowView.setVisibility(View.GONE);
         }
 	}
 	
@@ -185,19 +166,95 @@ public class BarDeploymentFragment extends Fragment {
 		super.onPause();
 		if(mBarChartView != null){
 			// Clear all animations
+			mBarChartView.clearAnimation();
+		}
+		if(mAnimator != null){
+			mAnimator.cancel();
 		}
 	}
 	
 	private void animate(){
-		if(mBarChartView == null || !Prefs.isAnimationEnabled()){
-			setPercent(mDeployment.getPercentage());
+		// No animation, set the value and be done
+		if(!Prefs.isAnimationEnabled()){
+			// Show the bar
+			mBarChartView.show();
+
+			switch (Prefs.getMainDisplayType()){
+				case ViewTypes.PERCENT:
+					setMainView(mDeployment.getPercentage());
+					return;
+				case ViewTypes.COMPLETE:
+					setMainView(mDeployment.getCompleted());
+					return;
+				case ViewTypes.REMAINING:
+					setMainView(mDeployment.getRemaining());
+					return;
+			}
+		}
+
+		// Set up the animation
+		switch(Prefs.getMainDisplayType()){
+			case ViewTypes.COMPLETE:
+				mAnimator = ObjectAnimator.ofInt(this, "mainView", 0, mDeployment.getCompleted());
+				break;
+			case ViewTypes.REMAINING:
+				mAnimator = ObjectAnimator.ofInt(this, "mainView", mDeployment.getLength(), mDeployment.getRemaining());
+				break;
+			default:
+				mAnimator = ObjectAnimator.ofInt(this, "mainView", 0, mDeployment.getPercentage());
+				break;
+		}
+
+		mAnimator.setDuration(ANI_DURATION / 2);
+
+		// Animate the chart
+		Animation anim = new Animation()
+				.setEasing(new ExpoEase())
+				.setDuration(ANI_DURATION);
+
+		mBarChartView.clearAnimation();
+		mBarChartView.show(anim);
+		mAnimator.start();
+	}
+
+	private void setMainView(int value){
+		switch(Prefs.getMainDisplayType()){
+			case ViewTypes.PERCENT:
+				mMainView.setText(value+"%");
+				return;
+			case ViewTypes.COMPLETE:
+				mMainView.setText(mResources.getQuantityString(R.plurals.days_complete, value, value));
+				return;
+			case ViewTypes.REMAINING:
+				mMainView.setText(mResources.getQuantityString(R.plurals.days_remaining, value, value));
 		}
 	}
-	
-	private void setPercent(int percent){
-		if(mPercentView != null){
-			mPercentView.setText(percent+"%");
+
+	private void fillSecondView(){
+		String text = "";
+		switch (Prefs.getMainDisplayType()){
+			case ViewTypes.PERCENT:
+				text =  mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted())
+						+ ", " +
+						mResources.getQuantityString(R.plurals.days_remaining, mDeployment.getRemaining(), mDeployment.getRemaining());
+				break;
+			case ViewTypes.COMPLETE:
+				if(!Prefs.hidePercent()){
+					text = mDeployment.getPercentage()
+							+ "% , ";
+				}
+				text += mResources.getQuantityString(R.plurals.days_remaining, mDeployment.getRemaining(), mDeployment.getRemaining());
+				break;
+			case ViewTypes.REMAINING:
+				if(!Prefs.hidePercent()){
+					text = mDeployment.getPercentage()
+							+ "% , ";
+				}
+				text +=	mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted());
+				break;
 		}
+
+		mSecondRowView.setText(text);
 	}
 
 	@Override
