@@ -128,24 +128,29 @@ public class BarDeploymentFragment extends Fragment {
 		// Adjust the main view text size, if needed
 		switch(Prefs.getMainDisplayType()){
 		case ViewTypes.PERCENT:
+			if(Prefs.hidePercent()){
+				mMainView.setVisibility(View.GONE);
+			}
 			break;
 		case ViewTypes.COMPLETE:
-			mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 20f);
+			if(Prefs.hideDays()){
+				mMainView.setVisibility(View.GONE);
+			} else {
+				mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 20f);
+			}
 			break;
 		case ViewTypes.REMAINING:
-			mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 10f);
+			if(Prefs.hideDays()){
+				mMainView.setVisibility(View.GONE);
+			} else {
+				mMainView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMainView.getTextSize() - density * 10f);
+			}
 			break;
 		}
 
 		// Hide the date range
         if(Prefs.hideDate()){
             mDateRangeView.setVisibility(View.GONE);
-        }
-
-        // Just hide percent
-        if(Prefs.hidePercent() && !Prefs.hideDays()){
-            mMainView.setVisibility(View.GONE);
-            return;
         }
 
         // Hide everything
@@ -245,16 +250,26 @@ public class BarDeploymentFragment extends Fragment {
 			case ViewTypes.COMPLETE:
 				if(!Prefs.hidePercent()){
 					text = mDeployment.getPercentage()
-							+ "% , ";
+							+ "%";
 				}
-				text += mResources.getQuantityString(R.plurals.days_remaining, mDeployment.getRemaining(), mDeployment.getRemaining());
+				if(!Prefs.hideDays()) {
+					if(text.length() != 0){
+						text += ", ";
+					}
+					text += mResources.getQuantityString(R.plurals.days_remaining, mDeployment.getRemaining(), mDeployment.getRemaining());
+				}
 				break;
 			case ViewTypes.REMAINING:
 				if(!Prefs.hidePercent()){
 					text = mDeployment.getPercentage()
-							+ "% , ";
+							+ "%";
 				}
-				text +=	mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted());
+				if(!Prefs.hideDays()) {
+					if(text.length() != 0){
+						text += ", ";
+					}
+					text += mResources.getQuantityString(R.plurals.days_complete, mDeployment.getCompleted(), mDeployment.getCompleted());
+				}
 				break;
 		}
 
