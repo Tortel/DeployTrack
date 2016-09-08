@@ -17,11 +17,14 @@ package com.tortel.deploytrack.data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import android.annotation.SuppressLint;
+
+import com.google.firebase.database.Exclude;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -52,14 +55,18 @@ public class Deployment {
 	private int remainingColor;
 	@DatabaseField
 	private int displayType;
-	
+    @DatabaseField
+    private UUID uuid;
+
+	@Exclude
 	public String getFormattedStart(){
 		if(format == null){
 			getFormat();
 		}
 		return format.format(startDate);
 	}
-	
+
+	@Exclude
 	public String getFormattedEnd(){
 		if(format == null){
 			getFormat();
@@ -71,11 +78,13 @@ public class Deployment {
 	private void getFormat(){
 		format = new SimpleDateFormat("MMM dd, yyyy");
 	}
-	
+
+	@Exclude
 	public DateTime getStart(){
 		return new DateTime(startDate);
 	}
-	
+
+	@Exclude
 	public DateTime getEnd(){
 		return new DateTime(endDate);
 	}
@@ -161,4 +170,12 @@ public class Deployment {
 	public void setDisplayType(int displayType) {
 		this.displayType = displayType;
 	}
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 }
