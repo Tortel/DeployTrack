@@ -41,6 +41,7 @@ import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 import com.tortel.deploytrack.service.NotificationService;
+import com.tortel.deploytrack.task.GenerateUuidTask;
 
 /**
  * The main activity that contains the fragments that show the graphs.
@@ -86,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
             Prefs.setWelcomeShown(this);
             WelcomeDialog dialog = new WelcomeDialog();
             dialog.show(getSupportFragmentManager(), "welcome");
+        }
+        if(!Prefs.areUuidsGenerated()){
+            Prefs.setGeneratedUuids(this);
+            // Start the task
+            new GenerateUuidTask(this).execute();
         }
 	}
 
@@ -261,6 +267,8 @@ public class MainActivity extends AppCompatActivity {
 			//Ignore
 		}
 	}
+
+
 
     private BroadcastReceiver mDeleteListener = new BroadcastReceiver() {
         @Override

@@ -21,6 +21,7 @@ import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Class to manage interaction with the database
@@ -45,6 +46,11 @@ public class DatabaseManager {
 
     public Deployment saveDeployment(Deployment deployment){
         try{
+            // Set a UUID if there isnt one
+            if(deployment.getUuid() == null){
+                deployment.setUuid(UUID.randomUUID());
+            }
+
             helper.getDeploymentDao().createOrUpdate(deployment);
             
             if(deploymentCache != null){

@@ -32,6 +32,7 @@ public class Prefs {
     private static final String KEY_WELCOME = "welcome_2.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_GEN_UUID = "uuid_gen";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
@@ -41,6 +42,7 @@ public class Prefs {
 	private static boolean lightTheme;
     private static boolean welcomeShown;
     private static boolean aboutScreenShotShown;
+    private static boolean generatedUuids;
 	
 	public static void load(Context context){
         SharedPreferences prefs = getPrefs(context);
@@ -53,6 +55,7 @@ public class Prefs {
 		lightTheme = prefs.getBoolean(KEY_LIGHT_THEME, false);
         welcomeShown = prefs.getBoolean(KEY_WELCOME, false);
         aboutScreenShotShown = prefs.getBoolean(KEY_SCREENSHOT, false);
+        generatedUuids = prefs.getBoolean(KEY_GEN_UUID, false);
 	}
 
     /**
@@ -97,12 +100,20 @@ public class Prefs {
         return aboutScreenShotShown;
     }
 
+    public static boolean areUuidsGenerated(){
+        return generatedUuids;
+    }
+
     public static void setWelcomeShown(Context context){
         SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_WELCOME, true).apply();
         welcomeShown = true;
     }
 
+    /**
+     * Set the preference that the welcome screen has been shown
+     * @param context
+     */
     public static void setAboutScreenShotShown(Context context){
         SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_SCREENSHOT, true).apply();
@@ -117,6 +128,16 @@ public class Prefs {
         } else {
             load(context);
         }
+    }
+
+    /**
+     * Set the preference that the UUIDs have been generated
+     * @param context
+     */
+    public static void setGeneratedUuids(Context context){
+        generatedUuids = true;
+        SharedPreferences prefs = getPrefs(context);
+        prefs.edit().putBoolean(KEY_GEN_UUID, generatedUuids).apply();
     }
 
     /**
