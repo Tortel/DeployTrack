@@ -122,7 +122,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d("firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -139,6 +139,9 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                             Log.e("signInWithCredential", task.getException());
                             Toast.makeText(SyncSetupActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Save the token
+                            Prefs.setToken(acct.getIdToken(), SyncSetupActivity.this);
                         }
                     }
                 });

@@ -31,6 +31,7 @@ public class Prefs {
     private static final String KEY_LIGHT_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "welcome_2.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
+    private static final String KEY_TOKEN = "token";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
@@ -42,8 +43,7 @@ public class Prefs {
     private static boolean aboutScreenShotShown;
 	
 	public static void load(Context context){
-        context = context.getApplicationContext();
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
 		
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
 		mainDisplayType = Integer.valueOf(prefs.getString(KEY_MAIN_VIEW, "0"));
@@ -54,6 +54,16 @@ public class Prefs {
         welcomeShown = prefs.getBoolean(KEY_WELCOME, false);
         aboutScreenShotShown = prefs.getBoolean(KEY_SCREENSHOT, false);
 	}
+
+    /**
+     * Get the SharedPreferences
+     * @param context
+     * @return
+     */
+    private static SharedPreferences getPrefs(Context context){
+        context = context.getApplicationContext();
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
 	
 	public static boolean isAnimationEnabled() {
 		return animationEnabled;
@@ -88,13 +98,13 @@ public class Prefs {
     }
 
     public static void setWelcomeShown(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_WELCOME, true).apply();
         welcomeShown = true;
     }
 
     public static void setAboutScreenShotShown(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_SCREENSHOT, true).apply();
         aboutScreenShotShown = true;
     }
@@ -107,6 +117,25 @@ public class Prefs {
         } else {
             load(context);
         }
+    }
+
+    /**
+     * Set the Google account token
+     * @param token
+     * @param context
+     */
+    public static void setToken(String token, Context context){
+        SharedPreferences prefs = getPrefs(context);
+        prefs.edit().putString(KEY_TOKEN, token).apply();
+    }
+
+    /**
+     * Get the Google account token
+     * @param context
+     * @return
+     */
+    public static String getToken(Context context){
+        return getPrefs(context).getString(KEY_TOKEN, null);
     }
 
     public class ViewTypes{
