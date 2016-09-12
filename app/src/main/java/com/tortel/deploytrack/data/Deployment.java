@@ -114,6 +114,7 @@ public class Deployment {
 	 * Get the number of days completed so far
 	 * @return
 	 */
+	@Exclude
 	public int getCompleted(){
 		DateTime start = getStart();
 		//Check if it has even started
@@ -129,6 +130,7 @@ public class Deployment {
 	 * Get the remaining time, in days
 	 * @return
 	 */
+	@Exclude
 	public int getRemaining(){
 		return getLength() - getCompleted();
 	}
@@ -137,13 +139,15 @@ public class Deployment {
 	 * Gets the percentage completed, as a whole number (0-100)
 	 * @return
 	 */
+	@Exclude
 	public int getPercentage(){
 		return (int) ((double) getCompleted() / (double) getLength() * 100);
 	}
-	
+	@Exclude
 	public int getId() {
 		return id;
 	}
+	@Exclude
 	public void setId(int id) {
 		this.id = id;
 	}
