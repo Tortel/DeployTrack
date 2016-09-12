@@ -56,7 +56,20 @@ public class Deployment {
 	@DatabaseField
 	private int displayType;
     @DatabaseField
-    private UUID uuid;
+    private String uuid;
+
+	/**
+	 * Update the fields to match the other deployment
+	 * @param other
+     */
+	public void updateData(Deployment other){
+		this.name = other.name;
+		this.startDate = other.startDate;
+		this.endDate = other.endDate;
+		this.completedColor = other.completedColor;
+		this.remainingColor = other.remainingColor;
+		this.displayType = other.displayType;
+	}
 
 	@Exclude
 	public String getFormattedStart(){
@@ -171,11 +184,15 @@ public class Deployment {
 		this.displayType = displayType;
 	}
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+	@Exclude
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid.toString();
+	}
 }

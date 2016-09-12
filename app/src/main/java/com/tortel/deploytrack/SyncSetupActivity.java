@@ -36,6 +36,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.tortel.deploytrack.data.DatabaseManager;
 
 /**
  * Activity for setting up syncing with Firebase
@@ -143,6 +144,8 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                             // Save the token
                             Prefs.setToken(acct.getIdToken(), SyncSetupActivity.this);
                         }
+                        DatabaseManager.getInstance(getApplicationContext())
+                                .setFirebaseUser(task.getResult().getUser());
                     }
                 });
     }

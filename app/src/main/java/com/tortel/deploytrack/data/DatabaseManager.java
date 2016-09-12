@@ -17,6 +17,11 @@ package com.tortel.deploytrack.data;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
+import com.j256.ormlite.stmt.Where;
 import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
@@ -33,6 +38,8 @@ public class DatabaseManager {
     
     private List<Deployment> deploymentCache;
 
+    private FirebaseDBManager firebaseDBManager;
+
     public static DatabaseManager getInstance(Context context){
         if(instance == null){
             instance = new DatabaseManager(context);
@@ -42,8 +49,14 @@ public class DatabaseManager {
 
     private DatabaseManager(Context context){
         helper = new DatabaseHelper(context.getApplicationContext());
+        firebaseDBManager = new FirebaseDBManager(this);
     }
 
+    /**
+     * Save a deployment object to the database
+     * @param deployment
+     * @return
+     */
     public Deployment saveDeployment(Deployment deployment){
         try{
             // Set a UUID if there isnt one
@@ -52,6 +65,7 @@ public class DatabaseManager {
             }
 
             helper.getDeploymentDao().createOrUpdate(deployment);
+            firebaseDBManager.saveDeployment(deployment);
             
             if(deploymentCache != null){
                 for(int i =0; i < deploymentCache.size(); i++){
@@ -66,6 +80,31 @@ public class DatabaseManager {
             Log.e("Error saving Deployment", e);
         }
         return deployment;
+    }
+
+    /**
+     * Set the Firebase user object, enabling Firebase sync
+     * @param fbUser
+     */
+    public void setFirebaseUser(FirebaseUser fbUser){
+        firebaseDBManager.setUser(fbUser);
+        // Sync it
+        firebaseDBManager.syncAll();
+    }
+
+    /**
+     * Get a deployment by the UUID
+     * @param uuid
+     * @return
+     */
+    public Deployment getDeploymentByUuid(String uuid){
+        try {
+            QueryBuilder<Deployment, Integer> queryBuilder = helper.getDeploymentDao().queryBuilder();
+            return queryBuilder.where().eq("uuid", uuid).queryForFirst();
+        } catch (SQLException e) {
+            Log.e("Exception querying for deployment with uuid "+uuid, e);
+        }
+        return null;
     }
 
     /**
@@ -114,20 +153,31 @@ public class DatabaseManager {
      * @return
      */
     public void deleteDeployment(int id){
-    	Log.v("Deleting deployment "+id);
-    	try{
-    		helper.getDeploymentDao().deleteById(id);
-    	} catch(SQLException e){
-    		Log.e("Exception getting Deployment", e);
-    	}
-    	if(deploymentCache !=null){
-        	for(int i=0; i < deploymentCache.size(); i++){
-        	    if(deploymentCache.get(i).getId() == id){
-        	        deploymentCache.remove(i);
-        	        return;
-        	    }
-        	}
-    	}
+        deleteDeployment(getDeployment(id), true);
+    }
+
+    /**
+     * Delete a deployment
+     * @param deployment
+     */
+    public void deleteDeployment(Deployment deployment, boolean includeFirebase){
+        Log.v("Deleting deployment "+deployment.getId());
+        try{
+            if(includeFirebase) {
+                firebaseDBManager.deleteDeployment(deployment);
+            }
+            helper.getDeploymentDao().deleteById(deployment.getId());
+        } catch(SQLException e){
+            Log.e("Exception getting Deployment", e);
+        }
+        if(deploymentCache !=null){
+            for(int i=0; i < deploymentCache.size(); i++){
+                if(deploymentCache.get(i).getId() == deployment.getId()){
+                    deploymentCache.remove(i);
+                    return;
+                }
+            }
+        }
     }
     
     /**
