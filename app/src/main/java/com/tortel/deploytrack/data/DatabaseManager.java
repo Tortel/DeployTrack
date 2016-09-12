@@ -18,10 +18,7 @@ package com.tortel.deploytrack.data;
 import android.content.Context;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
-import com.j256.ormlite.stmt.Where;
 import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
@@ -32,6 +29,8 @@ import java.util.UUID;
  * Class to manage interaction with the database
  */
 public class DatabaseManager {
+    public static String DATA_ADDED = "data-added";
+
     private static DatabaseManager instance;
 
     private DatabaseHelper helper;
@@ -49,7 +48,7 @@ public class DatabaseManager {
 
     private DatabaseManager(Context context){
         helper = new DatabaseHelper(context.getApplicationContext());
-        firebaseDBManager = new FirebaseDBManager(this);
+        firebaseDBManager = new FirebaseDBManager(this, context.getApplicationContext());
     }
 
     /**

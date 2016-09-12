@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -33,8 +34,16 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
@@ -78,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             }
 		} else {
 			mCurrentPosition = 0;
+			// Sync should only need to be set up once
+			setupSync();
 		}
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -230,6 +241,34 @@ public class MainActivity extends AppCompatActivity {
             return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void setupSync(){
+		String token = Prefs.getToken(this);
+		if(token != null) {
+			Log.d("Using cached token to log into Firebase");
+			AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
+			FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+			fbAuth.signInWithCredential(credential)
+					.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+						@Override
+						public void onComplete(@NonNull Task<AuthResult> task) {
+							Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
+
+							// If sign in fails, display a message to the user. If sign in succeeds
+							// the auth state listener will be notified and logic to handle the
+							// signed in user can be handled in the listener.
+							if (!task.isSuccessful()) {
+								Log.e("signInWithCredential", task.getException());
+							} else {
+								Log.d("Giving Firebase user to database manager");
+								// Save the token
+								DatabaseManager.getInstance(getApplicationContext())
+										.setFirebaseUser(task.getResult().getUser());
+							}
+						}
+					});
+		}
 	}
 	
     private boolean isAvailable(Intent intent) {

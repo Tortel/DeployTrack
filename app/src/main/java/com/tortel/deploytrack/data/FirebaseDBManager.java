@@ -1,5 +1,9 @@
 package com.tortel.deploytrack.data;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -18,12 +22,14 @@ class FirebaseDBManager implements ChildEventListener {
     private DatabaseManager mDbManager;
     private DatabaseReference mDatabase;
     private FirebaseUser mUser;
+    private LocalBroadcastManager mBradcastManager;
 
-    public FirebaseDBManager(DatabaseManager dbManager){
+    public FirebaseDBManager(DatabaseManager dbManager, Context context){
         // Enable persistence
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDbManager = dbManager;
+        mBradcastManager = LocalBroadcastManager.getInstance(context.getApplicationContext());
     }
 
     /**
@@ -49,6 +55,7 @@ class FirebaseDBManager implements ChildEventListener {
         }
 
         // Remove the deployment by UUID
+        Log.d("Deleting deployment with UUID "+deployment.getUuid()+" from Firebase");
         getDeploymentNode().child(deployment.getUuid()).removeValue();
     }
 
@@ -61,6 +68,7 @@ class FirebaseDBManager implements ChildEventListener {
             return;
         }
 
+        Log.d("Saving deployment with UUID "+deployment.getUuid()+" to Firebase");
         getDeploymentNode().child(deployment.getUuid()).setValue(deployment);
     }
 
@@ -125,6 +133,8 @@ class FirebaseDBManager implements ChildEventListener {
         if(localDeployment == null){
             Log.d("DB onChildAdded: Deployment with UUID "+newDeployment.getUuid()+" not present, saving locally");
             mDbManager.saveDeployment(newDeployment);
+            // Update the UI
+            mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_ADDED));
         }
     }
 
