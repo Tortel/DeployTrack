@@ -106,6 +106,7 @@ public class Deployment {
 	 * Returns the length of the deployment, in days
 	 * @return the length
 	 */
+	@Exclude
 	public int getLength(){
 		return Days.daysBetween(getStart(), getEnd()).getDays();
 	}
