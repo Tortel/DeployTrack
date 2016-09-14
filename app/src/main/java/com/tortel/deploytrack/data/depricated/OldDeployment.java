@@ -13,14 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack.data;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
+package com.tortel.deploytrack.data.depricated;
 
 import android.annotation.SuppressLint;
 
@@ -28,8 +21,15 @@ import com.google.firebase.database.Exclude;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable
-public class Deployment {
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
+@DatabaseTable(tableName = "deployment")
+public class OldDeployment {
 	/**
 	 * Use a circle-style display
 	 */
@@ -40,7 +40,9 @@ public class Deployment {
 	public static final int DISPLAY_BAR = 1;
 
 	private static SimpleDateFormat format;
-
+	
+	@DatabaseField(generatedId = true)
+	private int id;
 	@DatabaseField
 	private String name;
 	@DatabaseField
@@ -53,14 +55,14 @@ public class Deployment {
 	private int remainingColor;
 	@DatabaseField
 	private int displayType;
-    @DatabaseField(id = true)
+    @DatabaseField
     private String uuid;
 
 	/**
 	 * Update the fields to match the other deployment
 	 * @param other
      */
-	public void updateData(Deployment other){
+	public void updateData(OldDeployment other){
 		this.name = other.name;
 		this.startDate = other.startDate;
 		this.endDate = other.endDate;
@@ -141,6 +143,14 @@ public class Deployment {
 	@Exclude
 	public int getPercentage(){
 		return (int) ((double) getCompleted() / (double) getLength() * 100);
+	}
+	@Exclude
+	public int getId() {
+		return id;
+	}
+	@Exclude
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;

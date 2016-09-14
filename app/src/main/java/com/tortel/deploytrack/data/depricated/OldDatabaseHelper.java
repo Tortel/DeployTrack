@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack.data;
+package com.tortel.deploytrack.data.depricated;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,21 +23,23 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.data.WidgetInfo;
 
 import java.sql.SQLException;
 
 /**
- * Manage the database file
+ * Database helper class for the old data structures
  */
-class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
-    private Dao<Deployment, String> deploymentDao;
+    private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
 
-    DatabaseHelper(Context context){
+    OldDatabaseHelper(Context context){
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
     }
 
@@ -85,13 +87,16 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 db.execSQL("ALTER TABLE `deployment` ADD COLUMN uuid VARCHAR DEFAULT NULL");
                 oldVersion = 5;
             }
+            if(oldVersion == 5){
+
+            }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);
             throw new RuntimeException(e);
         }
     }
 
-    Dao<Deployment, String> getDeploymentDao(){
+    Dao<Deployment, Integer> getDeploymentDao(){
         if(deploymentDao == null){
             try{
             	deploymentDao = getDao(Deployment.class);

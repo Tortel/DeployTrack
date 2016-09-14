@@ -46,17 +46,17 @@ class FirebaseDBManager implements ChildEventListener {
     }
 
     /**
-     * Remove a deployment object from Firebase
-     * @param deployment
+     * Remove a deployment object from Firebase by the ID
+     * @param uuid
      */
-    public void deleteDeployment(Deployment deployment){
+    public void deleteDeployment(String uuid){
         if(mUser == null){
             return;
         }
 
         // Remove the deployment by UUID
-        Log.d("Deleting deployment with UUID "+deployment.getUuid()+" from Firebase");
-        getDeploymentNode().child(deployment.getUuid()).removeValue();
+        Log.d("Deleting deployment with UUID "+uuid+" from Firebase");
+        getDeploymentNode().child(uuid).removeValue();
     }
 
     /**
@@ -128,7 +128,7 @@ class FirebaseDBManager implements ChildEventListener {
         Log.d("FB onChildAdded: Deployment with UUID "+newDeployment.getUuid());
 
         // Check if this new deployment is present locally
-        Deployment localDeployment = mDbManager.getDeploymentByUuid(newDeployment.getUuid());
+        Deployment localDeployment = mDbManager.getDeployment(newDeployment.getUuid());
         // Add it if it is not
         if(localDeployment == null){
             Log.d("DB onChildAdded: Deployment with UUID "+newDeployment.getUuid()+" not present, saving locally");
@@ -141,7 +141,7 @@ class FirebaseDBManager implements ChildEventListener {
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
         Deployment updatedDeployment = dataSnapshot.getValue(Deployment.class);
-        Deployment localDeployment = mDbManager.getDeploymentByUuid(updatedDeployment.getUuid());
+        Deployment localDeployment = mDbManager.getDeployment(updatedDeployment.getUuid());
         Log.d("FB onChildChanged: Deployment with UUID "+updatedDeployment.getUuid());
 
         if(localDeployment == null){
@@ -161,7 +161,7 @@ class FirebaseDBManager implements ChildEventListener {
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
         Deployment removedDeployment = dataSnapshot.getValue(Deployment.class);
-        Deployment localDeployment = mDbManager.getDeploymentByUuid(removedDeployment.getUuid());
+        Deployment localDeployment = mDbManager.getDeployment(removedDeployment.getUuid());
         Log.d("FB onChildRemoved: Deployment with UUID "+removedDeployment.getUuid()+" removed from firebase");
 
         if(localDeployment != null){
