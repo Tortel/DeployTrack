@@ -18,6 +18,7 @@ package com.tortel.deploytrack.data;
 import android.content.Context;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crash.FirebaseCrash;
 import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
@@ -77,6 +78,8 @@ public class DatabaseManager {
             }
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception saving deployment", e));
         }
         return deployment;
     }
@@ -104,6 +107,8 @@ public class DatabaseManager {
             list = mHelper.getDeploymentDao().queryForAll();
         } catch(SQLException e){
             Log.e("Exception getting all Deployments", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception getting all deployments", e));
         }
         mDeploymentCache = list;
         return list;
@@ -127,6 +132,8 @@ public class DatabaseManager {
             tmp = mHelper.getDeploymentDao().queryForId(uuid);
         } catch(SQLException e){
             Log.e("Exception getting Deployment", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception getting deployment", e));
         }
         return tmp;
     }
@@ -153,7 +160,9 @@ public class DatabaseManager {
             }
             mHelper.getDeploymentDao().deleteById(uuid);
         } catch(SQLException e){
-            Log.e("Exception getting Deployment", e);
+            Log.e("Exception deleting Deployment", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception deleting deployment", e));
         }
         if(mDeploymentCache !=null){
             for(int i = 0; i < mDeploymentCache.size(); i++){
@@ -181,6 +190,8 @@ public class DatabaseManager {
             return list; 
         } catch(SQLException e){
             Log.e("Exception getting widget info", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception getting all widget info", e));
             return null;
         }
     }
@@ -200,6 +211,8 @@ public class DatabaseManager {
             return info; 
         } catch(SQLException e){
             Log.e("Exception getting widget info", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception getting all widget info", e));
             return null;
         }
     }
@@ -213,7 +226,9 @@ public class DatabaseManager {
         try{
             mHelper.getWidgetInfoDao().createOrUpdate(info);
         } catch(SQLException e){
-            Log.e("Exception getting widget info", e);
+            Log.e("Exception saving widget info", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception saving widget info", e));
         }
     }
     
@@ -227,6 +242,8 @@ public class DatabaseManager {
             mHelper.getWidgetInfoDao().deleteById(id);
         } catch(SQLException e){
             Log.e("Error deleting widget info", e);
+            // Report this to firebase
+            FirebaseCrash.report(new Exception("Exception deleting eidget info", e));
         }
     }
     

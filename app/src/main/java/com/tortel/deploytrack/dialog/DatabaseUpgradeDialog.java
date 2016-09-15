@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.crash.FirebaseCrash;
 import com.j256.ormlite.dao.Dao;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
@@ -123,6 +124,8 @@ public class DatabaseUpgradeDialog extends DialogFragment {
 
             } catch (Exception e){
                 Log.e("Exception during database upgrade", e);
+                // Report this to firebase
+                FirebaseCrash.report(new Exception("Exception during database upgrade", e));
             }
 
             return null;
