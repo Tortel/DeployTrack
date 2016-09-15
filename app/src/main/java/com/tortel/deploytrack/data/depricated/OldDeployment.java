@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import com.google.firebase.database.Exclude;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.tortel.deploytrack.data.Deployment;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -199,5 +200,22 @@ public class OldDeployment {
 	@Exclude
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid.toString();
+	}
+
+	/**
+	 * Create a new Deployment object with all the information
+	 * @return
+     */
+	public Deployment getUpdatedObject(){
+		Deployment updated = new Deployment();
+		updated.setUuid(uuid);
+		updated.setName(name);
+		updated.setCompletedColor(completedColor);
+		updated.setRemainingColor(remainingColor);
+		updated.setStartDate(startDate);
+		updated.setEndDate(endDate);
+		updated.setDisplayType(displayType);
+
+		return updated;
 	}
 }

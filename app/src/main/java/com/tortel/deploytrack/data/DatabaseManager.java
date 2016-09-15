@@ -32,11 +32,10 @@ public class DatabaseManager {
 
     private static DatabaseManager instance;
 
-    private DatabaseHelper helper;
-    
-    private List<Deployment> deploymentCache;
+    private DatabaseHelper mHelper;
+    private FirebaseDBManager mFirebaseDBManager;
 
-    private FirebaseDBManager firebaseDBManager;
+    private List<Deployment> mDeploymentCache;
 
     public static DatabaseManager getInstance(Context context){
         if(instance == null){
@@ -46,8 +45,8 @@ public class DatabaseManager {
     }
 
     private DatabaseManager(Context context){
-        helper = new DatabaseHelper(context.getApplicationContext());
-        firebaseDBManager = new FirebaseDBManager(this, context.getApplicationContext());
+        mHelper = new DatabaseHelper(context.getApplicationContext());
+        mFirebaseDBManager = new FirebaseDBManager(this, context.getApplicationContext());
     }
 
     /**
@@ -62,17 +61,17 @@ public class DatabaseManager {
                 deployment.setUuid(UUID.randomUUID());
             }
 
-            helper.getDeploymentDao().createOrUpdate(deployment);
-            firebaseDBManager.saveDeployment(deployment);
-            
-            if(deploymentCache != null){
-                for(int i =0; i < deploymentCache.size(); i++){
-                    if(deploymentCache.get(i).getUuid().equals(deployment.getUuid())){
-                        deploymentCache.set(i, deployment);
+            mHelper.getDeploymentDao().createOrUpdate(deployment);
+            mFirebaseDBManager.saveDeployment(deployment);
+
+            if(mDeploymentCache != null){
+                for(int i = 0; i < mDeploymentCache.size(); i++){
+                    if(mDeploymentCache.get(i).getUuid().equals(deployment.getUuid())){
+                        mDeploymentCache.set(i, deployment);
                         return deployment;
                     }
                 }
-                deploymentCache.add(deployment);
+                mDeploymentCache.add(deployment);
             }
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
@@ -85,9 +84,9 @@ public class DatabaseManager {
      * @param fbUser
      */
     public void setFirebaseUser(FirebaseUser fbUser){
-        firebaseDBManager.setUser(fbUser);
+        mFirebaseDBManager.setUser(fbUser);
         // Sync it
-        firebaseDBManager.syncAll();
+        mFirebaseDBManager.syncAll();
     }
 
     /**
@@ -95,16 +94,16 @@ public class DatabaseManager {
      * @return
      */
     public List<Deployment> getAllDeployments(){
-        if(deploymentCache != null){
-            return deploymentCache;
+        if(mDeploymentCache != null){
+            return mDeploymentCache;
         }
         List<Deployment> list = null;
         try{
-            list = helper.getDeploymentDao().queryForAll();
+            list = mHelper.getDeploymentDao().queryForAll();
         } catch(SQLException e){
             Log.e("Exception getting all Deployments", e);
         }
-        deploymentCache = list;
+        mDeploymentCache = list;
         return list;
     }
     
@@ -114,8 +113,8 @@ public class DatabaseManager {
      * @return
      */
     public Deployment getDeployment(String uuid){
-        if(deploymentCache != null){
-            for(Deployment deployment : deploymentCache){
+        if(mDeploymentCache != null){
+            for(Deployment deployment : mDeploymentCache){
                 if(deployment.getUuid().equals(uuid)){
                     return deployment;
                 }
@@ -123,7 +122,7 @@ public class DatabaseManager {
         }
         Deployment tmp = null;
         try{
-            tmp = helper.getDeploymentDao().queryForId(uuid);
+            tmp = mHelper.getDeploymentDao().queryForId(uuid);
         } catch(SQLException e){
             Log.e("Exception getting Deployment", e);
         }
@@ -148,16 +147,16 @@ public class DatabaseManager {
         Log.v("Deleting deployment "+uuid);
         try{
             if(includeFirebase) {
-                firebaseDBManager.deleteDeployment(uuid);
+                mFirebaseDBManager.deleteDeployment(uuid);
             }
-            helper.getDeploymentDao().deleteById(uuid);
+            mHelper.getDeploymentDao().deleteById(uuid);
         } catch(SQLException e){
             Log.e("Exception getting Deployment", e);
         }
-        if(deploymentCache !=null){
-            for(int i=0; i < deploymentCache.size(); i++){
-                if(deploymentCache.get(i).getUuid().equals(uuid)){
-                    deploymentCache.remove(i);
+        if(mDeploymentCache !=null){
+            for(int i = 0; i < mDeploymentCache.size(); i++){
+                if(mDeploymentCache.get(i).getUuid().equals(uuid)){
+                    mDeploymentCache.remove(i);
                     return;
                 }
             }
@@ -171,10 +170,10 @@ public class DatabaseManager {
     public List<WidgetInfo> getAllWidgetInfo(){
         Log.v("Getting all widget information");
         try{
-            List<WidgetInfo> list = helper.getWidgetInfoDao().queryForAll();
+            List<WidgetInfo> list = mHelper.getWidgetInfoDao().queryForAll();
             if(list != null){
                 for(WidgetInfo info : list){
-                    helper.getDeploymentDao().refresh(info.getDeployment());
+                    mHelper.getDeploymentDao().refresh(info.getDeployment());
                 }
             }
             return list; 
@@ -192,9 +191,9 @@ public class DatabaseManager {
     public WidgetInfo getWidgetInfo(int id){
         Log.v("Getting widget info for "+id);
         try{
-            WidgetInfo info = helper.getWidgetInfoDao().queryForId(id);
+            WidgetInfo info = mHelper.getWidgetInfoDao().queryForId(id);
             if(info != null){
-                helper.getDeploymentDao().refresh(info.getDeployment());
+                mHelper.getDeploymentDao().refresh(info.getDeployment());
             }
             return info; 
         } catch(SQLException e){
@@ -210,7 +209,7 @@ public class DatabaseManager {
     public void saveWidgetInfo(WidgetInfo info){
         Log.v("Saving widget info for "+info.getId());
         try{
-            helper.getWidgetInfoDao().createOrUpdate(info);
+            mHelper.getWidgetInfoDao().createOrUpdate(info);
         } catch(SQLException e){
             Log.e("Exception getting widget info", e);
         }
@@ -223,7 +222,7 @@ public class DatabaseManager {
     public void deleteWidgetInfo(int id){
         Log.v("Deleting widget info "+id);
         try{
-            helper.getWidgetInfoDao().deleteById(id);
+            mHelper.getWidgetInfoDao().deleteById(id);
         } catch(SQLException e){
             Log.e("Error deleting widget info", e);
         }
@@ -233,8 +232,8 @@ public class DatabaseManager {
      * Clear the entire database
      */
     public void clear(){
-        helper.onUpgrade(helper.getWritableDatabase(), 0, 1);
-        deploymentCache = null;
+        mHelper.onUpgrade(mHelper.getWritableDatabase(), 0, 1);
+        mDeploymentCache = null;
     }
 
 }

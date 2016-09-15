@@ -30,9 +30,9 @@ import java.sql.SQLException;
  * Manage the database file
  */
 class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABSE_NAME = "data.sqlite";
+    private static final String DATABSE_NAME = "data2016.09.sqlite";
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 1;
 
     private Dao<Deployment, String> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
@@ -60,30 +60,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 TableUtils.dropTable(connectionSource, Deployment.class, true);
                 TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
                 return;
-            }
-            if(oldVersion == 1){
-                //For version 2, I added the WidgetInfo table
-                TableUtils.createTable(connectionSource, WidgetInfo.class);
-                oldVersion = 2;
-            }
-            if(oldVersion == 2){
-                // Add the lightText field
-                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN lightText BOOLEAN DEFAULT 1");
-                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN minWidth INTEGER DEFAULT 0");
-                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN maxWidth INTEGER DEFAULT 0");
-                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN minHeight INTEGER DEFAULT 0");
-                db.execSQL("ALTER TABLE `widgetinfo` ADD COLUMN maxHeight INTEGER DEFAULT 0");
-                oldVersion = 3;
-            }
-            if(oldVersion == 3){
-                // Add the displayType field
-                db.execSQL("ALTER TABLE `deployment` ADD COLUMN displayType INTEGER DEFAULT 0");
-                oldVersion = 4;
-            }
-            if(oldVersion == 4){
-                // Add the UUID field
-                db.execSQL("ALTER TABLE `deployment` ADD COLUMN uuid VARCHAR DEFAULT NULL");
-                oldVersion = 5;
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);

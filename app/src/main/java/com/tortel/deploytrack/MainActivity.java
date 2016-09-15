@@ -34,7 +34,6 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +43,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.data.depricated.OldDatabaseHelper;
 import com.tortel.deploytrack.dialog.AboutDialog;
+import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
@@ -86,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 Prefs.setScreenShotMode(true, this);
             }
 		} else {
+			// Check if we need to upgrade the database
+			if(OldDatabaseHelper.oldDatabaseExists(this)){
+				DatabaseUpgradeDialog upgradeDialog = new DatabaseUpgradeDialog();
+				upgradeDialog.show(getSupportFragmentManager(), "upgrade");
+			}
+
 			mCurrentPosition = 0;
 			// Sync should only need to be set up once
 			setupSync();

@@ -17,6 +17,8 @@ package com.tortel.deploytrack.data.depricated;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.data.WidgetInfo;
 
 /**
  * Class to save info dialog_about a homescreen widget
@@ -103,5 +105,23 @@ public class OldWidgetInfo {
     }
     public void setMaxHeight(int maxHeight) {
         this.maxHeight = maxHeight;
+    }
+
+    /**
+     * Get the newer WidgetInfo class with all the data here
+     * @return
+     */
+    public WidgetInfo getUpdatedObject(Deployment deployment){
+        WidgetInfo updated = new WidgetInfo();
+
+        updated.setId(id);
+        updated.setDeployment(deployment);
+        updated.setLightText(lightText);
+        updated.setMinWidth(minWidth);
+        updated.setMinHeight(minHeight);
+        updated.setMaxWidth(maxWidth);
+        updated.setMaxHeight(maxHeight);
+
+        return updated;
     }
 }

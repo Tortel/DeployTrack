@@ -26,21 +26,22 @@ import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.data.Deployment;
 import com.tortel.deploytrack.data.WidgetInfo;
 
+import java.io.File;
 import java.sql.SQLException;
 
 /**
  * Database helper class for the old data structures
  */
-class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABSE_NAME = "data.sqlite";
+public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
+    private static final String DATABASE_NAME = "data.sqlite";
 
     private static final int DATABASE_VERSION = 5;
 
     private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
 
-    OldDatabaseHelper(Context context){
-        super(context, DATABSE_NAME, null, DATABASE_VERSION);
+    public OldDatabaseHelper(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -113,5 +114,23 @@ class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return widgetInfoDao;
+    }
+
+    /**
+     * Check if the old database file is present
+     * @param context
+     * @return
+     */
+    public static boolean oldDatabaseExists(Context context){
+        File databaseFile = context.getDatabasePath(DATABASE_NAME);
+        return databaseFile.exists();
+    }
+
+    /**
+     * Delete the database file
+     * @param context
+     */
+    public static void deleteDbFile(Context context){
+        context.getDatabasePath(DATABASE_NAME).delete();
     }
 }

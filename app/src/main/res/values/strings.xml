@@ -82,6 +82,9 @@ limitations under the License.
     <!-- Info fragment text -->
     <string name="howto_add">To add data, tap on the + icon in the Action Bar.</string>
 
+    <!-- DB Upgrade strings -->
+    <string name="db_upgrade">Upgrading database, please wait…</string>
+
     <!-- Preference Strings -->
     <string name="prefs_display">Display Settings</string>
     <string name="prefs_animate">Enable Animation</string>
