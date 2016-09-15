@@ -70,7 +70,7 @@ public class DeleteDialog extends DialogFragment {
                 //Delete it
                 DatabaseManager.getInstance(getActivity()).deleteDeployment(mId);
                 // Notify the app
-                Intent deleteIntent = new Intent(MainActivity.DATA_DELETED);
+                Intent deleteIntent = new Intent(DatabaseManager.DATA_DELETED);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(deleteIntent);
             }
         });

@@ -58,8 +58,6 @@ import com.tortel.deploytrack.task.GenerateUuidTask;
  * Also handles the options menu
  */
 public class MainActivity extends AppCompatActivity {
-    public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
-
 	private static final String KEY_POSITION = "position";
     private static final String KEY_SCREENSHOT = "screenshot";
 	
@@ -99,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
-        lbm.registerReceiver(mDeleteListener, new IntentFilter(DATA_DELETED));
+        lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_DELETED));
+		lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_ADDED));
+		lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_CHANGED));
 
         if(!Prefs.isWelcomeShown()){
             Prefs.setWelcomeShown(this);
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
-        lbm.unregisterReceiver(mDeleteListener);
+        lbm.unregisterReceiver(mChangeListener);
     }
 
     @Override
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private BroadcastReceiver mDeleteListener = new BroadcastReceiver() {
+    private BroadcastReceiver mChangeListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             reload();

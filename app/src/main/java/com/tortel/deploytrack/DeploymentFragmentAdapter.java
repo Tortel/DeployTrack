@@ -20,14 +20,10 @@ import java.util.List;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.fragments.*;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.SparseArray;
 
 class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
@@ -43,14 +39,6 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		mDb = DatabaseManager.getInstance(mContext);
 		mDeploymentList = mDb.getAllDeployments();
 		mFragmentList = new SparseArray<>();
-
-		LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				Log.d("Got DATA_ADDED broadcast, reloading DeploymentFragmentAdapter");
-				reload();
-			}
-		}, new IntentFilter(DatabaseManager.DATA_ADDED));
 	}
 	
 	public void reload(){

@@ -28,7 +28,9 @@ import java.util.UUID;
  * Class to manage interaction with the database
  */
 public class DatabaseManager {
-    public static String DATA_ADDED = "data-added";
+    public static final String DATA_ADDED = "com.tortel.deploytrack.DATA_ADDED";
+    public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
+    public static final String DATA_CHANGED = "com.tortel.deploytrack.DATA_CHANGED";
 
     private static DatabaseManager instance;
 
