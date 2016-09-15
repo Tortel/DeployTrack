@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
@@ -76,6 +78,10 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds){
         List<WidgetInfo> infoList = DatabaseManager.getInstance(context).getAllWidgetInfo();
+
+        // Log how many widgets there are
+        FirebaseAnalytics.getInstance(context)
+                .setUserProperty(Analytics.PROPERTY_WIDGET_COUNT, ""+infoList.size());
     	
         for(WidgetInfo info : infoList){
         	int widgetId = info.getId();

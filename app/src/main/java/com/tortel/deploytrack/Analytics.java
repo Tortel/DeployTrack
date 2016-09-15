@@ -36,6 +36,10 @@ public class Analytics {
      * How many deployments the user has
      */
     public static final String PROPERTY_DEPLOYMENT_COUNT = "deployment_count";
+    /**
+     * How many WidgetInfo objects are saved
+     */
+    public static final String PROPERTY_WIDGET_COUNT = "widget_count";
 
     // Hide the constructor
     private Analytics(){}
