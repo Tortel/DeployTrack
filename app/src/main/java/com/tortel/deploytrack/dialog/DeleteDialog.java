@@ -23,6 +23,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
@@ -72,6 +74,9 @@ public class DeleteDialog extends DialogFragment {
                 // Notify the app
                 Intent deleteIntent = new Intent(DatabaseManager.DATA_DELETED);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(deleteIntent);
+                // Log the event
+                FirebaseAnalytics.getInstance(getActivity())
+                        .logEvent(Analytics.EVENT_DELETED_DEPLOYMENT, null);
             }
         });
         return builder.build();

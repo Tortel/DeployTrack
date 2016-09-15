@@ -52,6 +52,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     // Firebase crash reporting
     compile 'com.google.firebase:firebase-crash:9.4.0'
+    // Firebase analytics
+    compile 'com.google.firebase:firebase-core:9.4.0'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
 }

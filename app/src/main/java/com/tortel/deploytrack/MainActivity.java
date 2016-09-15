@@ -38,6 +38,7 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_SCREENSHOT = "screenshot";
 	
 	private DeploymentFragmentAdapter mAdapter;
+	private FirebaseAnalytics mFirebaseAnalytics;
 	
 	private int mCurrentPosition;
     private boolean mScreenShotMode = false;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		
 		if(savedInstanceState != null){
 			mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
@@ -94,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 			mCurrentPosition = 0;
 			// Sync should only need to be set up once
 			setupSync();
+
+			// Log the event
+			mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 		}
 
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -155,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             indicator.setVisibility(View.VISIBLE);
         }
+
+		// Record the number of deployments
+		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, ""+mAdapter.getCount());
 	}
 
 	@Override

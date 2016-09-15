@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.ColorPicker.OnColorChangedListener;
 import com.larswerkman.holocolorpicker.SVBar;
@@ -73,6 +74,8 @@ public class CreateActivity extends AppCompatActivity {
 	
 	//The data to save;
 	private Deployment mDeployment;
+
+	private FirebaseAnalytics mFirebaseAnalytics;
 	
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -87,6 +90,8 @@ public class CreateActivity extends AppCompatActivity {
 		
 		setContentView(R.layout.activity_create);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		
 		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
@@ -269,6 +274,12 @@ public class CreateActivity extends AppCompatActivity {
 			}
 			//Save it
 			DatabaseManager.getInstance(this).saveDeployment(mDeployment);
+			// Log the event
+			if(getIntent().hasExtra("id")){
+				mFirebaseAnalytics.logEvent(Analytics.EVENT_EDITED_DEPLOYMENT, null);
+			} else {
+				mFirebaseAnalytics.logEvent(Analytics.EVENT_CREATED_DEPLOYMENT, null);
+			}
 			//End
 			finish();
 			return;
