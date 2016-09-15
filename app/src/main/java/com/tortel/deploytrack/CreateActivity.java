@@ -105,8 +105,8 @@ public class CreateActivity extends AppCompatActivity {
 		SVBar completedBar = (SVBar) findViewById(R.id.sv_completed);
 		SVBar remainingBar = (SVBar) findViewById(R.id.sv_remain);
 		
-		int id = getIntent().getIntExtra("id", -1);
-		if(id >= 0){
+		String id = getIntent().getStringExtra("id");
+		if(id != null){
 			//Starting in edit mode, load the old data
 			mDeployment = DatabaseManager.getInstance(this).getDeployment(id);
 			

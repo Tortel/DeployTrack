@@ -93,7 +93,7 @@ public class WidgetProvider extends AppWidgetProvider {
                         R.layout.widget_layout);
             }
 
-            Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getId());
+            Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getUuid());
 
             //Draw everything
             remoteViews = updateWidgetView(context, remoteViews, info, mScreenShotMode);

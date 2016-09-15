@@ -51,7 +51,7 @@ public class NotificationService extends Service {
     
     private static final String UPDATE_INTENT = "com.tortel.deploytrack.update_notification";
 
-    private int deploymentId;
+    private String deploymentId;
     private NotificationManager notificationManager;
 
     @Override
@@ -98,7 +98,7 @@ public class NotificationService extends Service {
     @SuppressLint("NewApi")
     private void showNotification() {
         // If there isnt an ID saved, shut down the service
-        if (deploymentId == -1) {
+        if (deploymentId == null) {
             stopSelf();
             return;
         }
@@ -173,9 +173,9 @@ public class NotificationService extends Service {
      * Load the ID for the deployment to be shown as a notification. Returns -1
      * if one isn't saved yet
      */
-    private static int getSavedId(Context context) {
+    private static String getSavedId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(KEY_ID, -1);
+        return prefs.getString(KEY_ID, null);
     }
 
     /**
@@ -185,9 +185,9 @@ public class NotificationService extends Service {
      * @param id
      *            the id to save
      */
-    public static void setSavedId(Context context, int id) {
+    public static void setSavedId(Context context, String id) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().putInt(KEY_ID, id).apply();
+        prefs.edit().putString(KEY_ID, id).apply();
     }
 
     @Override

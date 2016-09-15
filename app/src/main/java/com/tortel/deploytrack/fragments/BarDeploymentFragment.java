@@ -280,7 +280,7 @@ public class BarDeploymentFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState != null){
-			int id = savedInstanceState.getInt("id");
+			String id = savedInstanceState.getString("id");
 			mDeployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
 		}
 	}
@@ -288,6 +288,6 @@ public class BarDeploymentFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("id", mDeployment.getId());
+		outState.putString("id", mDeployment.getUuid());
 	}
 }

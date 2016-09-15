@@ -82,10 +82,10 @@ public class WidgetPickerActivity extends AppCompatActivity {
     }
     
     public void onClick(View v){
-        int id = mAdapter.getId(mCurrentPosition);
+        String id = mAdapter.getId(mCurrentPosition);
         switch(v.getId()){
         case R.id.button_save:
-            if(id != -1){
+            if(id != null){
                 DatabaseManager db = DatabaseManager.getInstance(this);
     
                 //Get the data

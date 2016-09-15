@@ -65,12 +65,12 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	 * @param position
 	 * @return
 	 */
-	public int getId(int position){
+	public String getId(int position){
 		if(position >= mDeploymentList.size()){
-			return -1;
+			return null;
 		}
 
-		return mDeploymentList.get(position).getId();
+		return mDeploymentList.get(position).getUuid();
 	}
 
 	@Override

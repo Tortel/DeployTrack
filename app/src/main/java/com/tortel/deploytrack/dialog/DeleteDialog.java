@@ -35,7 +35,7 @@ import com.tortel.deploytrack.data.Deployment;
 public class DeleteDialog extends DialogFragment {
     public static final String KEY_ID = "id";
 
-    private int mId;
+    private String mId;
     private String mName;
 
     @Override
@@ -43,7 +43,7 @@ public class DeleteDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mId = getArguments().getInt(KEY_ID);
+        mId = getArguments().getString(KEY_ID);
         Deployment deployment = DatabaseManager.getInstance(getActivity()).getDeployment(mId);
         mName = deployment.getName();
     }

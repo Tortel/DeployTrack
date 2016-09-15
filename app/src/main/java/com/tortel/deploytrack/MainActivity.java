@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-		final int id = mAdapter.getId(mCurrentPosition);
+		final String id = mAdapter.getId(mCurrentPosition);
 		
 		switch (item.getItemId()) {
 		case R.id.menu_create_new:
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 			return true;
 		case R.id.menu_edit:
 			//If its the info fragment, ignore
-			if(id == -1){
+			if(id == null){
 				return true;
 			}
 			intent = new Intent(this, CreateActivity.class);
@@ -177,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
 			return true;
 		case R.id.menu_delete:
 			//If its the info fragment, ignore
-			if(id == -1){
+			if(id == null){
 				return true;
 			}
             DeleteDialog dialog = new DeleteDialog();
             Bundle args = new Bundle();
-            args.putInt(DeleteDialog.KEY_ID, id);
+            args.putString(DeleteDialog.KEY_ID, id);
             dialog.setArguments(args);
             dialog.show(getSupportFragmentManager(), "delete");
 			return true;
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             transaction.commit();
 			return true;
 		case R.id.menu_notification_show:
-			if(id == -1){
+			if(id == null){
 				return true;
 			}
 			NotificationService.setSavedId(this, id);
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 			startService(intent);
 			return true;
 		case R.id.menu_notification_hide:
-			NotificationService.setSavedId(this, -1);
+			NotificationService.setSavedId(this, null);
 			intent = new Intent(this, NotificationService.class);
 			stopService(intent);
 			return true;

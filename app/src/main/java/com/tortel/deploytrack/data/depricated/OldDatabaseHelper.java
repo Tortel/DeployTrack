@@ -34,7 +34,7 @@ import java.sql.SQLException;
 class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABSE_NAME = "data.sqlite";
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 5;
 
     private Dao<Deployment, Integer> deploymentDao;
     private Dao<WidgetInfo, Integer> widgetInfoDao;
@@ -86,9 +86,6 @@ class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
                 // Add the UUID field
                 db.execSQL("ALTER TABLE `deployment` ADD COLUMN uuid VARCHAR DEFAULT NULL");
                 oldVersion = 5;
-            }
-            if(oldVersion == 5){
-
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);
