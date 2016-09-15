@@ -169,6 +169,9 @@ class FirebaseDBManager implements ChildEventListener {
         if(localDeployment != null){
             Log.d("FB onChildRemoved: Deployment with UUID "+removedDeployment.getUuid()+" removing locally");
             mDbManager.deleteDeployment(localDeployment.getUuid(), false);
+
+            // Update the UI
+            mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_DELETED));
         }
     }
 
