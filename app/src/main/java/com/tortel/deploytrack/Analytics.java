@@ -40,6 +40,10 @@ public class Analytics {
      * How many WidgetInfo objects are saved
      */
     public static final String PROPERTY_WIDGET_COUNT = "widget_count";
+    /**
+     * The application's build version
+     */
+    public static final String PROPERTY_BUILD_VERSION = "build_ver";
 
     // Hide the constructor
     private Analytics(){}

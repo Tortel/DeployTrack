@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
 		// Record the number of deployments
 		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, ""+mAdapter.getCount());
+		// Record the build version
+		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_BUILD_VERSION, BuildConfig.VERSION_NAME);
 	}
 
 	@Override
