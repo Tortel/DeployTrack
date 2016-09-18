@@ -16,7 +16,7 @@
 package com.tortel.deploytrack;
 
 /**
- * Contains constants releated to analytics
+ * Contains constants related to analytics
  */
 public class Analytics {
     /**

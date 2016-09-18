@@ -22,6 +22,7 @@ import com.google.firebase.crash.FirebaseCrash;
 import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,6 +76,7 @@ public class DatabaseManager {
                     }
                 }
                 mDeploymentCache.add(deployment);
+                Collections.sort(mDeploymentCache);
             }
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
@@ -105,6 +107,7 @@ public class DatabaseManager {
         List<Deployment> list = null;
         try{
             list = mHelper.getDeploymentDao().queryForAll();
+            Collections.sort(list);
         } catch(SQLException e){
             Log.e("Exception getting all Deployments", e);
             // Report this to firebase

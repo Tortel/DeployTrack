@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.Days;
 
 import android.annotation.SuppressLint;
@@ -29,7 +30,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class Deployment {
+public class Deployment implements Comparable<Deployment> {
 	/**
 	 * Use a circle-style display
 	 */
@@ -67,6 +68,18 @@ public class Deployment {
 		this.completedColor = other.completedColor;
 		this.remainingColor = other.remainingColor;
 		this.displayType = other.displayType;
+	}
+
+	@Override
+	public int compareTo(Deployment other) {
+		/*
+		 * Compare start dates, and if they are the same, use end dates
+		 */
+		int startCompare = startDate.compareTo(other.startDate);
+		if(startCompare == 0){
+			return endDate.compareTo(other.endDate);
+		}
+		return startCompare;
 	}
 
 	@Exclude
@@ -190,4 +203,5 @@ public class Deployment {
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid.toString();
 	}
+
 }
