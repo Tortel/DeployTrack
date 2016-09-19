@@ -97,6 +97,7 @@ limitations under the License.
 
     <string name="pref_sync_not_enabled">Sync is currently not enabled</string>
     <string name="pref_sync_enabled">Sync is enabled using %s</string>
+    <string name="tap_to_change_sync">Tap to change sync settings</string>
 
     <!-- Preference Strings -->
     <string name="prefs_display">Display Settings</string>

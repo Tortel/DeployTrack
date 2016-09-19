@@ -27,6 +27,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
@@ -36,6 +38,7 @@ public class SettingsActivity extends ActionBarActivity {
     private static final String KEY_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "pref_show_welcome";
     private static final String KEY_ABOUT_SCREENSHOT = "pref_show_about_screenshot";
+    private static final String KEY_SYNC = "pref_sync_info";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -86,6 +89,23 @@ public class SettingsActivity extends ActionBarActivity {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.preferences);
+
+            setSyncStatus();
+        }
+
+        /**
+         * Set the title of the sync preference to show the current email address
+         */
+        private void setSyncStatus(){
+            FirebaseUser currentUser = DatabaseManager.getInstance(getActivity()).getFirebaseUser();
+            Preference syncPref = getPreferenceScreen().findPreference(KEY_SYNC);
+            if(currentUser != null){
+                // Show that sync is enabled
+                syncPref.setTitle(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
+            } else {
+                // Show that sync is disabled
+                syncPref.setTitle(R.string.pref_sync_not_enabled);
+            }
         }
 
         @Override

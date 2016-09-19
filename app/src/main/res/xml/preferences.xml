@@ -55,6 +55,19 @@ limitations under the License.
 		    android:defaultValue="false" />
 	</PreferenceCategory>
 	<PreferenceCategory
+		android:title="@string/menu_sync">
+		<Preference
+			android:key="pref_sync_info"
+			android:title="@string/pref_sync_not_enabled"
+			android:summary="@string/tap_to_change_sync">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:targetPackage="com.tortel.deploytrack"
+				android:targetClass="com.tortel.deploytrack.SyncSetupActivity"
+				/>
+		</Preference>
+	</PreferenceCategory>
+	<PreferenceCategory
 	    android:title="@string/other">
 	    <Preference android:title="@string/send_feedback"
 	        android:summary="@string/send_feedback_summary">
