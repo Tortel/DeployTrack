@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_setup);
         setTitle(R.string.menu_sync);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mStatusTextView = (TextView) findViewById(R.id.sync_status);
         // Set up the click listener
@@ -65,7 +67,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_cSIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -107,6 +109,17 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         } else {
             mStatusTextView.setText(R.string.pref_sync_not_enabled);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            //Finish on the icon 'up' pressed
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
