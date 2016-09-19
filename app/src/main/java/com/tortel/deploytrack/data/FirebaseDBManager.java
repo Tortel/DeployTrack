@@ -54,10 +54,25 @@ class FirebaseDBManager implements ChildEventListener {
      */
     public void setUser(FirebaseUser user) {
         this.mUser = user;
-        // Register for changes
-        getDeploymentNode().addChildEventListener(this);
-        // Sync it when offline
-        getDeploymentNode().keepSynced(true);
+
+        if(mUser != null) {
+            // Register for changes
+            getDeploymentNode().addChildEventListener(this);
+            // Sync it when offline
+            getDeploymentNode().keepSynced(true);
+        } else {
+            // No user, clear everything
+            mDatabase.removeEventListener(this);
+            mDatabase.keepSynced(false);
+        }
+    }
+
+    /**
+     * Get the Firebase user object
+     * @return
+     */
+    public FirebaseUser getUser(){
+        return mUser;
     }
 
     /**

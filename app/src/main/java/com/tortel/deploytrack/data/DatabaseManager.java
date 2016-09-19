@@ -97,6 +97,14 @@ public class DatabaseManager {
     }
 
     /**
+     * Get the current Firebase user, if present
+     * @return
+     */
+    public FirebaseUser getFirebaseUser(){
+        return mFirebaseDBManager.getUser();
+    }
+
+    /**
      * Get all the saved GeoEvents
      * @return
      */

@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -49,14 +50,18 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private TextView mStatusTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_setup);
+        setTitle(R.string.menu_sync);
 
+        mStatusTextView = (TextView) findViewById(R.id.sync_status);
         // Set up the click listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.sign_out_button).setOnClickListener(this);
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -87,6 +92,21 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
             }
         };
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        showSyncStatus();
+    }
+
+    /**
+     * Update the mStatusTextView to reflect the current sync settings
+     */
+    private void showSyncStatus(){
+        FirebaseUser currentUser = DatabaseManager.getInstance(this).getFirebaseUser();
+        if(currentUser != null){
+            // If sync is enabled, show the email address it is using
+            mStatusTextView.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
+        } else {
+            mStatusTextView.setText(R.string.pref_sync_not_enabled);
+        }
     }
 
     @Override
@@ -119,7 +139,6 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, acct.getDisplayName()+"", Toast.LENGTH_LONG).show();
             // Handle Firebase login
             firebaseAuthWithGoogle(acct);
         }
@@ -151,6 +170,12 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                             // Set the user to start syncing
                             DatabaseManager.getInstance(getApplicationContext())
                                     .setFirebaseUser(task.getResult().getUser());
+
+                            // Let the user know
+                            Toast.makeText(SyncSetupActivity.this, getString(R.string.signed_in, acct.getEmail()),
+                                    Toast.LENGTH_LONG).show();
+
+                            showSyncStatus();
                         }
                     }
                 });
@@ -158,9 +183,24 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.sign_in_button){
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+        switch (view.getId()){
+            case R.id.sign_in_button:
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                return;
+            case R.id.sign_out_button:
+                // Clear the token
+                Prefs.setToken(null, this);
+                // Sign out
+                mAuth.signOut();
+                // Clear the user from the database manager
+                DatabaseManager.getInstance(this).setFirebaseUser(null);
+                // Update the UI
+                showSyncStatus();
+
+                // Toast it
+                Toast.makeText(SyncSetupActivity.this, R.string.signed_out, Toast.LENGTH_LONG).show();
+                return;
         }
     }
 

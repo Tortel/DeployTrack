@@ -85,6 +85,19 @@ limitations under the License.
     <!-- DB Upgrade strings -->
     <string name="db_upgrade">Upgrading database, please wait…</string>
 
+    <!-- Sync setup strings -->
+    <string name="sign_out">Sign Out</string>
+    <string name="sync_details">By logging in with your Google account, your data will be synced to the cloud, and any changes you make
+        will appear on all devices with sync enabled.\n\n
+    Your Google account is used so that you don\'t need to create and remember another password.
+    </string>
+
+    <string name="signed_in">Signed in as %s</string>
+    <string name="signed_out">Signed Out</string>
+
+    <string name="pref_sync_not_enabled">Sync is currently not enabled</string>
+    <string name="pref_sync_enabled">Sync is enabled using %s</string>
+
     <!-- Preference Strings -->
     <string name="prefs_display">Display Settings</string>
     <string name="prefs_animate">Enable Animation</string>
