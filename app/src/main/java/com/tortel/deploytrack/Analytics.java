@@ -15,6 +15,8 @@
  */
 package com.tortel.deploytrack;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 /**
  * Contains constants related to analytics
  */
@@ -41,9 +43,56 @@ public class Analytics {
      */
     public static final String PROPERTY_WIDGET_COUNT = "widget_count";
     /**
-     * The application's build version
+     * The user's theme (light/dark)
      */
-    public static final String PROPERTY_BUILD_VERSION = "build_ver";
+    public static final String PROPERTY_THEME = "theme";
+    /**
+     * The user's main view
+     */
+    public static final String PROPERTY_MAIN_VIEW = "main_view";
+    /**
+     * If the user has the dates hidden
+     */
+    public static final String PROPERTY_HIDE_DATES = "hide_dates";
+    /**
+     * If the user has the days completed/remaining hidden
+     */
+    public static final String PROPERTY_HIDE_DAY_COUNTS = "hide_counts";
+    /**
+     * If the user has the percentage hidden
+     */
+    public static final String PROPERTY_HIDE_PERCENT = "hide_percent";
+
+    /**
+     * Record the user's preferences to the analytics service
+     * @param analytics
+     */
+    public static void recordPreferences(FirebaseAnalytics analytics){
+        // The user's theme
+        if(Prefs.useLightTheme()){
+            analytics.setUserProperty(PROPERTY_THEME, "light");
+        } else {
+            analytics.setUserProperty(PROPERTY_THEME, "dark");
+        }
+
+        // The main view type
+        switch (Prefs.getMainDisplayType()){
+            case Prefs.ViewTypes.COMPLETE:
+                analytics.setUserProperty(PROPERTY_MAIN_VIEW, "complete");
+                break;
+            case Prefs.ViewTypes.REMAINING:
+                analytics.setUserProperty(PROPERTY_MAIN_VIEW, "remaining");
+                break;
+            case Prefs.ViewTypes.PERCENT:
+                analytics.setUserProperty(PROPERTY_MAIN_VIEW, "percent");
+                break;
+        }
+
+        // Hide views
+        analytics.setUserProperty(PROPERTY_HIDE_DATES, ""+Prefs.hideDate());
+        analytics.setUserProperty(PROPERTY_HIDE_DAY_COUNTS, ""+Prefs.hideDays());
+        analytics.setUserProperty(PROPERTY_HIDE_PERCENT, ""+Prefs.hidePercent());
+    }
 
     // Hide the constructor
     private Analytics(){}

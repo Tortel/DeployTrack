@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
             WelcomeDialog dialog = new WelcomeDialog();
             dialog.show(getSupportFragmentManager(), "welcome");
         }
+
+		// Set the analytics properties
+		setAnalyticsProperties();
 	}
 
     @Override
@@ -155,11 +158,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             indicator.setVisibility(View.VISIBLE);
         }
-
-		// Record the number of deployments
-		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, ""+mAdapter.getCount());
-		// Record the build version
-		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_BUILD_VERSION, BuildConfig.VERSION_NAME);
 	}
 
 	@Override
@@ -255,13 +253,31 @@ public class MainActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * If the user is logged in, make sure that sync is set up
+	 */
 	private void setupSync(){
 		FirebaseAuth auth = FirebaseAuth.getInstance();
 		if(auth.getCurrentUser() != null){
 			DatabaseManager.getInstance(this).setFirebaseUser(auth.getCurrentUser());
 		}
 	}
-	
+
+	/**
+	 * Set the various analytics properties
+	 */
+	private void setAnalyticsProperties(){
+		// Record the number of deployments
+		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, ""+mAdapter.getCount());
+
+		Analytics.recordPreferences(mFirebaseAnalytics);
+	}
+
+	/**
+	 * Check if there is an app available to handle an intent
+	 * @param intent
+	 * @return
+     */
     private boolean isAvailable(Intent intent) {
         final PackageManager mgr = getPackageManager();
         List<ResolveInfo> list = mgr.queryIntentActivities(intent,
@@ -297,8 +313,6 @@ public class MainActivity extends AppCompatActivity {
 			//Ignore
 		}
 	}
-
-
 
     private BroadcastReceiver mChangeListener = new BroadcastReceiver() {
         @Override

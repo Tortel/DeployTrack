@@ -122,6 +122,6 @@ limitations under the License.
     <string name="show_about_screenshot">Shot About Screen Shot Mode</string>
     <string name="show_about_screenshot_summary">Show the about screen shot mode dialog again</string>
     <string name="prefs_analytics">Enable Anonymous Statistics</string>
-    <string name="prefs_analytics_summary">Help make the application better by opting into anonymous usage statistics</string>
+    <string name="prefs_analytics_summary">Help make the application better by reporting anonymous usage statistics</string>
 
 </resources>
