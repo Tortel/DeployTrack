@@ -56,15 +56,14 @@ public class Prefs {
 
     /**
      * Get the SharedPreferences
-     * @param context
-     * @return
      */
     private static SharedPreferences getPrefs(Context context){
         context = context.getApplicationContext();
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 	
-	public static boolean isAnimationEnabled() {
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean isAnimationEnabled() {
 		return animationEnabled;
 	}
 
@@ -104,7 +103,6 @@ public class Prefs {
 
     /**
      * Set the preference that the welcome screen has been shown
-     * @param context
      */
     public static void setAboutScreenShotShown(Context context){
         SharedPreferences prefs = getPrefs(context);

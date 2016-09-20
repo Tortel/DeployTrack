@@ -30,7 +30,7 @@ import java.sql.SQLException;
  * Manage the database file
  */
 class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABSE_NAME = "data2016.09.sqlite";
+    private static final String DATABASE_NAME = "data2016.09.sqlite";
 
     private static final int DATABASE_VERSION = 1;
 
@@ -38,7 +38,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<WidgetInfo, Integer> widgetInfoDao;
 
     DatabaseHelper(Context context){
-        super(context, DATABSE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -59,7 +59,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             if(oldVersion == 0){
                 TableUtils.dropTable(connectionSource, Deployment.class, true);
                 TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
-                return;
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);

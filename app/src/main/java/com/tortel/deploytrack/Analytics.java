@@ -65,7 +65,7 @@ public class Analytics {
 
     /**
      * Record the user's preferences to the analytics service
-     * @param analytics
+     * @param analytics FB analytics object
      */
     public static void recordPreferences(FirebaseAnalytics analytics, boolean screenshotMode){
         // The user's theme
@@ -89,7 +89,7 @@ public class Analytics {
         }
 
         // Hide views
-        // Disable setthing this if screenshot mode is enabled
+        // Disable setting this if screenshot mode is enabled
         if(!screenshotMode) {
             analytics.setUserProperty(PROPERTY_HIDE_DATES, "" + Prefs.hideDate());
             analytics.setUserProperty(PROPERTY_HIDE_DAY_COUNTS, "" + Prefs.hideDays());

@@ -109,16 +109,16 @@ public class WidgetPickerActivity extends AppCompatActivity {
                         +" with deployment "+id);
             }
             finish();
-            return;
+            break;
         case R.id.button_cancel:
             finish();
-            return;
+            break;
         case R.id.widget_dark_text:
             mUseLightText = false;
-            return;
+            break;
         case R.id.widget_light_text:
             mUseLightText = true;
-            return;
+            break;
         }
     }
     

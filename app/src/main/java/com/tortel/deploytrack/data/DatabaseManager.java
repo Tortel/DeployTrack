@@ -36,8 +36,8 @@ public class DatabaseManager {
 
     private static DatabaseManager instance;
 
-    private DatabaseHelper mHelper;
-    private FirebaseDBManager mFirebaseDBManager;
+    private final DatabaseHelper mHelper;
+    private final FirebaseDBManager mFirebaseDBManager;
 
     private List<Deployment> mDeploymentCache;
 
@@ -55,10 +55,8 @@ public class DatabaseManager {
 
     /**
      * Save a deployment object to the database
-     * @param deployment
-     * @return
      */
-    public Deployment saveDeployment(Deployment deployment){
+    public void saveDeployment(Deployment deployment){
         try{
             // Set a UUID if there isnt one
             if(deployment.getUuid() == null){
@@ -72,7 +70,6 @@ public class DatabaseManager {
                 for(int i = 0; i < mDeploymentCache.size(); i++){
                     if(mDeploymentCache.get(i).getUuid().equals(deployment.getUuid())){
                         mDeploymentCache.set(i, deployment);
-                        return deployment;
                     }
                 }
                 mDeploymentCache.add(deployment);
@@ -83,12 +80,10 @@ public class DatabaseManager {
             // Report this to firebase
             FirebaseCrash.report(new Exception("Exception saving deployment", e));
         }
-        return deployment;
     }
 
     /**
      * Set the Firebase user object, enabling Firebase sync
-     * @param fbUser
      */
     public void setFirebaseUser(FirebaseUser fbUser){
         mFirebaseDBManager.setUser(fbUser);
@@ -98,7 +93,6 @@ public class DatabaseManager {
 
     /**
      * Get the current Firebase user, if present
-     * @return
      */
     public FirebaseUser getFirebaseUser(){
         return mFirebaseDBManager.getUser();
@@ -106,7 +100,6 @@ public class DatabaseManager {
 
     /**
      * Get all the saved GeoEvents
-     * @return
      */
     public List<Deployment> getAllDeployments(){
         if(mDeploymentCache != null){
@@ -127,8 +120,6 @@ public class DatabaseManager {
     
     /**
      * Get a specific Deployment from the database
-     * @param uuid
-     * @return
      */
     public Deployment getDeployment(String uuid){
         if(mDeploymentCache != null){
@@ -151,8 +142,6 @@ public class DatabaseManager {
     
     /**
      * Delete a specific Deployment from the database
-     * @param uuid
-     * @return
      */
     public void deleteDeployment(String uuid){
         deleteDeployment(uuid, true);
@@ -160,10 +149,8 @@ public class DatabaseManager {
 
     /**
      * Delete a deployment
-     * @param uuid
-     * @param includeFirebase
      */
-    public void deleteDeployment(String uuid, boolean includeFirebase){
+    void deleteDeployment(String uuid, boolean includeFirebase){
         Log.v("Deleting deployment "+uuid);
         try{
             if(includeFirebase) {
@@ -187,7 +174,6 @@ public class DatabaseManager {
     
     /**
      * Gets the widget information for the specified ID
-     * @return
      */
     public List<WidgetInfo> getAllWidgetInfo(){
         Log.v("Getting all widget information");
@@ -209,8 +195,6 @@ public class DatabaseManager {
     
     /**
      * Gets the widget information for the specified ID
-     * @param id
-     * @return
      */
     public WidgetInfo getWidgetInfo(int id){
         Log.v("Getting widget info for "+id);
@@ -230,7 +214,6 @@ public class DatabaseManager {
 
     /**
      * Saves the WidgetInfo
-     * @param info
      */
     public void saveWidgetInfo(WidgetInfo info){
         Log.v("Saving widget info for "+info.getId());
@@ -245,7 +228,6 @@ public class DatabaseManager {
     
     /**
      * Deletes the widget information from the database
-     * @param id
      */
     public void deleteWidgetInfo(int id){
         Log.v("Deleting widget info "+id);
@@ -256,14 +238,6 @@ public class DatabaseManager {
             // Report this to firebase
             FirebaseCrash.report(new Exception("Exception deleting eidget info", e));
         }
-    }
-    
-    /**
-     * Clear the entire database
-     */
-    public void clear(){
-        mHelper.onUpgrade(mHelper.getWritableDatabase(), 0, 1);
-        mDeploymentCache = null;
     }
 
 }

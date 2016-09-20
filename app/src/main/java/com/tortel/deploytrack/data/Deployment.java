@@ -59,9 +59,8 @@ public class Deployment implements Comparable<Deployment> {
 
 	/**
 	 * Update the fields to match the other deployment
-	 * @param other
      */
-	public void updateData(Deployment other){
+	void updateData(Deployment other){
 		this.name = other.name;
 		this.startDate = other.startDate;
 		this.endDate = other.endDate;
@@ -104,12 +103,12 @@ public class Deployment implements Comparable<Deployment> {
 	}
 
 	@Exclude
-	public DateTime getStart(){
+	DateTime getStart(){
 		return new DateTime(startDate);
 	}
 
 	@Exclude
-	public DateTime getEnd(){
+	DateTime getEnd(){
 		return new DateTime(endDate);
 	}
 	
@@ -124,7 +123,6 @@ public class Deployment implements Comparable<Deployment> {
 	
 	/**
 	 * Get the number of days completed so far
-	 * @return
 	 */
 	@Exclude
 	public int getCompleted(){
@@ -140,7 +138,6 @@ public class Deployment implements Comparable<Deployment> {
 	
 	/**
 	 * Get the remaining time, in days
-	 * @return
 	 */
 	@Exclude
 	public int getRemaining(){
@@ -149,7 +146,6 @@ public class Deployment implements Comparable<Deployment> {
 	
 	/**
 	 * Gets the percentage completed, as a whole number (0-100)
-	 * @return
 	 */
 	@Exclude
 	public int getPercentage(){

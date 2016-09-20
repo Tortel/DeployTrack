@@ -35,8 +35,6 @@ public class DatabaseUpgrader {
 
     /**
      * Checks if the database needs to be upgraded
-     * @param context
-     * @return
      */
     public static boolean needsUpgrade(Context context){
         return OldDatabaseHelper.oldDatabaseExists(context);
@@ -51,8 +49,8 @@ public class DatabaseUpgrader {
         OldDatabaseHelper oldDbHelper = new OldDatabaseHelper(context);
         Log.d("Starting DB upgrade");
         try{
-            Dao<OldDeployment, Integer> oldDeploymentDao = oldDbHelper.getDao(OldDeployment.class);
-            Dao<OldWidgetInfo, Integer> oldWidgetDao = oldDbHelper.getDao(OldWidgetInfo.class);
+            Dao<OldDeployment, Integer> oldDeploymentDao = oldDbHelper.getDeploymentDao();
+            Dao<OldWidgetInfo, Integer> oldWidgetDao = oldDbHelper.getWidgetInfoDao();
             SparseArray<Deployment> deploymentById = new SparseArray<>();
 
             // Get all the data from the old database and shove it in the new one

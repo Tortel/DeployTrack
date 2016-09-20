@@ -59,8 +59,6 @@ public class BarDeploymentFragment extends Fragment {
 	/**
 	 * Creates a new DeploymentFragment with the provided
 	 * Deployment
-	 * @param deployment
-	 * @return
 	 */
 	public static BarDeploymentFragment newInstance(Deployment deployment){
 		BarDeploymentFragment fragment = new BarDeploymentFragment();
@@ -68,6 +66,7 @@ public class BarDeploymentFragment extends Fragment {
 		return fragment;
 	}
 	
+	@SuppressLint("SetTextI18n")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
@@ -226,6 +225,7 @@ public class BarDeploymentFragment extends Fragment {
 		mAnimator.start();
 	}
 
+	@SuppressLint("SetTextI18n")
 	private void setMainView(int value){
 		switch(Prefs.getMainDisplayType()){
 			case ViewTypes.PERCENT:

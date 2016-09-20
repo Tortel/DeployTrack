@@ -37,22 +37,21 @@ class FirebaseDBManager implements ChildEventListener {
     private DatabaseManager mDbManager;
     private DatabaseReference mDatabase;
     private FirebaseUser mUser;
-    private LocalBroadcastManager mBradcastManager;
+    private LocalBroadcastManager mBroadcastManager;
 
-    public FirebaseDBManager(DatabaseManager dbManager, Context context){
+    FirebaseDBManager(DatabaseManager dbManager, Context context){
         // Enable persistence
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDbManager = dbManager;
-        mBradcastManager = LocalBroadcastManager.getInstance(context.getApplicationContext());
+        mBroadcastManager = LocalBroadcastManager.getInstance(context.getApplicationContext());
     }
 
     /**
      * Set the firebase user.
      * Until the user is set, no operations will work.
-     * @param user
      */
-    public void setUser(FirebaseUser user) {
+    void setUser(FirebaseUser user) {
         this.mUser = user;
 
         if(mUser != null) {
@@ -69,17 +68,15 @@ class FirebaseDBManager implements ChildEventListener {
 
     /**
      * Get the Firebase user object
-     * @return
      */
-    public FirebaseUser getUser(){
+    FirebaseUser getUser(){
         return mUser;
     }
 
     /**
      * Remove a deployment object from Firebase by the ID
-     * @param uuid
      */
-    public void deleteDeployment(String uuid){
+    void deleteDeployment(String uuid){
         if(mUser == null){
             return;
         }
@@ -91,9 +88,8 @@ class FirebaseDBManager implements ChildEventListener {
 
     /**
      * Save a deployment to Firebase
-     * @param deployment
      */
-    public void saveDeployment(Deployment deployment){
+    void saveDeployment(Deployment deployment){
         if(mUser == null){
             return;
         }
@@ -105,7 +101,7 @@ class FirebaseDBManager implements ChildEventListener {
     /**
      * Sync the local and remote information
      */
-    public void syncAll(){
+    void syncAll(){
         if(mUser == null){
             return;
         }
@@ -120,8 +116,6 @@ class FirebaseDBManager implements ChildEventListener {
 
     /**
      * Check if the deployment is saved in firebase. If not, add it
-     * @param rootNode
-     * @param deployment
      */
     private void checkForOrAdd(final DatabaseReference rootNode, final Deployment deployment){
         rootNode.child(deployment.getUuid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,7 +140,6 @@ class FirebaseDBManager implements ChildEventListener {
 
     /**
      * Get a reference to the root deployment node
-     * @return
      */
     private DatabaseReference getDeploymentNode(){
         return mDatabase.child("users").child(mUser.getUid()).child("deployments");
@@ -164,7 +157,7 @@ class FirebaseDBManager implements ChildEventListener {
             Log.d("DB onChildAdded: Deployment with UUID "+newDeployment.getUuid()+" not present, saving locally");
             mDbManager.saveDeployment(newDeployment);
             // Update the UI
-            mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_ADDED));
+            mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_ADDED));
         }
     }
 
@@ -187,7 +180,7 @@ class FirebaseDBManager implements ChildEventListener {
         // Save it
         mDbManager.saveDeployment(localDeployment);
         // Update the UI
-        mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_CHANGED));
+        mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_CHANGED));
     }
 
     @Override
@@ -201,7 +194,7 @@ class FirebaseDBManager implements ChildEventListener {
             mDbManager.deleteDeployment(localDeployment.getUuid(), false);
 
             // Update the UI
-            mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_DELETED));
+            mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_DELETED));
         }
     }
 

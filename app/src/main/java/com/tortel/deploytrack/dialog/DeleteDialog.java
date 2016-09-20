@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tortel.deploytrack.Analytics;
@@ -63,10 +64,9 @@ public class DeleteDialog extends DialogFragment {
         builder.title(R.string.delete);
         builder.positiveText(R.string.delete);
         builder.negativeText(R.string.cancel);
-
-        builder.callback(new MaterialDialog.ButtonCallback() {
+        builder.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onPositive(MaterialDialog dialog) {
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 Log.v("Deleting " + mId);
                 //Delete it
                 DatabaseManager.getInstance(getActivity()).deleteDeployment(mId);
@@ -78,6 +78,14 @@ public class DeleteDialog extends DialogFragment {
                         .logEvent(Analytics.EVENT_DELETED_DEPLOYMENT, null);
             }
         });
+
+        builder.onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dismiss();
+            }
+        });
+
         return builder.build();
     }
 }

@@ -20,8 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
@@ -62,14 +64,19 @@ public class AboutDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
 		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = (TextView) view.findViewById(R.id.about_view);
-		
-		text.setText(Html.fromHtml(readRawTextFile(getContent())));
+
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+			text.setText(Html.fromHtml(readRawTextFile(getContent()), Html.FROM_HTML_MODE_LEGACY));
+		} else {
+			//noinspection deprecation
+			text.setText(Html.fromHtml(readRawTextFile(getContent())));
+		}
 		Linkify.addLinks(text, Linkify.ALL);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		builder.customView(view, false);
 		builder.title(getTitleString());
-		builder.positiveText(getButtonString());
+		builder.positiveText(R.string.close);
 		
 		return builder.build();
 	}
@@ -90,15 +97,11 @@ public class AboutDialog extends DialogFragment {
 		return text.toString();
 	}
 
-    protected @StringRes int getTitleString(){
+    @StringRes int getTitleString(){
         return R.string.app_name;
     }
 
-    protected @StringRes int getButtonString(){
-        return R.string.close;
-    }
-
-    protected @RawRes int getContent(){
+    @RawRes int getContent(){
         return R.raw.about;
     }
 

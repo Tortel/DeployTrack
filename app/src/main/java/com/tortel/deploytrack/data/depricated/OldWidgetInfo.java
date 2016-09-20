@@ -23,6 +23,7 @@ import com.tortel.deploytrack.data.WidgetInfo;
 /**
  * Class to save info dialog_about a homescreen widget
  */
+@SuppressWarnings("unused")
 @DatabaseTable(tableName = "widgetinfo")
 public class OldWidgetInfo {
     @DatabaseField(id = true)
@@ -49,10 +50,6 @@ public class OldWidgetInfo {
         this.deployment = deployment;
     }
     
-    public boolean isWide(){
-        return (minWidth > 0 && minHeight > 0) && ((double) minWidth / (double) minHeight > 1.5);
-    }
-    
     public boolean equals(Object o){
         if(o == null || !o.getClass().equals(getClass())){
             return false;
@@ -73,40 +70,9 @@ public class OldWidgetInfo {
     public void setDeployment(OldDeployment deployment) {
         this.deployment = deployment;
     }
-    public boolean isLightText() {
-        return lightText;
-    }
-    public void setLightText(boolean lightText) {
-        this.lightText = lightText;
-    }
-    public int getMinWidth() {
-        return minWidth;
-    }
-    public void setMinWidth(int minWidth) {
-        this.minWidth = minWidth;
-    }
-    public int getMinHeight() {
-        return minHeight;
-    }
-    public void setMinHeight(int minHeight) {
-        this.minHeight = minHeight;
-    }
-    public int getMaxWidth() {
-        return maxWidth;
-    }
-    public void setMaxWidth(int maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-    public int getMaxHeight() {
-        return maxHeight;
-    }
-    public void setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
-    }
 
     /**
      * Get the newer WidgetInfo class with all the data here
-     * @return
      */
     public WidgetInfo getUpdatedObject(Deployment deployment){
         WidgetInfo updated = new WidgetInfo();

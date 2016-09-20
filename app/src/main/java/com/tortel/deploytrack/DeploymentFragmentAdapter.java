@@ -29,29 +29,19 @@ import android.util.SparseArray;
 class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	private List<Deployment> mDeploymentList;
-	private DatabaseManager mDb;
 	private Context mContext;
 	private SparseArray<Fragment> mFragmentList;
 	
-	DeploymentFragmentAdapter(Context mContext, FragmentManager fm){
+	DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm);
-		this.mContext = mContext.getApplicationContext();
-		mDb = DatabaseManager.getInstance(mContext);
-		mDeploymentList = mDb.getAllDeployments();
+		this.mContext = context.getApplicationContext();
+		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
 		mFragmentList = new SparseArray<>();
-	}
-	
-	public void reload(){
-		Log.d("Reloading data");
-		mDeploymentList = mDb.getAllDeployments();
-		notifyDataSetChanged();
 	}
 	
 	/**
 	 * Get the ID of the deployment at the provided position.
 	 * Returns -1 if it is the info fragment
-	 * @param position
-	 * @return
 	 */
 	public String getId(int position){
 		if(position >= mDeploymentList.size()){

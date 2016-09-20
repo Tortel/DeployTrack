@@ -258,8 +258,6 @@ public class MainActivity extends AppCompatActivity {
 
 	/**
 	 * Check if there is an app available to handle an intent
-	 * @param intent
-	 * @return
      */
     private boolean isAvailable(Intent intent) {
         final PackageManager mgr = getPackageManager();

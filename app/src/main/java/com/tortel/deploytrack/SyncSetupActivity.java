@@ -203,7 +203,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
             case R.id.sign_in_button:
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-                return;
+                break;
             case R.id.sign_out_button:
                 // Sign out
                 mAuth.signOut();
@@ -214,7 +214,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
                 // Toast it
                 Toast.makeText(SyncSetupActivity.this, R.string.signed_out, Toast.LENGTH_LONG).show();
-                return;
+                break;
         }
     }
 

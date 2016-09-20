@@ -66,8 +66,6 @@ public class DeploymentFragment extends Fragment {
 	/**
 	 * Creates a new DeploymentFragment with the provided
 	 * Deployment
-	 * @param deployment
-	 * @return
 	 */
 	public static DeploymentFragment newInstance(Deployment deployment){
 		DeploymentFragment fragment = new DeploymentFragment();
@@ -75,6 +73,7 @@ public class DeploymentFragment extends Fragment {
 		return fragment;
 	}
 	
+	@SuppressLint("SetTextI18n")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
@@ -283,6 +282,7 @@ public class DeploymentFragment extends Fragment {
 		}
 	}
 	
+	@SuppressLint("SetTextI18n")
 	private void setPercent(int percent){
 		if(mPercentView != null){
 			mPercentView.setText(percent+"%");

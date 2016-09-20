@@ -208,9 +208,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
-     * @param context
-     * @param remoteViews
-     * @param info
      */
     public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews, WidgetInfo info){
         return updateWidgetView(context, remoteViews, info, false);
@@ -218,10 +215,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
-     * @param context
-     * @param remoteViews
-     * @param info
-     * @param screenShotMode
      */
     public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews,
                                                WidgetInfo info, boolean screenShotMode){

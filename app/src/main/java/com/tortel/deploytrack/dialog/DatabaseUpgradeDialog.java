@@ -83,7 +83,7 @@ public class DatabaseUpgradeDialog extends DialogFragment {
      * Class which handles the upgrade in the background
      */
     private class DatabaseUpgradeTask extends AsyncTask<Void, Void, Boolean> {
-        private Context context;
+        private final Context context;
 
         public DatabaseUpgradeTask(Context context){
             this.context = context.getApplicationContext();

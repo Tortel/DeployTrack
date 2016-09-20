@@ -22,8 +22,6 @@ limitations under the License.
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="about">About</string>
-    <string name="show_notification">Show as notification</string>
-    <string name="hide_notification">Hide notification</string>
     <string name="send_feedback">Send Feedback</string>
     <string name="menu_screenshot">Toggle Screen Shot Mode</string>
     <string name="menu_sync">Sync Settings</string>
@@ -40,9 +38,6 @@ limitations under the License.
         <item quantity="one">%d day complete</item>
         <item quantity="other">%d days complete</item>
     </plurals>
-
-    <!-- Notification Strings -->
-	<string name="small_notification">%1$d%% - %2$d of %3$d days complete</string>
 
     <!-- Generic strings -->
     <string name="save">Save</string>
@@ -105,7 +100,6 @@ limitations under the License.
     <string name="prefs_animate_summary">Enable animating the circle and main text</string>
     <string name="prefs_main_view">Change Main View</string>
     <string name="prefs_main_view_summary">Choose what to display as the bold text</string>
-    <string name="prefs_main_view_default">Percent (Default)</string>
     <string name="prefs_light_theme">Use a light theme</string>
     <string name="prefs_light_theme_summary">The app will restart to apply the new theme</string>
     <string name="prefs_customization">Customization</string>

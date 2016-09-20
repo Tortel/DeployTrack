@@ -23,8 +23,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.tortel.deploytrack.Log;
-import com.tortel.deploytrack.data.Deployment;
-import com.tortel.deploytrack.data.WidgetInfo;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -37,8 +35,8 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final int DATABASE_VERSION = 5;
 
-    private Dao<Deployment, Integer> deploymentDao;
-    private Dao<WidgetInfo, Integer> widgetInfoDao;
+    private Dao<OldDeployment, Integer> deploymentDao;
+    private Dao<OldWidgetInfo, Integer> widgetInfoDao;
 
     public OldDatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,8 +45,8 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase databse, ConnectionSource connectionSource){
         try{
-            TableUtils.createTable(connectionSource, Deployment.class);
-            TableUtils.createTable(connectionSource, WidgetInfo.class);
+            TableUtils.createTable(connectionSource, OldDeployment.class);
+            TableUtils.createTable(connectionSource, OldWidgetInfo.class);
         } catch(SQLException e) {
             Log.e("Cant create database", e);
             throw new RuntimeException(e);
@@ -60,13 +58,13 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
         try{
             // Drop everything
             if(oldVersion == 0){
-                TableUtils.dropTable(connectionSource, Deployment.class, true);
-                TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
+                TableUtils.dropTable(connectionSource, OldDeployment.class, true);
+                TableUtils.dropTable(connectionSource, OldWidgetInfo.class, true);
                 return;
             }
             if(oldVersion == 1){
                 //For version 2, I added the WidgetInfo table
-                TableUtils.createTable(connectionSource, WidgetInfo.class);
+                TableUtils.createTable(connectionSource, OldWidgetInfo.class);
                 oldVersion = 2;
             }
             if(oldVersion == 2){
@@ -93,10 +91,10 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    Dao<Deployment, Integer> getDeploymentDao(){
+    public Dao<OldDeployment, Integer> getDeploymentDao(){
         if(deploymentDao == null){
             try{
-            	deploymentDao = getDao(Deployment.class);
+            	deploymentDao = getDao(OldDeployment.class);
             } catch(SQLException e){
                 Log.e("Error getting Deployment DAO", e);
             }
@@ -104,10 +102,10 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
         return deploymentDao;
     }
     
-    Dao<WidgetInfo, Integer> getWidgetInfoDao(){
+    public Dao<OldWidgetInfo, Integer> getWidgetInfoDao(){
         if(widgetInfoDao == null){
             try{
-                widgetInfoDao = getDao(WidgetInfo.class);
+                widgetInfoDao = getDao(OldWidgetInfo.class);
             } catch(SQLException e){
                 Log.e("Error getting widget info DAO", e);
             }
@@ -117,8 +115,6 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     /**
      * Check if the old database file is present
-     * @param context
-     * @return
      */
     public static boolean oldDatabaseExists(Context context){
         File databaseFile = context.getDatabasePath(DATABASE_NAME);
@@ -127,10 +123,13 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     /**
      * Delete the database file
-     * @param context
      */
     public static void deleteDbFiles(Context context){
-        context.getDatabasePath(DATABASE_NAME).delete();
-        context.getDatabasePath(DATABASE_NAME+"-journal").delete();
+        if(!context.getDatabasePath(DATABASE_NAME).delete()){
+            context.getDatabasePath(DATABASE_NAME).deleteOnExit();
+        }
+        if(!context.getDatabasePath(DATABASE_NAME+"-journal").delete()){
+            context.getDatabasePath(DATABASE_NAME+"-journal").deleteOnExit();
+        }
     }
 }

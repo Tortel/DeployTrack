@@ -28,10 +28,6 @@ public class WelcomeDialog extends AboutDialog {
         return R.string.welcome;
     }
 
-    protected @StringRes int getButtonString(){
-        return R.string.close;
-    }
-
     protected @RawRes int getContent(){
         return R.raw.welcome;
     }

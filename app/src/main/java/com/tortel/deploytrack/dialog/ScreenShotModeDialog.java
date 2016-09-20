@@ -29,10 +29,6 @@ public class ScreenShotModeDialog extends AboutDialog {
         return R.string.about_screenshot;
     }
 
-    protected @StringRes int getButtonString(){
-        return R.string.close;
-    }
-
     protected @RawRes int getContent(){
         return R.raw.screenshot_mode;
     }

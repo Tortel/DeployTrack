@@ -44,12 +44,12 @@ import com.tortel.deploytrack.data.*;
 public class CreateActivity extends AppCompatActivity {
 	private static final String KEY_TIME_START = "start";
 	private static final String KEY_TIME_END = "end";
-	private static final String KEY_SET_START = "startset";
-	private static final String KEY_SET_END = "endset";
+	private static final String KEY_SET_START = "startSet";
+	private static final String KEY_SET_END = "endSet";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
-	private static final String KEY_DISPALY_TYPE = "display";
+	private static final String KEY_DISPLAY_TYPE = "display";
 	
 	private EditText mNameEdit;
 	private Button mStartButton;
@@ -189,7 +189,7 @@ public class CreateActivity extends AppCompatActivity {
 				mSaveButton.setEnabled(true);
 			}
 
-			int viewType = savedInstanceState.getInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_CIRCLE);
+			int viewType = savedInstanceState.getInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
 			if(viewType == Deployment.DISPLAY_BAR){
 				mBarButton.setChecked(true);
 			} else {
@@ -228,9 +228,9 @@ public class CreateActivity extends AppCompatActivity {
 		outState.putInt(KEY_COLOR_REMAINING, mRemainingColor);
 
 		if(mBarButton.isChecked()){
-			outState.putInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_BAR);
+			outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_BAR);
 		} else {
-			outState.putInt(KEY_DISPALY_TYPE, Deployment.DISPLAY_CIRCLE);
+			outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
 		}
 	}
 	
@@ -247,7 +247,6 @@ public class CreateActivity extends AppCompatActivity {
 	
 	/**
 	 * Method called when the buttons are clicked
-	 * @param v
 	 */
 	public void onClick(View v){
 		FragmentManager fm = getSupportFragmentManager();
