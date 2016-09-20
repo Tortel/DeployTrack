@@ -47,6 +47,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
+/**
+ * Class that manages updating the widgets
+ */
 public class WidgetProvider extends AppWidgetProvider {
     public static final String UPDATE_INTENT = "com.tortel.deploytrack.WIDGET_UPDATE";
     public static final String KEY_SCREENSHOT_MODE = "screenshot";
@@ -61,8 +64,14 @@ public class WidgetProvider extends AppWidgetProvider {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.v("Got intent: "+intent.toString());
+        Log.v("Intent action: "+intent.getAction());
         // The standard widget intents are handled in the super call
         if(UPDATE_INTENT.equals(intent.getAction())) {
+            // Check if the database needs to be upgraded
+            if(DatabaseUpgrader.needsUpgrade(context)){
+                DatabaseUpgrader.doDatabaseUpgrade(context);
+            }
             mScreenShotMode = intent.getBooleanExtra(KEY_SCREENSHOT_MODE, false);
             Log.v("Update intent received");
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
@@ -77,6 +86,11 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds){
+        // Check if the database needs to be upgraded
+        if(DatabaseUpgrader.needsUpgrade(context)){
+            DatabaseUpgrader.doDatabaseUpgrade(context);
+        }
+
         List<WidgetInfo> infoList = DatabaseManager.getInstance(context).getAllWidgetInfo();
 
         // Log how many widgets there are

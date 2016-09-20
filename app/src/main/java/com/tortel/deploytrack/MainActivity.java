@@ -38,7 +38,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tortel.deploytrack.data.DatabaseManager;
-import com.tortel.deploytrack.data.depricated.OldDatabaseHelper;
+import com.tortel.deploytrack.data.DatabaseUpgrader;
 import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         if(Prefs.useLightTheme()){
             setTheme(R.style.Theme_DeployThemeLight);
         }
-
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
@@ -82,9 +81,17 @@ public class MainActivity extends AppCompatActivity {
             }
 		} else {
 			// Check if we need to upgrade the database
-			if(OldDatabaseHelper.oldDatabaseExists(this)){
+			if(DatabaseUpgrader.needsUpgrade(this)){
 				DatabaseUpgradeDialog upgradeDialog = new DatabaseUpgradeDialog();
 				upgradeDialog.show(getSupportFragmentManager(), "upgrade");
+			} else {
+				// Only show the welcome dialog if its the first time the app is opened,
+				// and the DB doesn't need to be upgraded
+				if(!Prefs.isWelcomeShown()){
+					Prefs.setWelcomeShown(this);
+					WelcomeDialog dialog = new WelcomeDialog();
+					dialog.show(getSupportFragmentManager(), "welcome");
+				}
 			}
 
 			mCurrentPosition = 0;
@@ -99,12 +106,6 @@ public class MainActivity extends AppCompatActivity {
         lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_DELETED));
 		lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_ADDED));
 		lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_CHANGED));
-
-        if(!Prefs.isWelcomeShown()){
-            Prefs.setWelcomeShown(this);
-            WelcomeDialog dialog = new WelcomeDialog();
-            dialog.show(getSupportFragmentManager(), "welcome");
-        }
 	}
 
     @Override

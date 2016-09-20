@@ -23,19 +23,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.SparseArray;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.crash.FirebaseCrash;
-import com.j256.ormlite.dao.Dao;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.*;
-import com.tortel.deploytrack.data.depricated.*;
-
-import java.util.List;
-import java.util.UUID;
+import com.tortel.deploytrack.provider.WidgetProvider;
 
 /**
  * Dialog that runs the database upgrade
@@ -88,68 +82,26 @@ public class DatabaseUpgradeDialog extends DialogFragment {
     /**
      * Class which handles the upgrade in the background
      */
-    private class DatabaseUpgradeTask extends AsyncTask<Void, Void, Void> {
-        private DatabaseManager dbManager;
-        private OldDatabaseHelper oldDbHelper;
+    private class DatabaseUpgradeTask extends AsyncTask<Void, Void, Boolean> {
         private Context context;
 
         public DatabaseUpgradeTask(Context context){
-            context = context.getApplicationContext();
-            dbManager = DatabaseManager.getInstance(context);
-            oldDbHelper = new OldDatabaseHelper(context);
-            this.context = context;
+            this.context = context.getApplicationContext();
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            Log.d("Starting DB upgrade in background thread");
-            try{
-                Dao<OldDeployment, Integer> oldDeploymentDao = oldDbHelper.getDao(OldDeployment.class);
-                Dao<OldWidgetInfo, Integer> oldWidgetDao = oldDbHelper.getDao(OldWidgetInfo.class);
-                SparseArray<Deployment> deploymentById = new SparseArray<>();
-
-                // Get all the data from the old database and shove it in the new one
-                List<OldDeployment> oldDeployments = oldDeploymentDao.queryForAll();
-                for(OldDeployment cur : oldDeployments){
-                    Log.d("Updating old deployment with ID "+cur.getId());
-                    // Make sure the UUID is set
-                    if(cur.getUuid() == null){
-                        cur.setUuid(UUID.randomUUID());
-                    }
-                    Deployment updated = cur.getUpdatedObject();
-
-                    // Add it to our map of deployment objects for updating any WidgetInfo objects
-                    deploymentById.put(cur.getId(), updated);
-
-                    // Save it
-                    dbManager.saveDeployment(updated);
-                }
-
-                Log.d("Deployment objects updated");
-
-                List<OldWidgetInfo> oldWidgetInfo = oldWidgetDao.queryForAll();
-                for(OldWidgetInfo cur : oldWidgetInfo){
-                    Log.d("Updating WidgetInfo with ID "+cur.getId());
-
-                    Deployment deployment = deploymentById.get(cur.getDeployment().getId());
-                    WidgetInfo updated = cur.getUpdatedObject(deployment);
-
-                    dbManager.saveWidgetInfo(updated);
-                }
-
-            } catch (Exception e){
-                Log.e("Exception during database upgrade", e);
-                // Report this to firebase
-                FirebaseCrash.report(new Exception("Exception during database upgrade", e));
-            }
-
-            return null;
+        protected Boolean doInBackground(Void... voids) {
+            return DatabaseUpgrader.doDatabaseUpgrade(context);
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            Log.d("Upgrade complete, deleting old database file");
-            OldDatabaseHelper.deleteDbFile(context);
+        protected void onPostExecute(Boolean result) {
+            // TODO - Wtf to do if it failed?
+
+            // Force the widgets to update
+            Log.v("Sending widget update broadcast");
+            Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+            getActivity().sendBroadcast(updateWidgetIntent);
 
             // Re-start the main activity
             restartMainActivity();

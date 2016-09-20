@@ -130,7 +130,8 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
      * Delete the database file
      * @param context
      */
-    public static void deleteDbFile(Context context){
+    public static void deleteDbFiles(Context context){
         context.getDatabasePath(DATABASE_NAME).delete();
+        context.getDatabasePath(DATABASE_NAME+"-journal").delete();
     }
 }
