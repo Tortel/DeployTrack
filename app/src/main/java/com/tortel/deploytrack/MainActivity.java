@@ -45,7 +45,6 @@ import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
-import com.tortel.deploytrack.service.NotificationService;
 
 /**
  * The main activity that contains the fragments that show the graphs.
@@ -196,19 +195,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(about, "about");
             transaction.commit();
-			return true;
-		case R.id.menu_notification_show:
-			if(id == null){
-				return true;
-			}
-			NotificationService.setSavedId(this, id);
-			intent = new Intent(this, NotificationService.class);
-			startService(intent);
-			return true;
-		case R.id.menu_notification_hide:
-			NotificationService.setSavedId(this, null);
-			intent = new Intent(this, NotificationService.class);
-			stopService(intent);
 			return true;
 		case R.id.menu_feedback:
 		    intent = new Intent(Intent.ACTION_SEND);

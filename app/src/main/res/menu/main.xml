@@ -53,21 +53,6 @@ limitations under the License.
         android:title="@string/settings"
         />
 
-    <!-- Hidden options -->
-    <item
-        android:id="@+id/menu_notification_show"
-        android:visible="false"
-        app:showAsAction="never"
-        android:title="@string/show_notification"
-        />
-
-    <item
-        android:id="@+id/menu_notification_hide"
-        android:visible="false"
-        app:showAsAction="never"
-        android:title="@string/hide_notification"
-        />
-
     <item
         android:id="@+id/menu_sync"
         app:showAsAction="never"
