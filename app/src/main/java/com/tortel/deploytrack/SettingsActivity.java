@@ -34,7 +34,9 @@ import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
-
+/**
+ * Settings activity
+ */
 public class SettingsActivity extends AppCompatActivity {
     private static final String KEY_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "pref_show_welcome";
@@ -58,7 +60,6 @@ public class SettingsActivity extends AppCompatActivity {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, new SettingsFragment());
         transaction.commit();
-
 	}
 	
 	@Override
@@ -71,12 +72,16 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+    @Override
 	public void onStop(){
 	    super.onStop();
 	    sendWidgetUpdateBroadcast();
 	}
-	
+
+    /**
+     * Send a broadcast to force the widgets to update
+     */
 	private void sendWidgetUpdateBroadcast(){
 	    Log.v("Sending widget update broadcast");
 	    // Force the widgets to update
@@ -84,6 +89,9 @@ public class SettingsActivity extends AppCompatActivity {
         sendBroadcast(updateWidgetIntent);
 	}
 
+    /**
+     * Fragment which shows the actual settings
+     */
     public static class SettingsFragment extends PreferenceFragment
             implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
