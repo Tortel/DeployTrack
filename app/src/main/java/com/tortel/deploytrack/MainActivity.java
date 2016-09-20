@@ -111,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
             WelcomeDialog dialog = new WelcomeDialog();
             dialog.show(getSupportFragmentManager(), "welcome");
         }
-
-		// Set the analytics properties
-		setAnalyticsProperties();
 	}
 
     @Override
@@ -158,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             indicator.setVisibility(View.VISIBLE);
         }
+
+		// Set the analytics properties
+		setAnalyticsProperties();
 	}
 
 	@Override
@@ -268,9 +268,11 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void setAnalyticsProperties(){
 		// Record the number of deployments
-		mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, ""+mAdapter.getCount());
+		if(mAdapter != null) {
+			mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, "" + mAdapter.getCount());
+		}
 
-		Analytics.recordPreferences(mFirebaseAnalytics);
+		Analytics.recordPreferences(mFirebaseAnalytics, mScreenShotMode);
 	}
 
 	/**

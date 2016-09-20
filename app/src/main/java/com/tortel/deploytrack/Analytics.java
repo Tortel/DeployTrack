@@ -67,7 +67,7 @@ public class Analytics {
      * Record the user's preferences to the analytics service
      * @param analytics
      */
-    public static void recordPreferences(FirebaseAnalytics analytics){
+    public static void recordPreferences(FirebaseAnalytics analytics, boolean screenshotMode){
         // The user's theme
         if(Prefs.useLightTheme()){
             analytics.setUserProperty(PROPERTY_THEME, "light");
@@ -89,9 +89,12 @@ public class Analytics {
         }
 
         // Hide views
-        analytics.setUserProperty(PROPERTY_HIDE_DATES, ""+Prefs.hideDate());
-        analytics.setUserProperty(PROPERTY_HIDE_DAY_COUNTS, ""+Prefs.hideDays());
-        analytics.setUserProperty(PROPERTY_HIDE_PERCENT, ""+Prefs.hidePercent());
+        // Disable setthing this if screenshot mode is enabled
+        if(!screenshotMode) {
+            analytics.setUserProperty(PROPERTY_HIDE_DATES, "" + Prefs.hideDate());
+            analytics.setUserProperty(PROPERTY_HIDE_DAY_COUNTS, "" + Prefs.hideDays());
+            analytics.setUserProperty(PROPERTY_HIDE_PERCENT, "" + Prefs.hidePercent());
+        }
     }
 
     // Hide the constructor
