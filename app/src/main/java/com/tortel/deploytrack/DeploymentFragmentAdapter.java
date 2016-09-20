@@ -68,7 +68,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		}
 		if(mFragmentList.get(position) == null){
 			Deployment deployment = mDeploymentList.get(position);
-			Fragment fragment = null;
+			Fragment fragment;
 			// Get the correct type of fragment
 			if(deployment.getDisplayType() == Deployment.DISPLAY_CIRCLE){
 				fragment = DeploymentFragment.newInstance(deployment);

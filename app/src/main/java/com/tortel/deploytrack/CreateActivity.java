@@ -89,7 +89,9 @@ public class CreateActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_create);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		if(getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		

@@ -49,10 +49,7 @@ public class WidgetInfo {
     }
     
     public boolean isWide(){
-        if(minWidth > 0 && minHeight > 0){
-            return (double) minWidth / (double) minHeight > 1.5;
-        }
-        return false;
+        return (minWidth > 0 && minHeight > 0) && (double) minWidth / (double) minHeight > 1.5;
     }
     
     public boolean equals(Object o){

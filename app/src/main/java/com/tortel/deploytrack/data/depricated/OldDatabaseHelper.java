@@ -86,7 +86,6 @@ public class OldDatabaseHelper extends OrmLiteSqliteOpenHelper {
             if(oldVersion == 4){
                 // Add the UUID field
                 db.execSQL("ALTER TABLE `deployment` ADD COLUMN uuid VARCHAR DEFAULT NULL");
-                oldVersion = 5;
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);

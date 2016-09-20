@@ -59,7 +59,9 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_setup);
         setTitle(R.string.menu_sync);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mStatusTextView = (TextView) findViewById(R.id.sync_status);
         // Set up the click listener

@@ -308,7 +308,7 @@ public class WidgetProvider extends AppWidgetProvider {
 		
 		//Reset variables
 	    float currentAngle = 270;
-	    float currentSweep = 0;
+	    float currentSweep;
 	    float totalLength = deployment.getCompleted() + deployment.getRemaining();
 	    int thickness = size / 3;
 		

@@ -30,7 +30,6 @@ limitations under the License.
 
     <!-- Display fragment strings -->
     <string name="date_range">%1$s to %2$s</string>
-    <string name="date_stats">%1$d days complete, %2$d days left</string>
 
     <plurals name="days_remaining">
         <item quantity="one">%d day left</item>

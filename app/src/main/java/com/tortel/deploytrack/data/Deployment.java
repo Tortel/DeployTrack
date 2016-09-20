@@ -20,10 +20,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.Days;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import com.j256.ormlite.field.DatabaseField;
@@ -71,7 +71,7 @@ public class Deployment implements Comparable<Deployment> {
 	}
 
 	@Override
-	public int compareTo(Deployment other) {
+	public int compareTo(@NonNull Deployment other) {
 		/*
 		 * Compare start dates, and if they are the same, use end dates
 		 */

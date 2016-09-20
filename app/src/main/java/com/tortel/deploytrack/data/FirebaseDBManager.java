@@ -185,7 +185,7 @@ class FirebaseDBManager implements ChildEventListener {
         }
 
         // Save it
-        mDbManager.saveDeployment(updatedDeployment);
+        mDbManager.saveDeployment(localDeployment);
         // Update the UI
         mBradcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_CHANGED));
     }
