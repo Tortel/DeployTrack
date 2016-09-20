@@ -175,8 +175,6 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                             Toast.makeText(SyncSetupActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            // Save the token
-                            Prefs.setToken(acct.getIdToken(), SyncSetupActivity.this);
                             // Log it
                             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
 
@@ -202,8 +200,6 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 return;
             case R.id.sign_out_button:
-                // Clear the token
-                Prefs.setToken(null, this);
                 // Sign out
                 mAuth.signOut();
                 // Clear the user from the database manager

@@ -256,30 +256,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setupSync(){
-		String token = Prefs.getToken(this);
-		if(token != null) {
-			Log.d("Using cached token to log into Firebase");
-			AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
-			FirebaseAuth fbAuth = FirebaseAuth.getInstance();
-			fbAuth.signInWithCredential(credential)
-					.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-						@Override
-						public void onComplete(@NonNull Task<AuthResult> task) {
-							Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
-
-							// If sign in fails, display a message to the user. If sign in succeeds
-							// the auth state listener will be notified and logic to handle the
-							// signed in user can be handled in the listener.
-							if (!task.isSuccessful()) {
-								Log.e("signInWithCredential", task.getException());
-							} else {
-								Log.d("Giving Firebase user to database manager");
-								// Save the token
-								DatabaseManager.getInstance(getApplicationContext())
-										.setFirebaseUser(task.getResult().getUser());
-							}
-						}
-					});
+		FirebaseAuth auth = FirebaseAuth.getInstance();
+		if(auth.getCurrentUser() != null){
+			DatabaseManager.getInstance(this).setFirebaseUser(auth.getCurrentUser());
 		}
 	}
 	

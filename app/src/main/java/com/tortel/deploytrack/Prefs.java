@@ -31,7 +31,6 @@ public class Prefs {
     private static final String KEY_LIGHT_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "welcome_2.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
-    private static final String KEY_TOKEN = "token";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
@@ -121,25 +120,6 @@ public class Prefs {
         } else {
             load(context);
         }
-    }
-
-    /**
-     * Set the Google account token
-     * @param token
-     * @param context
-     */
-    public static void setToken(String token, Context context){
-        SharedPreferences prefs = getPrefs(context);
-        prefs.edit().putString(KEY_TOKEN, token).apply();
-    }
-
-    /**
-     * Get the Google account token
-     * @param context
-     * @return
-     */
-    public static String getToken(Context context){
-        return getPrefs(context).getString(KEY_TOKEN, null);
     }
 
     public class ViewTypes{
