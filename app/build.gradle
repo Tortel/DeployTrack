@@ -35,7 +35,7 @@ dependencies {
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
-    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.0.2'
     // https://github.com/diogobernardino/WilliamChart
     compile 'com.diogobernardino:williamchart:2.2'
 
