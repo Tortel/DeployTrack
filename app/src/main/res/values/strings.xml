@@ -89,7 +89,8 @@ limitations under the License.
     <string name="sign_out">Sign Out</string>
     <string name="sync_details">By logging in with your Google account, your data will be synced to the cloud, and any changes you make
         will appear on all devices with sync enabled.\n\n
-    Your Google account is used so that you don\'t need to create and remember another password.
+    Your Google account is used so that you don\'t need to create and remember another password.\n\n
+        <a href="https://www.iubenda.com/privacy-policy/7913020">Privacy Policy</a>
     </string>
 
     <string name="signed_in">Signed in as %s</string>

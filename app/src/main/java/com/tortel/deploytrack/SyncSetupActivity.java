@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -64,6 +65,8 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         // Set up the click listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
+        // Make the privacy policy link clickable
+        ((TextView) findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
