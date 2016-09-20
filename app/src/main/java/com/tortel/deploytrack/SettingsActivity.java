@@ -24,7 +24,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -35,7 +35,7 @@ import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends AppCompatActivity {
     private static final String KEY_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "pref_show_welcome";
     private static final String KEY_ABOUT_SCREENSHOT = "pref_show_about_screenshot";
@@ -128,7 +128,7 @@ public class SettingsActivity extends ActionBarActivity {
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             DialogFragment dialog;
-            FragmentManager fragMan = ((ActionBarActivity) getActivity()).getSupportFragmentManager();
+            FragmentManager fragMan = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
             if(KEY_WELCOME.equals(preference.getKey())){
                 dialog = new WelcomeDialog();
                 dialog.show(fragMan, "welcome");
