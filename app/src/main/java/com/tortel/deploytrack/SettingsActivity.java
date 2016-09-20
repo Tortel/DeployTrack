@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseUser;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
@@ -39,6 +40,7 @@ public class SettingsActivity extends ActionBarActivity {
     private static final String KEY_WELCOME = "pref_show_welcome";
     private static final String KEY_ABOUT_SCREENSHOT = "pref_show_about_screenshot";
     private static final String KEY_SYNC = "pref_sync_info";
+    private static final String KEY_ANALYTICS = "pref_analytics";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -146,6 +148,11 @@ public class SettingsActivity extends ActionBarActivity {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getActivity().startActivity(intent);
+            } else if(key.equals(KEY_ANALYTICS)){
+                // Turn analytics on/off
+                boolean value = sharedPreferences.getBoolean(KEY_ANALYTICS, true);
+                Log.d("Analytics collection: "+value);
+                FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(value);
             }
         }
     }

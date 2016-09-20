@@ -84,5 +84,10 @@ limitations under the License.
             android:key="pref_show_about_screenshot"
             android:title="@string/show_about_screenshot"
             android:summary="@string/show_about_screenshot_summary" />
+		<CheckBoxPreference
+			android:key="pref_analytics"
+			android:title="@string/prefs_analytics"
+			android:summary="@string/prefs_analytics_summary"
+			android:defaultValue="true" />
 	</PreferenceCategory>
 </PreferenceScreen>
