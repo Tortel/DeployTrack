@@ -33,7 +33,6 @@ public class WidgetInfo {
     private int minWidth;
     @DatabaseField(defaultValue="0")
     private int minHeight;
-    //TODO: Add these to the SQL
     @DatabaseField(defaultValue="0")
     private int maxWidth;
     @DatabaseField(defaultValue="0")
