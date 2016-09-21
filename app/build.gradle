@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.ben-manes.versions'
 
 android {
     compileSdkVersion 24
