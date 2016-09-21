@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources>
-    <!-- Tab style stuff -->
-    <attr name="tabIndicatorColor" format="color" />
-    <attr name="tabTextColor" format="color" />
     <attr name="edittext_color" format="color" />
     <attr name="edittext_hint" format="color" />
 </resources>
