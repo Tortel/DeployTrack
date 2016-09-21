@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
@@ -62,10 +62,11 @@ public class AboutDialog extends DialogFragment {
 		MaterialDialog.Builder builder = new MaterialDialog.Builder(wrappedContext);
 
 		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
+		@SuppressLint("InflateParams")
 		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = (TextView) view.findViewById(R.id.about_view);
 
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			text.setText(Html.fromHtml(readRawTextFile(getContent()), Html.FROM_HTML_MODE_LEGACY));
 		} else {
 			//noinspection deprecation

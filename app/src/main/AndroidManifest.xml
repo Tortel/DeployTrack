@@ -14,15 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tortel.deploytrack" >
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.DeployThemeDark" >
+        android:theme="@style/Theme.DeployThemeDark"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Main activity -->
         <activity
