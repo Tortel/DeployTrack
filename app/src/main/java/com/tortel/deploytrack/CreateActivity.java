@@ -45,16 +45,14 @@ import com.tortel.deploytrack.data.*;
 public class CreateActivity extends AppCompatActivity {
 	private static final String KEY_TIME_START = "start";
 	private static final String KEY_TIME_END = "end";
-	private static final String KEY_SET_START = "startSet";
-	private static final String KEY_SET_END = "endSet";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
 	private static final String KEY_DISPLAY_TYPE = "display";
 	
 	private EditText mNameEdit;
-	private Button mStartButton;
-	private Button mEndButton;
+	private EditText mStartButton;
+	private EditText mEndButton;
 
 	private RadioButton mBarButton;
 	
@@ -67,10 +65,6 @@ public class CreateActivity extends AppCompatActivity {
 	//Date range
 	private Calendar mStartDate;
 	private Calendar mEndDate;
-	
-	//Flags for dates
-	private boolean mStartSet;
-	private boolean mEndSet;
 	
 	//The data to save;
 	private Deployment mDeployment;
@@ -98,8 +92,8 @@ public class CreateActivity extends AppCompatActivity {
 		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
 		mNameEdit = (EditText) findViewById(R.id.name);
-		mStartButton = (Button) findViewById(R.id.button_start);
-		mEndButton = (Button) findViewById(R.id.button_end);
+		mStartButton = (EditText) findViewById(R.id.button_start);
+		mEndButton = (EditText) findViewById(R.id.button_end);
 
 		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
 		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
@@ -126,14 +120,10 @@ public class CreateActivity extends AppCompatActivity {
 			
 			mStartDate.setTimeInMillis(mDeployment.getStartDate().getTime());
 			mEndDate.setTimeInMillis(mDeployment.getEndDate().getTime());
-			mStartSet = true;
-			mEndSet = true;
 			
 			//Set the buttons
-			mStartButton.setText(getResources().getString(R.string.start_date) +
-                    "\n" + mDateFormat.format(mStartDate.getTime()));
-			mEndButton.setText(getResources().getString(R.string.end_date) +
-                    "\n" + mDateFormat.format(mEndDate.getTime()));
+			mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
+			mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
 
 			// Set circle/bar selected
 			if(mDeployment.getDisplayType() == Deployment.DISPLAY_BAR){
@@ -148,12 +138,9 @@ public class CreateActivity extends AppCompatActivity {
 			getSupportActionBar().setTitle(R.string.edit);
 		} else {
 			mDeployment = new Deployment();
-			mEndButton.setEnabled(false);
 			
 			mStartDate = Calendar.getInstance();
 			mEndDate = (Calendar) mStartDate.clone();
-			mStartSet = false;
-			mEndSet = false;
 			
 			mCompletedColor = Color.GREEN;
 			mRemainingColor = Color.RED;
@@ -166,24 +153,18 @@ public class CreateActivity extends AppCompatActivity {
 			mStartDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
 			mEndDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
 			
-			mStartSet = savedInstanceState.getBoolean(KEY_SET_START);
-			mEndSet = savedInstanceState.getBoolean(KEY_SET_END);
-			
 			mNameEdit.setText(savedInstanceState.getString(KEY_NAME));
 			
 			mCompletedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
 			mRemainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
 			
 			//Set the date buttons, if set
-			if(mStartSet){
-				mStartButton.setText(getResources().getString(R.string.start_date) +
-                        "\n" + mDateFormat.format(mStartDate.getTime()));
-				mEndButton.setEnabled(true);
+			if(mStartDate != null){
+				mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
 			}
 			
-			if(mEndSet && mEndDate.after(mStartDate)){
-				mEndButton.setText(getResources().getString(R.string.end_date) +
-                        "\n" + mDateFormat.format(mEndDate.getTime()));
+			if(mStartDate != null && mEndDate != null && mEndDate.after(mStartDate)){
+				mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
 			}
 
 			int viewType = savedInstanceState.getInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
@@ -215,9 +196,6 @@ public class CreateActivity extends AppCompatActivity {
 		// Save everything
 		outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
 		outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
-		
-		outState.putBoolean(KEY_SET_START, mStartSet);
-		outState.putBoolean(KEY_SET_END, mEndSet);
 		
 		outState.putString(KEY_NAME, mNameEdit.getText().toString());
 		
@@ -259,7 +237,7 @@ public class CreateActivity extends AppCompatActivity {
 			// TODO - Notify?
 			return;
 		}
-		if(!(mStartDate.getTimeInMillis() < mEndDate.getTimeInMillis())){
+		if(!mEndDate.after(mStartDate)){
 			// TODO - Notify?
 			return;
 		}
@@ -305,11 +283,8 @@ public class CreateActivity extends AppCompatActivity {
 			startPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					mStartDate.set(year, month, day, 0, 0);
-					if(!mEndSet || mStartDate.before(mEndDate)){
-						mStartSet = true;
-						mEndButton.setEnabled(true);
-						mStartButton.setText(getResources().getString(R.string.start_date) +
-                                "\n" + mDateFormat.format(mStartDate.getTime()));
+					if(mEndDate == null || mStartDate.before(mEndDate)){
+						mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
 					}
@@ -322,10 +297,8 @@ public class CreateActivity extends AppCompatActivity {
 			endPicker.initialize(new OnDateSetListener(){
 				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
 					mEndDate.set(year, month, day, 0, 0);
-					if(mEndDate.after(mStartDate)){
-						mEndSet = true;
-						mEndButton.setText(getResources().getString(R.string.end_date) +
-                                "\n" + mDateFormat.format(mEndDate.getTime()));
+					if(mStartDate == null || mEndDate.after(mStartDate)){
+						mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
 					}

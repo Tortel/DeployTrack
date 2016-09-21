@@ -41,22 +41,39 @@ limitations under the License.
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-    
-            <Button
-                android:id="@+id/button_start"
-                android:layout_width="0dip"
-                android:layout_height="75dip"
-                android:layout_weight="0.45"
-                android:onClick="onClick"
-                android:text="@string/start_date" />
-    
-            <Button
-                android:id="@+id/button_end"
-                android:layout_width="0dip"
-                android:layout_height="75dip"
-                android:layout_weight="0.45"
-                android:onClick="onClick"
-                android:text="@string/end_date" />
+
+			<com.rengwuxian.materialedittext.MaterialEditText
+				android:id="@+id/button_start"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_margin="5dip"
+				android:drawableLeft="@drawable/ic_date_range_white_24dp"
+				app:met_floatingLabel="highlight"
+				app:met_textColor="?attr/edittext_color"
+				app:met_textColorHint="?attr/edittext_hint"
+				app:met_floatingLabelTextColor="?attr/edittext_color"
+				android:drawablePadding="5dip"
+				android:hint="@string/start_date"
+				android:editable="false"
+				android:onClick="onClick" />
+
+			<com.rengwuxian.materialedittext.MaterialEditText
+				android:id="@+id/button_end"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_margin="5dip"
+				android:drawableLeft="@drawable/ic_date_range_white_24dp"
+				app:met_floatingLabel="highlight"
+				app:met_textColor="?attr/edittext_color"
+				app:met_textColorHint="?attr/edittext_hint"
+				app:met_floatingLabelTextColor="?attr/edittext_color"
+				android:drawablePadding="5dip"
+				android:hint="@string/end_date"
+				android:editable="false"
+				android:onClick="onClick" />
+
         </LinearLayout>
 	
 	    <TextView
