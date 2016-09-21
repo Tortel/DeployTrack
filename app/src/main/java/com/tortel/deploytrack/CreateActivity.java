@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +55,6 @@ public class CreateActivity extends AppCompatActivity {
 	private EditText mNameEdit;
 	private Button mStartButton;
 	private Button mEndButton;
-	private Button mSaveButton;
 
 	private RadioButton mBarButton;
 	
@@ -100,7 +100,6 @@ public class CreateActivity extends AppCompatActivity {
 		mNameEdit = (EditText) findViewById(R.id.name);
 		mStartButton = (Button) findViewById(R.id.button_start);
 		mEndButton = (Button) findViewById(R.id.button_end);
-		mSaveButton = (Button) findViewById(R.id.button_save);
 
 		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
 		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
@@ -150,7 +149,6 @@ public class CreateActivity extends AppCompatActivity {
 		} else {
 			mDeployment = new Deployment();
 			mEndButton.setEnabled(false);
-			mSaveButton.setEnabled(false);
 			
 			mStartDate = Calendar.getInstance();
 			mEndDate = (Calendar) mStartDate.clone();
@@ -186,7 +184,6 @@ public class CreateActivity extends AppCompatActivity {
 			if(mEndSet && mEndDate.after(mStartDate)){
 				mEndButton.setText(getResources().getString(R.string.end_date) +
                         "\n" + mDateFormat.format(mEndDate.getTime()));
-				mSaveButton.setEnabled(true);
 			}
 
 			int viewType = savedInstanceState.getInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
@@ -211,11 +208,11 @@ public class CreateActivity extends AppCompatActivity {
 		completedPicker.setShowOldCenterColor(false);
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//Save everything
+		// Save everything
 		outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
 		outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
 		
@@ -233,6 +230,12 @@ public class CreateActivity extends AppCompatActivity {
 			outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
 		}
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_create, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -241,8 +244,53 @@ public class CreateActivity extends AppCompatActivity {
 		case android.R.id.home:
 			this.finish();
 			return true;
+			case R.id.menu_save:
+				saveDeployment();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Check that everything is set, and save the deployment
+	 */
+	private void saveDeployment(){
+		if(mStartDate == null || mEndDate == null){
+			// TODO - Notify?
+			return;
+		}
+		if(!(mStartDate.getTimeInMillis() < mEndDate.getTimeInMillis())){
+			// TODO - Notify?
+			return;
+		}
+
+		String name = mNameEdit.getText().toString().trim();
+		if("".equals(name)){
+			Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		//Set the values
+		mDeployment.setStartDate(mStartDate.getTime());
+		mDeployment.setEndDate(mEndDate.getTime());
+		mDeployment.setName(name);
+		mDeployment.setCompletedColor(mCompletedColor);
+		mDeployment.setRemainingColor(mRemainingColor);
+		// Set the display type
+		if(mBarButton.isChecked()){
+			mDeployment.setDisplayType(Deployment.DISPLAY_BAR);
+		} else {
+			mDeployment.setDisplayType(Deployment.DISPLAY_CIRCLE);
+		}
+		//Save it
+		DatabaseManager.getInstance(this).saveDeployment(mDeployment);
+		// Log the event
+		if(getIntent().hasExtra("id")){
+			mFirebaseAnalytics.logEvent(Analytics.EVENT_EDITED_DEPLOYMENT, null);
+		} else {
+			mFirebaseAnalytics.logEvent(Analytics.EVENT_CREATED_DEPLOYMENT, null);
+		}
+		//End
+		finish();
 	}
 	
 	/**
@@ -252,38 +300,6 @@ public class CreateActivity extends AppCompatActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		
 		switch(v.getId()){
-		case R.id.button_cancel:
-			this.finish();
-			return;
-		case R.id.button_save:
-			String name = mNameEdit.getText().toString().trim();
-			if("".equals(name)){
-				Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
-				return;
-			}
-			//Set the values
-			mDeployment.setStartDate(mStartDate.getTime());
-			mDeployment.setEndDate(mEndDate.getTime());
-			mDeployment.setName(name);
-			mDeployment.setCompletedColor(mCompletedColor);
-			mDeployment.setRemainingColor(mRemainingColor);
-			// Set the display type
-			if(mBarButton.isChecked()){
-				mDeployment.setDisplayType(Deployment.DISPLAY_BAR);
-			} else {
-				mDeployment.setDisplayType(Deployment.DISPLAY_CIRCLE);
-			}
-			//Save it
-			DatabaseManager.getInstance(this).saveDeployment(mDeployment);
-			// Log the event
-			if(getIntent().hasExtra("id")){
-				mFirebaseAnalytics.logEvent(Analytics.EVENT_EDITED_DEPLOYMENT, null);
-			} else {
-				mFirebaseAnalytics.logEvent(Analytics.EVENT_CREATED_DEPLOYMENT, null);
-			}
-			//End
-			finish();
-			return;
 		case R.id.button_start:
 			DatePickerDialog startPicker = new DatePickerDialog();
 			startPicker.initialize(new OnDateSetListener(){
@@ -296,7 +312,6 @@ public class CreateActivity extends AppCompatActivity {
                                 "\n" + mDateFormat.format(mStartDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-						mSaveButton.setEnabled(false);
 					}
 				}
 			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
@@ -309,12 +324,10 @@ public class CreateActivity extends AppCompatActivity {
 					mEndDate.set(year, month, day, 0, 0);
 					if(mEndDate.after(mStartDate)){
 						mEndSet = true;
-						mSaveButton.setEnabled(true);
 						mEndButton.setText(getResources().getString(R.string.end_date) +
                                 "\n" + mDateFormat.format(mEndDate.getTime()));
 					} else {
 						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-						mSaveButton.setEnabled(false);
 					}
 				}
 			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
