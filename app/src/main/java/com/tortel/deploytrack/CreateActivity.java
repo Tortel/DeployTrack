@@ -19,14 +19,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -42,7 +43,9 @@ import com.tortel.deploytrack.data.*;
 /**
  * Activity for creating and editing a Deployment
  */
-public class CreateActivity extends AppCompatActivity {
+public class CreateActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
+	private static final String TAG_DATE_DIALOG = "datePicker";
+
 	private static final String KEY_TIME_START = "start";
 	private static final String KEY_TIME_END = "end";
 	private static final String KEY_NAME = "name";
@@ -51,8 +54,8 @@ public class CreateActivity extends AppCompatActivity {
 	private static final String KEY_DISPLAY_TYPE = "display";
 	
 	private EditText mNameEdit;
-	private EditText mStartButton;
-	private EditText mEndButton;
+	private EditText mStartInput;
+	private EditText mEndInput;
 
 	private RadioButton mBarButton;
 	
@@ -92,8 +95,13 @@ public class CreateActivity extends AppCompatActivity {
 		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
 		mNameEdit = (EditText) findViewById(R.id.name);
-		mStartButton = (EditText) findViewById(R.id.button_start);
-		mEndButton = (EditText) findViewById(R.id.button_end);
+		mStartInput = (EditText) findViewById(R.id.button_start);
+		mStartInput.setOnClickListener(this);
+		mStartInput.setOnFocusChangeListener(this);
+
+		mEndInput = (EditText) findViewById(R.id.button_end);
+		mEndInput.setOnClickListener(this);
+		mEndInput.setOnFocusChangeListener(this);
 
 		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
 		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
@@ -122,8 +130,8 @@ public class CreateActivity extends AppCompatActivity {
 			mEndDate.setTimeInMillis(mDeployment.getEndDate().getTime());
 			
 			//Set the buttons
-			mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
-			mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
+			mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+			mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
 
 			// Set circle/bar selected
 			if(mDeployment.getDisplayType() == Deployment.DISPLAY_BAR){
@@ -160,11 +168,11 @@ public class CreateActivity extends AppCompatActivity {
 			
 			//Set the date buttons, if set
 			if(mStartDate != null){
-				mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
+				mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
 			}
 			
 			if(mStartDate != null && mEndDate != null && mEndDate.after(mStartDate)){
-				mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
+				mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
 			}
 
 			int viewType = savedInstanceState.getInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
@@ -274,40 +282,84 @@ public class CreateActivity extends AppCompatActivity {
 	/**
 	 * Method called when the buttons are clicked
 	 */
-	public void onClick(View v){
-		FragmentManager fm = getSupportFragmentManager();
-		
-		switch(v.getId()){
+	@Override
+	public void onClick(View view){
+		Log.d("OnClick called");
+		switch(view.getId()){
 		case R.id.button_start:
-			DatePickerDialog startPicker = new DatePickerDialog();
-			startPicker.initialize(new OnDateSetListener(){
-				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-					mStartDate.set(year, month, day, 0, 0);
-					if(mEndDate == null || mStartDate.before(mEndDate)){
-						mStartButton.setText(mDateFormat.format(mStartDate.getTime()));
-					} else {
-						Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-					}
-				}
-			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
-			startPicker.show(fm, "startPicker");
-			return;
+			showStartDatePicker();
+			break;
 		case R.id.button_end:
-			DatePickerDialog endPicker = new DatePickerDialog();
-			endPicker.initialize(new OnDateSetListener(){
-				public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-					mEndDate.set(year, month, day, 0, 0);
-					if(mStartDate == null || mEndDate.after(mStartDate)){
-						mEndButton.setText(mDateFormat.format(mEndDate.getTime()));
-					} else {
-						Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-					}
-				}
-			}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
-			endPicker.show(fm, "endPicker");
+			showEndDatePicker();
+			break;
 		}
 	}
-	
+
+	@Override
+	public void onFocusChange(View view, boolean hasFocus) {
+		Log.d("onFocusChange called with hasFocus: "+hasFocus);
+		if(hasFocus){
+			switch (view.getId()){
+				case R.id.button_start:
+					showStartDatePicker();
+					break;
+				case R.id.button_end:
+					showEndDatePicker();
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Show the start date picker, if it is not already visible
+	 */
+	private void showStartDatePicker(){
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment startDialog = fm.findFragmentByTag(TAG_DATE_DIALOG);
+		if(startDialog != null && startDialog.isVisible()){
+			Log.d("Date dialog is visible, not showing");
+			return;
+		}
+
+		DatePickerDialog startPicker = new DatePickerDialog();
+		startPicker.initialize(new OnDateSetListener(){
+			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
+				mStartDate.set(year, month, day, 0, 0);
+				if(mEndDate == null || mStartDate.before(mEndDate)){
+					mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+				} else {
+					Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
+				}
+			}
+		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
+		startPicker.show(fm, TAG_DATE_DIALOG);
+	}
+
+	/**
+	 * Show the end date picker, if it is not already visible
+	 */
+	private void showEndDatePicker(){
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment endDialog = fm.findFragmentByTag(TAG_DATE_DIALOG);
+		if(endDialog != null && endDialog.isVisible()){
+			Log.d("End dialog is visible, not showing");
+			return;
+		}
+
+		DatePickerDialog endPicker = new DatePickerDialog();
+		endPicker.initialize(new OnDateSetListener(){
+			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
+				mEndDate.set(year, month, day, 0, 0);
+				if(mStartDate == null || mEndDate.after(mStartDate)){
+					mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
+				} else {
+					Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
+				}
+			}
+		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
+		endPicker.show(fm, TAG_DATE_DIALOG);
+	}
+
 	/*
 	 * Classes to listen for color changes
 	 */
