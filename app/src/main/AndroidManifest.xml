@@ -17,6 +17,11 @@ limitations under the License.
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tortel.deploytrack" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Needed for Firebase Analytics -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Used in the date picker, I think? -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
