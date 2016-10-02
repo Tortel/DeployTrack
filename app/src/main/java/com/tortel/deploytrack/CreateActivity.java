@@ -324,15 +324,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		DatePickerDialog startPicker = new DatePickerDialog();
 		startPicker.initialize(new OnDateSetListener(){
 			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-				mStartDate.set(year, month, day, 0, 0);
-				if(mEndDate == null || mStartDate.before(mEndDate)){
-					mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
-				} else {
-					Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-				}
+				((CreateActivity) dialog.getActivity()).setStartDate(year, month, day);
 			}
 		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
 		startPicker.show(fm, TAG_DATE_DIALOG);
+	}
+
+	/**
+	 * Set the start date
+     */
+	public void setStartDate(int year, int month, int day){
+		mStartDate.set(year, month, day, 0, 0);
+		if(mEndDate == null || mStartDate.before(mEndDate)){
+			mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+		} else {
+			Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
@@ -349,15 +356,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		DatePickerDialog endPicker = new DatePickerDialog();
 		endPicker.initialize(new OnDateSetListener(){
 			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-				mEndDate.set(year, month, day, 0, 0);
-				if(mStartDate == null || mEndDate.after(mStartDate)){
-					mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
-				} else {
-					Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-				}
+				((CreateActivity) dialog.getActivity()).setEndDate(year, month, day);
 			}
 		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
 		endPicker.show(fm, TAG_DATE_DIALOG);
+	}
+
+	/**
+	 * Set the end date
+     */
+	public void setEndDate(int year, int month, int day){
+		mEndDate.set(year, month, day, 0, 0);
+		if(mStartDate == null || mEndDate.after(mStartDate)){
+			mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
+		} else {
+			Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/*
