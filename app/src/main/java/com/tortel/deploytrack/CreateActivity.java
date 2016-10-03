@@ -321,6 +321,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 					showEndDatePicker();
 					break;
 			}
+			// Shift the focus off the date 'buttons'
+			mNameEdit.requestFocus();
 		}
 	}
 
