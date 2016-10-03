@@ -16,6 +16,7 @@
 package com.tortel.deploytrack.dialog;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -41,7 +42,20 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
         super();
         setOnDateSetListener(this);
         isActive = true;
-        mType = TYPE_START;
+    }
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        if(bundle != null){
+            mType = bundle.getInt(EXTRA_TYPE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putInt(EXTRA_TYPE, mType);
     }
 
     /**
