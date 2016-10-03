@@ -19,11 +19,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +36,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.ColorPicker.OnColorChangedListener;
 import com.larswerkman.holocolorpicker.SVBar;
 import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.dialog.SingleDatePickerDialog;
 
 /**
  * Activity for creating and editing a Deployment
@@ -196,6 +199,17 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		completedPicker.setColor(mCompletedColor);
 		completedPicker.setShowOldCenterColor(false);
 		completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
+
+		// Register for date changes
+		LocalBroadcastManager.getInstance(this).registerReceiver(mDateChangeReceiver,
+				new IntentFilter(SingleDatePickerDialog.ACTION_DATE_SELECTED));
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		// Unregister our date change receiver
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mDateChangeReceiver);
 	}
 
 	@Override
@@ -321,25 +335,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			return;
 		}
 
-		DatePickerDialog startPicker = new DatePickerDialog();
-		startPicker.initialize(new OnDateSetListener(){
-			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-				((CreateActivity) dialog.getActivity()).setStartDate(year, month, day);
-			}
-		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
-		startPicker.show(fm, TAG_DATE_DIALOG);
+		if(!SingleDatePickerDialog.isActive()){
+			SingleDatePickerDialog startPicker = new SingleDatePickerDialog();
+			SingleDatePickerDialog endPicker = new SingleDatePickerDialog();
+			endPicker.initialize(SingleDatePickerDialog.TYPE_START, mStartDate.get(Calendar.YEAR),
+					mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH));
+			startPicker.show(fm, TAG_DATE_DIALOG);
+		}
 	}
 
 	/**
 	 * Set the start date
      */
 	public void setStartDate(int year, int month, int day){
+		Log.v("Setting start date to "+day+"/"+month+"/"+year);
 		mStartDate.set(year, month, day, 0, 0);
-		if(mEndDate == null || mStartDate.before(mEndDate)){
-			mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
-		} else {
-			Toast.makeText(CreateActivity.this, R.string.invalid_start, Toast.LENGTH_SHORT).show();
-		}
+		mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
 	}
 
 	/**
@@ -353,25 +364,21 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			return;
 		}
 
-		DatePickerDialog endPicker = new DatePickerDialog();
-		endPicker.initialize(new OnDateSetListener(){
-			public void onDateSet(DatePickerDialog dialog, int year, int month, int day){
-				((CreateActivity) dialog.getActivity()).setEndDate(year, month, day);
-			}
-		}, mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH), true);
-		endPicker.show(fm, TAG_DATE_DIALOG);
+		if(!SingleDatePickerDialog.isActive()) {
+			SingleDatePickerDialog endPicker = new SingleDatePickerDialog();
+			endPicker.initialize(SingleDatePickerDialog.TYPE_END, mEndDate.get(Calendar.YEAR),
+					mEndDate.get(Calendar.MONTH), mEndDate.get(Calendar.DAY_OF_MONTH));
+			endPicker.show(fm, TAG_DATE_DIALOG);
+		}
 	}
 
 	/**
 	 * Set the end date
      */
 	public void setEndDate(int year, int month, int day){
+		Log.v("Setting end date to "+day+"/"+month+"/"+year);
 		mEndDate.set(year, month, day, 0, 0);
-		if(mStartDate == null || mEndDate.after(mStartDate)){
-			mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
-		} else {
-			Toast.makeText(CreateActivity.this, R.string.invalid_end, Toast.LENGTH_SHORT).show();
-		}
+		mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
 	}
 
 	/*
@@ -390,4 +397,19 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			mRemainingColor = color;
 		}
 	}
+
+	private BroadcastReceiver mDateChangeReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int year = intent.getIntExtra(SingleDatePickerDialog.EXTRA_YEAR, -1);
+			int month = intent.getIntExtra(SingleDatePickerDialog.EXTRA_MONTH, -1);
+			int day = intent.getIntExtra(SingleDatePickerDialog.EXTRA_DAY, -1);
+			int type = intent.getIntExtra(SingleDatePickerDialog.EXTRA_TYPE, SingleDatePickerDialog.TYPE_START);
+			if(type  == SingleDatePickerDialog.TYPE_START){
+				setStartDate(year, month, day);
+			} else {
+				setEndDate(year, month, day);
+			}
+		}
+	};
 }
