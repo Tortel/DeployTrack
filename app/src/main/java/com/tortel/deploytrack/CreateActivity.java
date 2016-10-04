@@ -25,16 +25,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -57,8 +59,11 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 	private static final String KEY_DISPLAY_TYPE = "display";
 	
 	private EditText mNameEdit;
+	private TextInputLayout mNameWrapper;
 	private EditText mStartInput;
+	private TextInputLayout mStartWrapper;
 	private EditText mEndInput;
+	private TextInputLayout mEndWrapper;
 
 	private RadioButton mBarButton;
 	
@@ -98,13 +103,38 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
 		mNameEdit = (EditText) findViewById(R.id.name);
+		mNameEdit.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+				// Do nothing
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+				// Clear errors on text change
+				try{
+					mNameWrapper.setErrorEnabled(false);
+				} catch(Exception e){
+					// Ignore
+				}
+			}
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+				// Do nothing
+			}
+		});
+		mNameWrapper = (TextInputLayout) findViewById(R.id.name_wraper);
+
 		mStartInput = (EditText) findViewById(R.id.button_start);
 		mStartInput.setOnClickListener(this);
 		mStartInput.setOnFocusChangeListener(this);
+		mStartWrapper = (TextInputLayout) findViewById(R.id.start_wrapper);
 
 		mEndInput = (EditText) findViewById(R.id.button_end);
 		mEndInput.setOnClickListener(this);
 		mEndInput.setOnFocusChangeListener(this);
+		mEndWrapper = (TextInputLayout) findViewById(R.id.end_wrapper);
 
 		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
 		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
@@ -255,20 +285,38 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 	 * Check that everything is set, and save the deployment
 	 */
 	private void saveDeployment(){
-		if(mStartDate == null || mEndDate == null){
-			// TODO - Notify?
-			return;
+		boolean hasError = false;
+
+		if(mStartDate == null){
+			mStartWrapper.setErrorEnabled(true);
+			mStartWrapper.setError(getString(R.string.invalid_start));
+			hasError = true;
+		} else {
+			mStartWrapper.setErrorEnabled(false);
 		}
-		if(!mEndDate.after(mStartDate)){
-			// TODO - Notify?
-			return;
+
+		if(mEndDate == null || !mEndDate.after(mStartDate)){
+			mEndWrapper.setErrorEnabled(true);
+			mEndWrapper.setError(getString(R.string.invalid_end));
+			hasError = true;
+		} else {
+			mEndWrapper.setErrorEnabled(false);
 		}
 
 		String name = mNameEdit.getText().toString().trim();
 		if("".equals(name)){
-			Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show();
+			mNameWrapper.setErrorEnabled(true);
+			mNameWrapper.setError(getString(R.string.invalid_name));
+			hasError = true;
+		} else {
+			mNameWrapper.setErrorEnabled(false);
+		}
+
+		// Stop now if there was an error
+		if(hasError){
 			return;
 		}
+
 		//Set the values
 		mDeployment.setStartDate(mStartDate.getTime());
 		mDeployment.setEndDate(mEndDate.getTime());
@@ -353,6 +401,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		Log.v("Setting start date to "+day+"/"+month+"/"+year);
 		mStartDate.set(year, month, day, 0, 0);
 		mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+
+		mStartWrapper.setErrorEnabled(false);
 	}
 
 	/**
@@ -381,6 +431,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		Log.v("Setting end date to "+day+"/"+month+"/"+year);
 		mEndDate.set(year, month, day, 0, 0);
 		mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
+
+		mEndWrapper.setErrorEnabled(false);
 	}
 
 	/*
