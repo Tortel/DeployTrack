@@ -13,26 +13,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:gravity="center"
-        android:id="@+id/indicator"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        app:pstsDividerColor="@color/divider"
-        app:pstsUnderlineColor="?attr/tabIndicatorColor"
-        app:pstsIndicatorColor="?attr/tabIndicatorColor" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        />
+        <com.astuetz.PagerSlidingTabStrip
+            android:gravity="center"
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            app:pstsDividerColor="@color/divider"
+            app:pstsUnderlineColor="?attr/tabIndicatorColor"
+            app:pstsIndicatorColor="?attr/tabIndicatorColor" />
 
-</LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

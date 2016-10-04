@@ -72,6 +72,7 @@ limitations under the License.
     <string name="invalid_name">Please enter a valid name</string>
     <string name="invalid_start">Enter a valid start date</string>
     <string name="invalid_end">End date is not after start date</string>
+    <string name="sync_account_error">There was an error with your sync account</string>
 
     <!-- Info fragment text -->
     <string name="howto_add">To add data, tap on the + icon in the Action Bar.</string>

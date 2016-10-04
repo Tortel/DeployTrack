@@ -31,6 +31,7 @@ public class Prefs {
     private static final String KEY_LIGHT_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "welcome_2.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
+    private static final String KEY_SYNC_ENABLED = "sync";
 	
 	private static boolean animationEnabled;
 	private static int mainDisplayType;
@@ -99,6 +100,22 @@ public class Prefs {
         SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_WELCOME, true).apply();
         welcomeShown = true;
+    }
+
+    /**
+     * Check if sync is or was enabled
+     */
+    public static boolean isSyncEnabled(Context context){
+        return getPrefs(context).getBoolean(KEY_SYNC_ENABLED, false);
+    }
+
+    /**
+     * Set if sync is enabled or not
+     */
+    public static void setSyncEnabled(Context context, boolean enabled){
+        getPrefs(context).edit()
+                .putBoolean(KEY_SYNC_ENABLED, enabled)
+                .apply();
     }
 
     /**

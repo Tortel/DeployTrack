@@ -192,6 +192,8 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                                     Toast.LENGTH_LONG).show();
 
                             showSyncStatus();
+                            // Record that sync is enabled
+                            Prefs.setSyncEnabled(getApplicationContext(), true);
                         }
                     }
                 });
@@ -211,6 +213,8 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                 DatabaseManager.getInstance(this).setFirebaseUser(null);
                 // Update the UI
                 showSyncStatus();
+                // Un-set the preference
+                Prefs.setSyncEnabled(getApplicationContext(), false);
 
                 // Toast it
                 Toast.makeText(SyncSetupActivity.this, R.string.signed_out, Toast.LENGTH_LONG).show();

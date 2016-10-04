@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -241,6 +242,15 @@ public class MainActivity extends AppCompatActivity {
 		FirebaseAuth auth = FirebaseAuth.getInstance();
 		if(auth.getCurrentUser() != null){
 			DatabaseManager.getInstance(this).setFirebaseUser(auth.getCurrentUser());
+		} else if(Prefs.isSyncEnabled(getApplicationContext())){
+			// If sync is/was enabled, and no account was found, let the user know
+			Snackbar.make(findViewById(R.id.root), R.string.sync_account_error, Snackbar.LENGTH_INDEFINITE)
+					.setAction(R.string.menu_sync, new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							startActivity(new Intent(MainActivity.this, SyncSetupActivity.class));
+						}
+					}).show();
 		}
 	}
 
