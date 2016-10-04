@@ -70,8 +70,8 @@ limitations under the License.
 
     <!-- Error Strings -->
     <string name="invalid_name">Please enter a valid name</string>
-    <string name="invalid_start">Start date is not before end date!</string>
-    <string name="invalid_end">End date is not after start date!</string>
+    <string name="invalid_start">Enter a valid start date</string>
+    <string name="invalid_end">End date is not after start date</string>
 
     <!-- Info fragment text -->
     <string name="howto_add">To add data, tap on the + icon in the Action Bar.</string>

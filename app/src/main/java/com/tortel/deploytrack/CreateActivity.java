@@ -287,7 +287,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 	private void saveDeployment(){
 		boolean hasError = false;
 
-		if(mStartDate == null){
+		if(mStartDate == null || "".equals(mStartInput.getText().toString())){
 			mStartWrapper.setErrorEnabled(true);
 			mStartWrapper.setError(getString(R.string.invalid_start));
 			hasError = true;
@@ -295,7 +295,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			mStartWrapper.setErrorEnabled(false);
 		}
 
-		if(mEndDate == null || !mEndDate.after(mStartDate)){
+		if(mEndDate == null || !mEndDate.after(mStartDate) || "".equals(mEndInput.getText().toString())){
 			mEndWrapper.setErrorEnabled(true);
 			mEndWrapper.setError(getString(R.string.invalid_end));
 			hasError = true;
@@ -387,8 +387,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
 		if(!SingleDatePickerDialog.isActive()){
 			SingleDatePickerDialog startPicker = new SingleDatePickerDialog();
-			SingleDatePickerDialog endPicker = new SingleDatePickerDialog();
-			endPicker.initialize(SingleDatePickerDialog.TYPE_START, mStartDate.get(Calendar.YEAR),
+			startPicker.initialize(SingleDatePickerDialog.TYPE_START, mStartDate.get(Calendar.YEAR),
 					mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH));
 			startPicker.show(fm, TAG_DATE_DIALOG);
 		}
