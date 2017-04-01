@@ -26,11 +26,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.db.chart.Tools;
+import com.db.chart.animation.Animation;
 import com.db.chart.model.BarSet;
-import com.db.chart.view.AxisController;
+import com.db.chart.renderer.AxisRenderer;
 import com.db.chart.view.HorizontalStackBarChartView;
-import com.db.chart.view.animation.Animation;
-import com.db.chart.view.animation.easing.ExpoEase;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.Prefs.ViewTypes;
@@ -94,8 +93,8 @@ public class BarDeploymentFragment extends Fragment {
         mBarChartView.setRoundCorners(Tools.fromDpToPx(15));
         mBarChartView.setSetSpacing(Tools.fromDpToPx(10));
         mBarChartView.setBorderSpacing(Tools.fromDpToPx(20))
-                .setYLabels(AxisController.LabelPosition.NONE)
-                .setXLabels(AxisController.LabelPosition.NONE)
+                .setYLabels(AxisRenderer.LabelPosition.NONE)
+                .setXLabels(AxisRenderer.LabelPosition.NONE)
                 .setXAxis(false)
                 .setYAxis(false);
 
@@ -217,7 +216,7 @@ public class BarDeploymentFragment extends Fragment {
 
 		// Animate the chart
 		Animation anim = new Animation()
-				.setEasing(new ExpoEase())
+				//.setEasing(new ExpoEase())
 				.setDuration(ANI_DURATION);
 
 		mBarChartView.clearAnimation();
