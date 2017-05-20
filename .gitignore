@@ -32,11 +32,6 @@ gen/
 .idea
 *.iml
 
-# this keeps wanting to update...
-gradle/wrapper/gradle-wrapper.properties
-/gradle/wrapper/gradle-wrapper.properties
-/gradle/wrapper/gradle-wrapper.properties
-
 # System specific stuff
 local.properties
 
