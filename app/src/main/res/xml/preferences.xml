@@ -66,6 +66,15 @@ limitations under the License.
 				android:targetClass="com.tortel.deploytrack.SyncSetupActivity"
 				/>
 		</Preference>
+		<Preference
+			android:key="pref_privacy_policy"
+			android:title="@string/prefs_privacy_policy"
+			android:summary="@string/prefs_privacy_policy_summary">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://github.com/Tortel/DeployTrack/blob/master/PrivacyPolicy.md"
+				/>
+		</Preference>
 	</PreferenceCategory>
 	<PreferenceCategory
 	    android:title="@string/other">
