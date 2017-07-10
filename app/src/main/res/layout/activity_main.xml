@@ -30,7 +30,7 @@ limitations under the License.
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dip"
-            app:pstsDividerColor="@color/divider"
+            app:pstsDividerColor="?attr/tabIndicatorColor"
             app:pstsUnderlineColor="?attr/tabIndicatorColor"
             app:pstsIndicatorColor="?attr/tabIndicatorColor" />
 
