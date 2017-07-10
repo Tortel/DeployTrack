@@ -116,7 +116,7 @@ limitations under the License.
     <string name="send_feedback_summary">Open an Email application to send feedback to the developer</string>
     <string name="show_welcome">Show Welcome</string>
     <string name="show_welcome_summary">Show the welcome dialog again</string>
-    <string name="show_about_screenshot">Shot About Screen Shot Mode</string>
+    <string name="show_about_screenshot">Show About Screen Shot Mode</string>
     <string name="show_about_screenshot_summary">Show the about screen shot mode dialog again</string>
     <string name="prefs_analytics">Enable Anonymous Statistics</string>
     <string name="prefs_analytics_summary">Help make the application better by reporting anonymous usage statistics</string>
