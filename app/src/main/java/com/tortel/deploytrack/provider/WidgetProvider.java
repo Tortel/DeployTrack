@@ -176,6 +176,10 @@ public class WidgetProvider extends AppWidgetProvider {
             Bundle newOptions) {
         DatabaseManager db = DatabaseManager.getInstance(context);
         WidgetInfo widgetInfo = db.getWidgetInfo(appWidgetId);
+        // Bail if the info is null
+        if(widgetInfo == null) {
+            return;
+        }
         
         int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
         int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
@@ -262,11 +266,14 @@ public class WidgetProvider extends AppWidgetProvider {
         remoteViews.setImageViewBitmap(R.id.widget_pie, getChartBitmap(deployment, size));
         
         // Apply text color
-        if(!info.isLightText()){
+        if(info.isLightText()){
+            remoteViews.setTextColor(R.id.widget_info, Color.LTGRAY);
+            remoteViews.setTextColor(R.id.widget_name, Color.LTGRAY);
+            remoteViews.setTextColor(R.id.widget_percent, Color.LTGRAY);
+        } else {
             remoteViews.setTextColor(R.id.widget_info, Color.DKGRAY);
             remoteViews.setTextColor(R.id.widget_name, Color.DKGRAY);
             remoteViews.setTextColor(R.id.widget_percent, Color.DKGRAY);
-            
         }
         
         // Register an onClickListener
