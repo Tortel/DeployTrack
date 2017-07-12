@@ -28,10 +28,10 @@ dependencies {
     // https://github.com/bmarrdev/android-DecoView-charting
     compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
 
-    // https://github.com/rengwuxian/MaterialEditText
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    // https://github.com/astuetz/PagerSlidingTabStrip
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    // https://github.com/ogaclejapan/SmartTabLayout
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    // https://github.com/jpardogo/PagerSlidingTabStrip
+    compile 'com.jpardogo.materialtabstrip:library:1.1.1'
     // https://github.com/jaydeep17/datetimepicker
     compile 'com.github.jaydeep17:datetimepicker:0.0.4'
     // https://github.com/LarsWerkman/HoloColorPicker

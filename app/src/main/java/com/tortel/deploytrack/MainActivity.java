@@ -35,9 +35,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
 import com.tortel.deploytrack.dialog.AboutDialog;
@@ -132,18 +132,11 @@ public class MainActivity extends AppCompatActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(mAdapter);
 
-        PagerSlidingTabStrip indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
+		SmartTabLayout indicator = (SmartTabLayout) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
-
-        // Set the tab text color
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.tabTextColor, typedValue, true);
-        int color = typedValue.data;
-        indicator.setTextColor(color);
 		
 		pager.setCurrentItem(mCurrentPosition);
-		indicator.notifyDataSetChanged();
 
         if(mScreenShotMode){
             indicator.setVisibility(View.INVISIBLE);
