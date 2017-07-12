@@ -56,6 +56,11 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // Check for light theme
+        Prefs.load(this);
+        if(Prefs.useLightTheme()){
+            setTheme(R.style.Theme_DeployThemeLight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_setup);
         setTitle(R.string.menu_sync);
