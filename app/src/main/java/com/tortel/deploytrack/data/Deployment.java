@@ -81,6 +81,11 @@ public class Deployment implements Comparable<Deployment> {
 		return startCompare;
 	}
 
+	@Override
+	public String toString(){
+		return "[Deployment "+uuid+" "+name+"]";
+	}
+
 	@Exclude
 	public String getFormattedStart(){
 		if(format == null){

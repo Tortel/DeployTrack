@@ -91,52 +91,12 @@ public class WidgetProvider extends AppWidgetProvider {
             DatabaseUpgrader.doDatabaseUpgrade(context);
         }
 
-        List<WidgetInfo> infoList = DatabaseManager.getInstance(context).getAllWidgetInfo();
-
-        // Log how many widgets there are
-        FirebaseAnalytics.getInstance(context)
-                .setUserProperty(Analytics.PROPERTY_WIDGET_COUNT, ""+infoList.size());
-    	
-        for(WidgetInfo info : infoList){
-        	int widgetId = info.getId();
-
-            Log.d("Updating widget "+widgetId);
-            
-            RemoteViews remoteViews;
-            
-            if(info.isWide()){
-                Log.v("Using wide layout");
-                remoteViews = new RemoteViews(context.getPackageName(),
-                    R.layout.widget_wide_layout);
-            } else {
-                remoteViews = new RemoteViews(context.getPackageName(),
-                        R.layout.widget_layout);
-            }
-
-            Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getUuid());
-
-            //Draw everything
-            remoteViews = updateWidgetView(context, remoteViews, info, mScreenShotMode);
-
-            
-            //Update it
-            try{
-            	appWidgetManager.updateAppWidget(widgetId, remoteViews);
-            } catch(Exception e){
-            	/*
-            	 * Catching all exceptions, because I suspect that if a widget has been deleted,
-            	 * yet not removed from the database, it will still try to update it and probably cause
-            	 * some sort of exception. So Ill just go ahead and keep the app from crashing.
-            	 */
-            	Log.e("Uhoh!",e);
-            }
-        }
+        updateAllWidgets(context, appWidgetManager);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if(mScreenShotMode){
             // Time screenshot mode out in 3 min
-
             Intent cancelScreenShotMode = new Intent(UPDATE_INTENT);
             cancelScreenShotMode.putExtra(KEY_SCREENSHOT_MODE, false);
 
@@ -167,6 +127,62 @@ public class WidgetProvider extends AppWidgetProvider {
                 alarmManager.set(AlarmManager.RTC, tomorrow.getMillis() + 100, pending);
             }
 
+        }
+    }
+
+    /**
+     * Update all widgets in the database
+     * @param context
+     * @param appWidgetManager
+     */
+    private void updateAllWidgets(Context context, AppWidgetManager appWidgetManager){
+        List<WidgetInfo> infoList = DatabaseManager.getInstance(context).getAllWidgetInfo();
+
+        // Log how many widgets there are
+        FirebaseAnalytics.getInstance(context)
+                .setUserProperty(Analytics.PROPERTY_WIDGET_COUNT, ""+infoList.size());
+
+        for(WidgetInfo info : infoList){
+            int widgetId = info.getId();
+
+            Log.d("Updating widget "+widgetId);
+
+            Log.d("Widget "+info.getId()+" with deployment "+info.getDeployment().getUuid());
+
+            //Draw everything
+            RemoteViews remoteViews = updateWidgetView(context, info, mScreenShotMode);
+
+            //Update it
+            try{
+                appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            } catch(Exception e){
+                /*
+                 * Catching all exceptions, because I suspect that if a widget has been deleted,
+                 * yet not removed from the database, it will still try to update it and probably cause
+                 * some sort of exception. So Ill just go ahead and keep the app from crashing.
+                 */
+                Log.e("Uhoh!",e);
+
+                // Show the error view
+                showErrorView(context, appWidgetManager, widgetId);
+            }
+        }
+    }
+
+    /**
+     * Show the error view for the widget ID
+     * @param context
+     * @param appWidgetManager
+     * @param widgetId
+     */
+    private void showErrorView(Context context, AppWidgetManager appWidgetManager, int widgetId){
+        // Show the error message
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_error);
+        try {
+            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+        } catch(Exception e){
+            // Ohwell. We tried
+            Log.e("Uhoh showing error view", e);
         }
     }
     
@@ -213,18 +229,37 @@ public class WidgetProvider extends AppWidgetProvider {
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
      */
-    public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews, WidgetInfo info){
-        return updateWidgetView(context, remoteViews, info, false);
+    public static RemoteViews updateWidgetView(Context context, WidgetInfo info){
+        return updateWidgetView(context, info, false);
     }
 
     /**
      * Sets up and fills the RemoteViews with the data provided in the WidgetInfo class
      */
-    public static RemoteViews updateWidgetView(Context context, RemoteViews remoteViews,
+    public static RemoteViews updateWidgetView(Context context,
                                                WidgetInfo info, boolean screenShotMode){
         Deployment deployment = info.getDeployment();
         Resources resources = context.getResources();
         Prefs.load(context);
+
+        Log.v("Updating widget info for "+deployment);
+
+        // Check for a null name and no percentage - it probably means that the deployment was deleted, but
+        // the widgetinfo object is still around
+        if(deployment.getName() == null && deployment.getPercentage() == 0){
+            return new RemoteViews(context.getPackageName(), R.layout.widget_error);
+        }
+
+        RemoteViews remoteViews;
+
+        if(info.isWide()){
+            Log.v("Using wide layout");
+            remoteViews = new RemoteViews(context.getPackageName(),
+                    R.layout.widget_wide_layout);
+        } else {
+            remoteViews = new RemoteViews(context.getPackageName(),
+                    R.layout.widget_layout);
+        }
 
         if(screenShotMode){
             // If screen shot mode is enabled, hide the details

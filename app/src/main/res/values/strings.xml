@@ -54,6 +54,7 @@ limitations under the License.
     <string name="text_color">Text Color</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
+    <string name="widget_error">There was an error loading the widget. Please remove and re-add the widget</string>
 
     <!-- Create strings -->
     <string name="name">Name</string>

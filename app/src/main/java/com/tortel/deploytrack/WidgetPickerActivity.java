@@ -96,10 +96,8 @@ public class WidgetPickerActivity extends AppCompatActivity {
                 info.setLightText(mUseLightText);
                 db.saveWidgetInfo(info);
                 
-                RemoteViews remoteView = new RemoteViews(getPackageName(), R.layout.widget_layout);
-                
                 //Set it all up
-                remoteView = WidgetProvider.updateWidgetView(this, remoteView, info);
+                RemoteViews remoteView = WidgetProvider.updateWidgetView(this, info);
                 
                 mWidgetManager.updateAppWidget(mWidgetId, remoteView);
                 mResultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
