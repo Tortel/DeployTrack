@@ -28,13 +28,19 @@ limitations under the License.
         android:textStyle="bold"
         android:text="@string/widget_pick" />
 
-    <com.astuetz.PagerSlidingTabStrip
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/indicator"
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        app:pstsDividerColor="@color/divider"
-        app:pstsUnderlineColor="?attr/tabIndicatorColor"
-        app:pstsIndicatorColor="?attr/tabIndicatorColor" />
+        android:layout_height="48dp"
+        app:stl_defaultTabTextHorizontalPadding="24dp"
+        app:stl_indicatorColor="@color/primary"
+        app:stl_indicatorInterpolation="linear"
+        app:stl_indicatorThickness="3dp"
+        app:stl_titleOffset="auto_center"
+        app:stl_underlineThickness="1dp"
+        app:stl_defaultTabTextColor="?attr/tabTextColor" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

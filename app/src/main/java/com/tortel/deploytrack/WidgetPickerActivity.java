@@ -20,11 +20,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
@@ -65,18 +64,11 @@ public class WidgetPickerActivity extends AppCompatActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(mAdapter);
 
-        PagerSlidingTabStrip indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
+        SmartTabLayout indicator = (SmartTabLayout) findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new PageChangeListener());
-
-        // Set the tab text color
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.tabTextColor, typedValue, true);
-        int color = typedValue.data;
-        indicator.setTextColor(color);
         
         pager.setCurrentItem(mCurrentPosition);
-        indicator.notifyDataSetChanged();
         
         Log.d("WidgetPicker started with mWidgetId "+ mWidgetId);
     }
