@@ -49,13 +49,13 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
 
     // Firebase
-    compile 'com.google.firebase:firebase-auth:11.0.2'
-    compile 'com.google.firebase:firebase-database:11.0.2'
-    compile 'com.google.android.gms:play-services-auth:11.0.2'
+    compile 'com.google.firebase:firebase-auth:11.0.4'
+    compile 'com.google.firebase:firebase-database:11.0.4'
+    compile 'com.google.android.gms:play-services-auth:11.0.4'
     // Firebase crash reporting
-    compile 'com.google.firebase:firebase-crash:11.0.2'
+    compile 'com.google.firebase:firebase-crash:11.0.4'
     // Firebase analytics
-    compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.google.firebase:firebase-core:11.0.4'
 
     compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
 }
