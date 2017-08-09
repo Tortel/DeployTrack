@@ -29,7 +29,7 @@ public class Prefs {
     private static final String KEY_HIDE_DAYS = "pref_hide_days";
     private static final String KEY_HIDE_PERCENT = "pref_hide_percent";
     private static final String KEY_LIGHT_THEME = "pref_light_theme";
-    private static final String KEY_WELCOME = "welcome_2.0";
+    private static final String KEY_WELCOME = "welcome_3.0";
     private static final String KEY_SCREENSHOT = "about_screenshot";
     private static final String KEY_SYNC_ENABLED = "sync";
 	
