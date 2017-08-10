@@ -8,8 +8,8 @@ android {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 20
-        versionName "2.9.0-pre"
+        versionCode 21
+        versionName "3.0.0"
     }
 
     buildTypes {
@@ -30,8 +30,6 @@ dependencies {
 
     // https://github.com/ogaclejapan/SmartTabLayout
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
-    // https://github.com/jpardogo/PagerSlidingTabStrip
-    compile 'com.jpardogo.materialtabstrip:library:1.1.1'
     // https://github.com/jaydeep17/datetimepicker
     compile 'com.github.jaydeep17:datetimepicker:0.0.4'
     // https://github.com/LarsWerkman/HoloColorPicker
