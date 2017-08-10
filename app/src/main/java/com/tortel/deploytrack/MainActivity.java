@@ -219,10 +219,6 @@ public class MainActivity extends AppCompatActivity {
 			intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 			return true;
-		case R.id.menu_sync:
-            intent = new Intent(this, SyncSetupActivity.class);
-            startActivity(intent);
-            return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
