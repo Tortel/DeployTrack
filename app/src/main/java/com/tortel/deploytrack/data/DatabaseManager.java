@@ -50,7 +50,7 @@ public class DatabaseManager {
 
     private DatabaseManager(Context context){
         mHelper = new DatabaseHelper(context.getApplicationContext());
-        mFirebaseDBManager = new FirebaseDBManager(this, context.getApplicationContext());
+        mFirebaseDBManager = FirebaseDBManager.getInstance(this, context.getApplicationContext());
     }
 
     /**

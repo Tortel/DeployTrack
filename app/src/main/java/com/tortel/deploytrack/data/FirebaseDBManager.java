@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,17 +35,38 @@ import java.util.List;
  * Handles interaction with the firebase database
  */
 class FirebaseDBManager implements ChildEventListener {
+    private static FirebaseDBManager instance;
+
     private DatabaseManager mDbManager;
     private DatabaseReference mDatabase;
     private FirebaseUser mUser;
     private LocalBroadcastManager mBroadcastManager;
 
-    FirebaseDBManager(DatabaseManager dbManager, Context context){
+    private FirebaseDBManager(DatabaseManager dbManager, Context context){
         // Enable persistence
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        } catch (Exception e) {
+            Log.e("Exception enabling persistance", e);
+            // If theres an error, log it
+            FirebaseCrash.report(new Exception("Exception enabling persistance", e));
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDbManager = dbManager;
         mBroadcastManager = LocalBroadcastManager.getInstance(context.getApplicationContext());
+    }
+
+    /**
+     * Get an instance of the Firebase DB manager
+     * @param dbManager
+     * @param context
+     * @return
+     */
+    public static FirebaseDBManager getInstance(DatabaseManager dbManager, Context context) {
+        if (instance == null) {
+            instance = new FirebaseDBManager(dbManager, context);
+        }
+        return instance;
     }
 
     /**
