@@ -38,6 +38,14 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
 		mFragmentList = new SparseArray<>();
 	}
+
+	/**
+	 * Reload all the deployments from the database
+	 */
+	public void reloadData(){
+		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
+		this.notifyDataSetChanged();
+	}
 	
 	/**
 	 * Get the ID of the deployment at the provided position.

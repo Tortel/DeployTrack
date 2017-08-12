@@ -126,7 +126,11 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void reload(){
 		Log.v("Reloading activity");
-		mAdapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		if (mAdapter == null) {
+			mAdapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
+		} else {
+			mAdapter.reloadData();
+		}
 
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(mAdapter);
