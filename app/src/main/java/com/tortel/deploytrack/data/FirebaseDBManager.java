@@ -66,6 +66,10 @@ class FirebaseDBManager implements ChildEventListener {
         if (instance == null) {
             instance = new FirebaseDBManager(dbManager, context);
         }
+        // Make sure that the database manager is properly set
+        if (instance.mDbManager != dbManager) {
+            instance.mDbManager = dbManager;
+        }
         return instance;
     }
 
