@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.0'
 
     defaultConfig {
@@ -23,8 +23,8 @@ android {
 
 dependencies {
     //noinspection GradleCompatible
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:appcompat-v7:26.0.1'
+    compile 'com.android.support:design:26.0.1'
     // https://github.com/bmarrdev/android-DecoView-charting
     compile 'com.github.bmarrdev:android-DecoView-charting:v1.2'
 
@@ -35,7 +35,7 @@ dependencies {
     // https://github.com/LarsWerkman/HoloColorPicker
     compile 'com.larswerkman:HoloColorPicker:1.5'
     // https://github.com/afollestad/material-dialogs
-    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.6'
     // https://github.com/diogobernardino/WilliamChart
     compile 'com.diogobernardino:williamchart:2.4.0'
 
@@ -47,13 +47,13 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
 
     // Firebase
-    compile 'com.google.firebase:firebase-auth:11.0.4'
-    compile 'com.google.firebase:firebase-database:11.0.4'
-    compile 'com.google.android.gms:play-services-auth:11.0.4'
+    compile 'com.google.firebase:firebase-auth:11.2.0'
+    compile 'com.google.firebase:firebase-database:11.2.0'
+    compile 'com.google.android.gms:play-services-auth:11.2.0'
     // Firebase crash reporting
-    compile 'com.google.firebase:firebase-crash:11.0.4'
+    compile 'com.google.firebase:firebase-crash:11.2.0'
     // Firebase analytics
-    compile 'com.google.firebase:firebase-core:11.0.4'
+    compile 'com.google.firebase:firebase-core:11.2.0'
 
     compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
 }
