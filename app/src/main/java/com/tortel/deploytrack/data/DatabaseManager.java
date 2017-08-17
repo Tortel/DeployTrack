@@ -39,8 +39,6 @@ public class DatabaseManager {
     private final DatabaseHelper mHelper;
     private final FirebaseDBManager mFirebaseDBManager;
 
-    private List<Deployment> mDeploymentCache;
-
     public static DatabaseManager getInstance(Context context){
         if(instance == null){
             instance = new DatabaseManager(context);
@@ -65,16 +63,6 @@ public class DatabaseManager {
 
             mHelper.getDeploymentDao().createOrUpdate(deployment);
             mFirebaseDBManager.saveDeployment(deployment);
-
-            if(mDeploymentCache != null){
-                for(int i = 0; i < mDeploymentCache.size(); i++){
-                    if(mDeploymentCache.get(i).getUuid().equals(deployment.getUuid())){
-                        mDeploymentCache.set(i, deployment);
-                    }
-                }
-                mDeploymentCache.add(deployment);
-                Collections.sort(mDeploymentCache);
-            }
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
             // Report this to firebase
@@ -102,9 +90,6 @@ public class DatabaseManager {
      * Get all the saved GeoEvents
      */
     public List<Deployment> getAllDeployments(){
-        if(mDeploymentCache != null){
-            return mDeploymentCache;
-        }
         List<Deployment> list = null;
         try{
             list = mHelper.getDeploymentDao().queryForAll();
@@ -114,7 +99,6 @@ public class DatabaseManager {
             // Report this to firebase
             FirebaseCrash.report(new Exception("Exception getting all deployments", e));
         }
-        mDeploymentCache = list;
         return list;
     }
     
@@ -122,13 +106,6 @@ public class DatabaseManager {
      * Get a specific Deployment from the database
      */
     public Deployment getDeployment(String uuid){
-        if(mDeploymentCache != null){
-            for(Deployment deployment : mDeploymentCache){
-                if(deployment.getUuid().equals(uuid)){
-                    return deployment;
-                }
-            }
-        }
         Deployment tmp = null;
         try{
             tmp = mHelper.getDeploymentDao().queryForId(uuid);
@@ -161,14 +138,6 @@ public class DatabaseManager {
             Log.e("Exception deleting Deployment", e);
             // Report this to firebase
             FirebaseCrash.report(new Exception("Exception deleting deployment", e));
-        }
-        if(mDeploymentCache !=null){
-            for(int i = 0; i < mDeploymentCache.size(); i++){
-                if(mDeploymentCache.get(i).getUuid().equals(uuid)){
-                    mDeploymentCache.remove(i);
-                    return;
-                }
-            }
         }
     }
     
