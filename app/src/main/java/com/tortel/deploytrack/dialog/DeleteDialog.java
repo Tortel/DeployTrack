@@ -72,6 +72,7 @@ public class DeleteDialog extends DialogFragment {
                 DatabaseManager.getInstance(getActivity()).deleteDeployment(mId);
                 // Notify the app
                 Intent deleteIntent = new Intent(DatabaseManager.DATA_DELETED);
+                deleteIntent.putExtra(KEY_ID, mId);
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(deleteIntent);
                 // Log the event
                 FirebaseAnalytics.getInstance(getActivity())

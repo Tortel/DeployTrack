@@ -73,8 +73,20 @@ public class DeploymentFragment extends Fragment {
 		return fragment;
 	}
 
+	/**
+	 * Get the deployment displayed by this fragment
+	 * @return
+	 */
 	public Deployment getDeployment() {
 		return mDeployment;
+	}
+
+	/**
+	 * Get the UUID of the deployment shown, or null
+	 * @return
+	 */
+	public String getDeploymentId() {
+		return mDeployment == null ? null : mDeployment.getUuid();
 	}
 	
 	@SuppressLint("SetTextI18n")

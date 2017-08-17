@@ -304,6 +304,9 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mChangeListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(DatabaseManager.DATA_DELETED) && mAdapter != null) {
+				mAdapter.deploymentDeleted(intent.getStringExtra(DeleteDialog.KEY_ID));
+			}
             reload();
         }
     };

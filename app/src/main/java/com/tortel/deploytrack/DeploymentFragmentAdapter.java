@@ -60,6 +60,24 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		return mDeploymentList.get(position).getUuid();
 	}
 
+	/**
+	 * Remove the fragment with the ID provided
+	 * @param uuid
+	 */
+	public void deploymentDeleted(String uuid) {
+		if (uuid == null){
+			return;
+		}
+		if(mFragmentList != null) {
+			for(int i = 0; i < mFragmentList.size(); i++) {
+				if (uuid.equals(mFragmentList.valueAt(i).getDeploymentId())) {
+					mFragmentList.removeAt(i);
+					return;
+				}
+			}
+		}
+	}
+
 	@Override
 	public Fragment getItem(int position) {
 		if(position >= mDeploymentList.size()){
@@ -87,6 +105,12 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 			return mContext.getText(R.string.info);
 		}
 		return mDeploymentList.get(position).getName();
+	}
+
+	@Override
+	public int getItemPosition(Object object) {
+		// Always return none to force a full refresh each time
+		return POSITION_NONE;
 	}
 
 }
