@@ -54,8 +54,6 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:11.2.0'
     // Firebase analytics
     compile 'com.google.firebase:firebase-core:11.2.0'
-
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
 }
 
 // For use with Firebase
