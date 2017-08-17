@@ -125,20 +125,24 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	private void reload(){
-		Log.v("Reloading activity");
+		Log.v("Reloading data");
 		if (mAdapter == null) {
 			mAdapter = new DeploymentFragmentAdapter(this, getSupportFragmentManager());
-		} else {
-			mAdapter.reloadData();
 		}
+		mAdapter.reloadData();
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        ViewPager pager = findViewById(R.id.pager);
 		pager.setAdapter(mAdapter);
 
-		SmartTabLayout indicator = (SmartTabLayout) findViewById(R.id.indicator);
+		SmartTabLayout indicator = findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
-		
+
+		// Make sure that the position does not go past the end
+		if (mCurrentPosition >= mAdapter.getCount()) {
+			mCurrentPosition = Math.max(0, mCurrentPosition - 1);
+		}
+
 		pager.setCurrentItem(mCurrentPosition);
 
         if(mScreenShotMode){

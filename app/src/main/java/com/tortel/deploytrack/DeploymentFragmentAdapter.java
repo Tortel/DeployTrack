@@ -30,7 +30,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	private List<Deployment> mDeploymentList;
 	private Context mContext;
-	private SparseArray<Fragment> mFragmentList;
+	private SparseArray<DeploymentFragment> mFragmentList;
 	
 	DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm);
@@ -45,6 +45,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	public void reloadData(){
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
 		this.notifyDataSetChanged();
+		mFragmentList.clear();
 	}
 	
 	/**
@@ -64,16 +65,10 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		if(position >= mDeploymentList.size()){
 			return new NoDataFragment();
 		}
-		if(mFragmentList.get(position) == null){
+		if(mFragmentList.get(position) == null ||
+				mFragmentList.get(position).getDeployment() == null){
 			Deployment deployment = mDeploymentList.get(position);
-			Fragment fragment;
-			// Get the correct type of fragment
-			if(deployment.getDisplayType() == Deployment.DISPLAY_CIRCLE){
-				fragment = DeploymentFragment.newInstance(deployment);
-			} else {
-				fragment = BarDeploymentFragment.newInstance(deployment);
-			}
-			mFragmentList.put(position, fragment);
+			mFragmentList.put(position, DeploymentFragment.newInstance(deployment));
 		}
 		return mFragmentList.get(position);
 	}

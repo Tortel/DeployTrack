@@ -72,14 +72,24 @@ public class DeploymentFragment extends Fragment {
 		fragment.mDeployment = deployment;
 		return fragment;
 	}
+
+	public Deployment getDeployment() {
+		return mDeployment;
+	}
 	
 	@SuppressLint("SetTextI18n")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState){
 		mResources = getActivity().getResources();
-		
+
 		View view = inflater.inflate(R.layout.fragment_deployment, container, false);
+
+		// Check for a valid deployment object
+		if (mDeployment == null) {
+			// Stop now
+			return view;
+		}
 
         // Set up the views
         setUpTextViews(view);
@@ -236,7 +246,7 @@ public class DeploymentFragment extends Fragment {
 	}
 	
 	private void animate(){
-		if(mArcView == null){
+		if(mArcView == null || mDeployment == null){
 			return;
 		}
 
@@ -294,13 +304,17 @@ public class DeploymentFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState != null){
 			String id = savedInstanceState.getString("id");
-			mDeployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
+			if (id != null) {
+				mDeployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
+			}
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("id", mDeployment.getUuid());
+		if (mDeployment != null) {
+			outState.putString("id", mDeployment.getUuid());
+		}
 	}
 }
