@@ -205,4 +205,14 @@ public class Deployment implements Comparable<Deployment> {
 		this.uuid = uuid.toString();
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Deployment){
+			Deployment o = (Deployment) obj;
+			return uuid != null &&
+					uuid.equals(o.uuid);
+		}
+		return false;
+	}
 }
