@@ -44,8 +44,8 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	 */
 	public void reloadData(){
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
-		this.notifyDataSetChanged();
 		mFragmentList.clear();
+		this.notifyDataSetChanged();
 	}
 	
 	/**
@@ -109,7 +109,14 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getItemPosition(Object object) {
-		// Always return none to force a full refresh each time
+		Log.v("Checking position of " + object);
+		if (mDeploymentList != null && object instanceof DeploymentFragment) {
+			DeploymentFragment fragment = (DeploymentFragment) object;
+			Deployment deployment = fragment.getDeployment();
+			int position = mDeploymentList.indexOf(deployment);
+			return position < 0 ? POSITION_NONE : position;
+		}
+		// Default to none
 		return POSITION_NONE;
 	}
 

@@ -70,6 +70,7 @@ public class DeploymentFragment extends Fragment {
 	public static DeploymentFragment newInstance(Deployment deployment){
 		DeploymentFragment fragment = new DeploymentFragment();
 		fragment.mDeployment = deployment;
+		fragment.setRetainInstance(false);
 		return fragment;
 	}
 
