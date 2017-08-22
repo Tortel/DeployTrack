@@ -93,10 +93,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		if(mDeploymentList.size() == 0){
-			return 1;
-		}
-		return mDeploymentList.size();
+		return Math.max(mDeploymentList.size(), 1);
 	}
 	
 	@Override
@@ -110,14 +107,18 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getItemPosition(Object object) {
 		Log.v("Checking position of " + object);
+		int position = POSITION_NONE;
 		if (mDeploymentList != null && object instanceof DeploymentFragment) {
 			DeploymentFragment fragment = (DeploymentFragment) object;
 			Deployment deployment = fragment.getDeployment();
-			int position = mDeploymentList.indexOf(deployment);
-			return position < 0 ? POSITION_NONE : position;
+			position = mDeploymentList.indexOf(deployment);
+			if (position < 0) {
+				position = POSITION_NONE;
+			}
 		}
+		Log.v("Returning position "+position);
 		// Default to none
-		return POSITION_NONE;
+		return position;
 	}
 
 }
