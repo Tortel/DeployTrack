@@ -8,8 +8,8 @@ android {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 23
-        versionName "3.0.2"
+        versionCode 24
+        versionName "3.0.3"
     }
 
     buildTypes {
