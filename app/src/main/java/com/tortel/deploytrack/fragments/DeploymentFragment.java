@@ -138,6 +138,7 @@ public class DeploymentFragment extends Fragment {
 		mCompletedSeries = new SeriesItem.Builder(mDeployment.getCompletedColor())
 				.setRange(0, mDeployment.getLength(), 0)
 				.setLineWidth(size / 5f)
+				.setCapRounded(false)
 				.setInitialVisibility(false)
 				.build();
 
