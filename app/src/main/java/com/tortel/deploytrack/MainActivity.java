@@ -132,18 +132,21 @@ public class MainActivity extends AppCompatActivity {
 		mAdapter.reloadData();
 
         ViewPager pager = findViewById(R.id.pager);
-		pager.setAdapter(mAdapter);
 
-		SmartTabLayout indicator = findViewById(R.id.indicator);
-		indicator.setViewPager(pager);
-		indicator.setOnPageChangeListener(new PageChangeListener());
-
+        // Disable the adapter for a minute
+        pager.setAdapter(null);
 		// Make sure that the position does not go past the end
 		if (mCurrentPosition >= mAdapter.getCount()) {
 			mCurrentPosition = Math.max(0, mCurrentPosition - 1);
 		}
 
+		// Re-set the adapter and position
+		pager.setAdapter(mAdapter);
 		pager.setCurrentItem(mCurrentPosition);
+
+		SmartTabLayout indicator = findViewById(R.id.indicator);
+		indicator.setViewPager(pager);
+		indicator.setOnPageChangeListener(new PageChangeListener());
 
         if(mScreenShotMode){
             indicator.setVisibility(View.INVISIBLE);
