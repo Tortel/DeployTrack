@@ -17,6 +17,7 @@ package com.tortel.deploytrack;
 
 import java.util.List;
 
+import com.crashlytics.android.Crashlytics;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.fragments.*;
 
@@ -25,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
+import android.view.ViewGroup;
 
 class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
@@ -75,6 +77,16 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 					return;
 				}
 			}
+		}
+	}
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		try {
+			super.destroyItem(container, position, object);
+		} catch (IndexOutOfBoundsException e) {
+		    // Hopefully this wont screw up the state too much
+            Crashlytics.logException(new Exception("OutOfBoundsException during destroyItem", e));
 		}
 	}
 

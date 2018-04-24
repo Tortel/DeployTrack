@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager pager = findViewById(R.id.pager);
 
-        // Disable the adapter for a minute
-        pager.setAdapter(null);
 		// Make sure that the position does not go past the end
 		if (mCurrentPosition >= mAdapter.getCount()) {
 			mCurrentPosition = Math.max(0, mCurrentPosition - 1);
