@@ -18,7 +18,7 @@ package com.tortel.deploytrack.data;
 import android.content.Context;
 import android.util.SparseArray;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.dao.Dao;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.data.depricated.*;
@@ -89,7 +89,7 @@ public class DatabaseUpgrader {
         } catch (Exception e){
             Log.e("Exception during database upgrade", e);
             // Report this to firebase
-            FirebaseCrash.report(new Exception("Exception during database upgrade", e));
+            Crashlytics.logException(new Exception("Exception during database upgrade", e));
             // Uh-oh
             return false;
         }
