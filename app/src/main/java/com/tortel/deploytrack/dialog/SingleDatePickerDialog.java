@@ -17,10 +17,15 @@ package com.tortel.deploytrack.dialog;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.R;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 /**
  * DatePickerDialog that keeps track if a dialog is open or not
@@ -32,51 +37,41 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
     public static final String EXTRA_DAY = "day";
     public static final String EXTRA_TYPE = "mType";
 
-    public static final int TYPE_START = 0;
-    public static final int TYPE_END = 1;
+    public enum PickerType {
+        START,
+        END
+    };
 
-    private static boolean isActive = false;
-    private int mType;
+    private PickerType mType;
 
     public SingleDatePickerDialog() {
         super();
         setOnDateSetListener(this);
-        isActive = true;
+        dismissOnPause(true);
+        mType = PickerType.START;
+    }
+
+    public void setType(PickerType type) {
+        mType = type;
+    }
+
+    public void initialize(Calendar calendar) {
+        this.initialize(this, calendar);
     }
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        setAccentColor(getResources().getColor(R.color.primary));
         if(bundle != null){
-            mType = bundle.getInt(EXTRA_TYPE);
+            mType = bundle.getInt(EXTRA_TYPE) == 0 ? PickerType.START : PickerType.END;
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
+    public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        bundle.putInt(EXTRA_TYPE, mType);
-    }
-
-    /**
-     * Initialize the picker
-     */
-    public void initialize(int type, int year, int month, int day){
-        mType = type;
-        initialize(this, year, month, day, true);
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-        isActive = false;
-    }
-
-    /**
-     * Returns if a SingleDatePickerDialog is visible/active or not
-     */
-    public static boolean isActive(){
-        return isActive;
+        bundle.putInt(EXTRA_TYPE, mType == PickerType.START ? 0 : 1);
     }
 
     @Override
@@ -88,7 +83,7 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
         intent.putExtra(EXTRA_DAY, day);
         intent.putExtra(EXTRA_MONTH, month);
         intent.putExtra(EXTRA_YEAR, year);
-        intent.putExtra(EXTRA_TYPE, mType);
+        intent.putExtra(EXTRA_TYPE, mType == PickerType.START ? 0 : 1);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 }

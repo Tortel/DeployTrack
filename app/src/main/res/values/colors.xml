@@ -23,6 +23,6 @@ limitations under the License.
     <color name="divider">#B6B6B6</color>
 
     <!-- Datepicker colors -->
-    <color name="datepicker_primary">@color/primary</color>
-    <color name="datepicker_primary_dark">@color/primary_dark</color>
+    <color name="mdtp_accent_color">@color/primary</color>
+    <color name="mdtp_accent_color_dark">@color/primary_dark</color>
 </resources>

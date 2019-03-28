@@ -22,7 +22,7 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/grey"
+        android:textColor="@android:color/darker_gray"
         android:text="@string/widget_error" />
 
 </LinearLayout>

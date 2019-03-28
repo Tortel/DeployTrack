@@ -27,6 +27,9 @@ limitations under the License.
         <!-- Material text input text color -->
         <item name="edittext_color">@android:color/primary_text_dark</item>
         <item name="edittext_hint">@android:color/secondary_text_dark</item>
+
+        <!-- Date picker theme info -->
+        <item name="mdtp_theme_dark">true</item>
     </style>
 
     <style name="Theme.DeployThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -41,6 +44,9 @@ limitations under the License.
         <!-- Material text input text color -->
         <item name="edittext_color">@android:color/primary_text_light</item>
         <item name="edittext_hint">@android:color/darker_gray</item>
+
+        <!-- Date picker theme info -->
+        <item name="mdtp_theme_dark">false</item>
     </style>
     
     <!-- Style for the percentage -->

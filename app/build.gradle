@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 27
         versionName "3.0.6"
     }
@@ -26,15 +26,15 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
 
     // https://github.com/ogaclejapan/SmartTabLayout
-    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
-    // https://github.com/jaydeep17/datetimepicker
-    implementation 'com.github.jaydeep17:datetimepicker:0.0.4'
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+    // https://github.com/wdullaer/MaterialDateTimePicker
+    implementation 'com.wdullaer:materialdatetimepicker:4.1.2'
     // https://github.com/LarsWerkman/HoloColorPicker
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 

@@ -25,11 +25,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -385,12 +385,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			return;
 		}
 
-		if(!SingleDatePickerDialog.isActive()){
-			SingleDatePickerDialog startPicker = new SingleDatePickerDialog();
-			startPicker.initialize(SingleDatePickerDialog.TYPE_START, mStartDate.get(Calendar.YEAR),
-					mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH));
-			startPicker.show(fm, TAG_DATE_DIALOG);
-		}
+		SingleDatePickerDialog startPicker = new SingleDatePickerDialog();
+		startPicker.setType(SingleDatePickerDialog.PickerType.START);
+		startPicker.initialize(mStartDate == null ? Calendar.getInstance() : mStartDate);
+		startPicker.show(fm, TAG_DATE_DIALOG);
 	}
 
 	/**
@@ -415,12 +413,12 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			return;
 		}
 
-		if(!SingleDatePickerDialog.isActive()) {
-			SingleDatePickerDialog endPicker = new SingleDatePickerDialog();
-			endPicker.initialize(SingleDatePickerDialog.TYPE_END, mEndDate.get(Calendar.YEAR),
-					mEndDate.get(Calendar.MONTH), mEndDate.get(Calendar.DAY_OF_MONTH));
-			endPicker.show(fm, TAG_DATE_DIALOG);
-		}
+		SingleDatePickerDialog endPicker = new SingleDatePickerDialog();
+		endPicker.setType(SingleDatePickerDialog.PickerType.END);
+		endPicker.setMinDate(mStartDate);
+		endPicker.initialize(mEndDate == null? mStartDate : mEndDate);
+
+		endPicker.show(fm, TAG_DATE_DIALOG);
 	}
 
 	/**
@@ -457,8 +455,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			int year = intent.getIntExtra(SingleDatePickerDialog.EXTRA_YEAR, -1);
 			int month = intent.getIntExtra(SingleDatePickerDialog.EXTRA_MONTH, -1);
 			int day = intent.getIntExtra(SingleDatePickerDialog.EXTRA_DAY, -1);
-			int type = intent.getIntExtra(SingleDatePickerDialog.EXTRA_TYPE, SingleDatePickerDialog.TYPE_START);
-			if(type  == SingleDatePickerDialog.TYPE_START){
+			SingleDatePickerDialog.PickerType type = intent.getIntExtra(SingleDatePickerDialog.EXTRA_TYPE, 0) == 0 ?
+					SingleDatePickerDialog.PickerType.START : SingleDatePickerDialog.PickerType.END;
+
+			if(type  == SingleDatePickerDialog.PickerType.START){
 				setStartDate(year, month, day);
 			} else {
 				setEndDate(year, month, day);

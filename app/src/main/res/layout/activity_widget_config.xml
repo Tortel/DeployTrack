@@ -42,7 +42,7 @@ limitations under the License.
         app:stl_underlineThickness="1dp"
         app:stl_defaultTabTextColor="?attr/tabTextColor" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_weight="1"
         android:layout_width="match_parent"

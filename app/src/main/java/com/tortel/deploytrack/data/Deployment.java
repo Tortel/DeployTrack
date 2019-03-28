@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 import com.j256.ormlite.field.DatabaseField;
