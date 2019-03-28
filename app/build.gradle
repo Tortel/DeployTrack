@@ -3,7 +3,6 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
@@ -26,7 +25,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     // https://github.com/bmarrdev/android-DecoView-charting
-    implementation 'com.github.bmarrdev:android-DecoView-charting:v1.2'
+    implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
 
     // https://github.com/ogaclejapan/SmartTabLayout
     implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
@@ -38,7 +37,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.9.9'
+    implementation 'joda-time:joda-time:2.10.1'
 
     // http://ormlite.com/
     implementation 'com.j256.ormlite:ormlite-core:5.1'
@@ -49,7 +48,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:15.0.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
     // Crashlytics crash reporting
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     // Firebase analytics
     implementation 'com.google.firebase:firebase-core:15.0.0'
 }
