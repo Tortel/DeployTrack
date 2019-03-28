@@ -23,8 +23,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
@@ -56,12 +59,17 @@ public class DatabaseUpgradeDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        builder.autoDismiss(false);
-        builder.progress(true, 0);
-        builder.content(R.string.db_upgrade);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
 
-        return builder.build();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.dialog_progress, null);
+        TextView messageView = view.findViewById(R.id.dialog_content);
+        messageView.setText(R.string.db_upgrade);
+        builder.setView(view);
+
+        return builder.create();
     }
 
     /**

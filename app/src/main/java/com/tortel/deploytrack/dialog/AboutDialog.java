@@ -29,6 +29,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -37,7 +38,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.tortel.deploytrack.R;
 
 public class AboutDialog extends DialogFragment {
@@ -59,12 +59,12 @@ public class AboutDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context wrappedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_DeployThemeLight);
 
-		MaterialDialog.Builder builder = new MaterialDialog.Builder(wrappedContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(wrappedContext);
 
 		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
 		@SuppressLint("InflateParams")
 		View view = inflater.inflate(R.layout.dialog_about, null);
-		TextView text = (TextView) view.findViewById(R.id.about_view);
+		TextView text = view.findViewById(R.id.about_view);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			text.setText(Html.fromHtml(readRawTextFile(getContent()), Html.FROM_HTML_MODE_LEGACY));
@@ -75,11 +75,11 @@ public class AboutDialog extends DialogFragment {
 		Linkify.addLinks(text, Linkify.ALL);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
 		
-		builder.customView(view, false);
-		builder.title(getTitleString());
-		builder.positiveText(R.string.close);
+		builder.setView(view);
+		builder.setTitle(getTitleString());
+		builder.setPositiveButton(R.string.close, null);
 		
-		return builder.build();
+		return builder.create();
 	}
 	
 	private String readRawTextFile(int id) {
