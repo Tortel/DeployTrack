@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -33,7 +32,6 @@ import androidx.appcompat.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -57,11 +55,9 @@ public class AboutDialog extends DialogFragment {
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Context wrappedContext = new ContextThemeWrapper(getActivity(), R.style.Theme_DeployThemeLight);
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(wrappedContext);
-
-		LayoutInflater inflater = getActivity().getLayoutInflater().cloneInContext(wrappedContext);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
 		@SuppressLint("InflateParams")
 		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = view.findViewById(R.id.about_view);
