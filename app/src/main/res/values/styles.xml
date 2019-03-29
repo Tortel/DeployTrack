@@ -15,7 +15,7 @@ limitations under the License.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Dark theme -->
-    <style name="Theme.DeployThemeDark" parent="Theme.AppCompat">
+    <style name="Theme.DeployThemeDark" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -32,7 +32,7 @@ limitations under the License.
         <item name="mdtp_theme_dark">true</item>
     </style>
 
-    <style name="Theme.DeployThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.DeployThemeLight" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>

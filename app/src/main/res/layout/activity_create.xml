@@ -28,15 +28,14 @@ limitations under the License.
 			android:id="@+id/name_wraper"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:hintAnimationEnabled="true"
+			android:hint="@string/name"
 			android:padding="5dip">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:id="@+id/name"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences"
-				android:hint="@string/name"/>
+				android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences" />
 
 		</com.google.android.material.textfield.TextInputLayout>
     
