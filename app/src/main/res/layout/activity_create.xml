@@ -91,7 +91,8 @@ limitations under the License.
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/color_completed" />
+	        android:text="@string/color_completed"
+			android:padding="5dip" />
 	        
 	    <com.larswerkman.holocolorpicker.ColorPicker
 		    android:id="@+id/picker_completed"
@@ -110,7 +111,8 @@ limitations under the License.
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/color_remaining" />
+	        android:text="@string/color_remaining"
+			android:padding="5dip" />
 	        
 	    <com.larswerkman.holocolorpicker.ColorPicker
 		    android:id="@+id/picker_remain"
