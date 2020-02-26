@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
@@ -34,12 +34,12 @@ dependencies {
     // https://github.com/ogaclejapan/SmartTabLayout
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     // https://github.com/wdullaer/MaterialDateTimePicker
-    implementation 'com.wdullaer:materialdatetimepicker:4.1.2'
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     // https://github.com/LarsWerkman/HoloColorPicker
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.10.1'
+    implementation 'joda-time:joda-time:2.10.5'
 
     // http://ormlite.com/
     implementation 'com.j256.ormlite:ormlite-core:5.1'
