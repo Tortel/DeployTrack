@@ -90,17 +90,14 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d("onAuthStateChanged:signed_out");
-                }
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                // User is signed in
+                Log.d("onAuthStateChanged:signed_in:" + user.getUid());
+            } else {
+                // User is signed out
+                Log.d("onAuthStateChanged:signed_out");
             }
         };
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -172,34 +169,31 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
+                .addOnCompleteListener(this, task -> {
+                    Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.e("signInWithCredential", task.getException());
-                            Toast.makeText(SyncSetupActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Log it
-                            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful()) {
+                        Log.e("signInWithCredential", task.getException());
+                        Toast.makeText(SyncSetupActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Log it
+                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
 
-                            // Set the user to start syncing
-                            DatabaseManager.getInstance(getApplicationContext())
-                                    .setFirebaseUser(task.getResult().getUser());
+                        // Set the user to start syncing
+                        DatabaseManager.getInstance(getApplicationContext())
+                                .setFirebaseUser(task.getResult().getUser());
 
-                            // Let the user know
-                            Toast.makeText(SyncSetupActivity.this, getString(R.string.signed_in, acct.getEmail()),
-                                    Toast.LENGTH_LONG).show();
+                        // Let the user know
+                        Toast.makeText(SyncSetupActivity.this, getString(R.string.signed_in, acct.getEmail()),
+                                Toast.LENGTH_LONG).show();
 
-                            showSyncStatus();
-                            // Record that sync is enabled
-                            Prefs.setSyncEnabled(getApplicationContext(), true);
-                        }
+                        showSyncStatus();
+                        // Record that sync is enabled
+                        Prefs.setSyncEnabled(getApplicationContext(), true);
                     }
                 });
     }

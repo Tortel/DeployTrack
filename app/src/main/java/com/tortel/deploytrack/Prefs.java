@@ -46,7 +46,7 @@ public class Prefs {
         SharedPreferences prefs = getPrefs(context);
 		
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
-		mainDisplayType = Integer.valueOf(prefs.getString(KEY_MAIN_VIEW, "0"));
+		mainDisplayType = Integer.parseInt(prefs.getString(KEY_MAIN_VIEW, "0"));
 		hideDate = prefs.getBoolean(KEY_HIDE_DATE, false);
         hideDays = prefs.getBoolean(KEY_HIDE_DAYS, false);
 		hidePercent = prefs.getBoolean(KEY_HIDE_PERCENT, false);
@@ -137,7 +137,7 @@ public class Prefs {
         }
     }
 
-    public class ViewTypes{
+    public static class ViewTypes{
 		public static final int PERCENT = 0;
 		public static final int COMPLETE = 1;
 		public static final int REMAINING = 2;

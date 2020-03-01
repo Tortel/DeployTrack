@@ -242,11 +242,8 @@ public class MainActivity extends AppCompatActivity {
 		} else if(Prefs.isSyncEnabled(getApplicationContext())){
 			// If sync is/was enabled, and no account was found, let the user know
 			Snackbar.make(findViewById(R.id.root), R.string.sync_account_error, Snackbar.LENGTH_INDEFINITE)
-					.setAction(R.string.menu_sync, new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							startActivity(new Intent(MainActivity.this, SyncSetupActivity.class));
-						}
+					.setAction(R.string.menu_sync, view -> {
+						startActivity(new Intent(MainActivity.this, SyncSetupActivity.class));
 					}).show();
 		}
 	}

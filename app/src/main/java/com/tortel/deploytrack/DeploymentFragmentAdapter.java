@@ -22,6 +22,8 @@ import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.fragments.*;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -35,7 +37,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private SparseArray<DeploymentFragment> mFragmentList;
 	
 	DeploymentFragmentAdapter(Context context, FragmentManager fm){
-		super(fm);
+		super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		this.mContext = context.getApplicationContext();
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
 		mFragmentList = new SparseArray<>();
@@ -81,7 +83,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	}
 
 	@Override
-	public void destroyItem(ViewGroup container, int position, Object object) {
+	public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 		try {
 			super.destroyItem(container, position, object);
 		} catch (IndexOutOfBoundsException e) {
@@ -90,6 +92,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		}
 	}
 
+	@NonNull
 	@Override
 	public Fragment getItem(int position) {
 		if(position >= mDeploymentList.size()){
@@ -117,7 +120,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	}
 
 	@Override
-	public int getItemPosition(Object object) {
+	public int getItemPosition(@NonNull Object object) {
 		Log.v("Checking position of " + object);
 		int position = POSITION_NONE;
 		if (mDeploymentList != null && object instanceof DeploymentFragment) {
