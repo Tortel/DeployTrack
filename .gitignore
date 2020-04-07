@@ -10,7 +10,6 @@ gen/
 /.idea/libraries
 .DS_Store
 /build
-/gradle
 /.gradle
 .idea
 
