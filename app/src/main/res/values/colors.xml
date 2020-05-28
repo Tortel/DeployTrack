@@ -19,6 +19,7 @@ limitations under the License.
     <color name="primary_dark">#00796B</color>
     <color name="primary_light">#B2DFDB</color>
     <color name="accent">#00BCD4</color>
+    <color name="accent_variant">#006D7B</color>
     <color name="secondary_text">#727272</color>
     <color name="divider">#B6B6B6</color>
 
