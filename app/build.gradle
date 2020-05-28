@@ -39,20 +39,20 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.10.5'
+    implementation 'joda-time:joda-time:2.10.6'
 
     // http://ormlite.com/
     implementation 'com.j256.ormlite:ormlite-core:5.1'
     implementation 'com.j256.ormlite:ormlite-android:5.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
     // Crashlytics crash reporting
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     // Firebase analytics
-    implementation 'com.google.firebase:firebase-core:17.2.3'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
 }
 
 // For use with Firebase
