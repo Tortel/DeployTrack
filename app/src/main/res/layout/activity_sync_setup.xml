@@ -13,55 +13,78 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/sync_details"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="5dip"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@string/sync_details" />
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/menu_sync"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            app:navigationIcon="@drawable/ic_arrow_back_24dp"
+            />
 
-        <TextView
-            android:id="@+id/sync_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@string/pref_sync_not_enabled"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="5dip"
-                android:layout_margin="2dip"
-                android:text="@string/sign_out"/>
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/sync_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dip" />
+                android:gravity="center"
+                android:padding="5dip"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/sync_details" />
+
+            <TextView
+                android:id="@+id/sync_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/pref_sync_not_enabled"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/sign_out_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="5dip"
+                    android:layout_margin="2dip"
+                    android:text="@string/sign_out"/>
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</LinearLayout>

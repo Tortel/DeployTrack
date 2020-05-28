@@ -34,6 +34,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -64,9 +65,18 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_setup);
         setTitle(R.string.menu_sync);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+            if (item.getItemId() == android.R.id.home) {
+                finish();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        });
+        toolbar.setNavigationOnClickListener((View v) -> {
+            this.finish();
+        });
 
         mStatusTextView = (TextView) findViewById(R.id.sync_status);
         // Set up the click listener

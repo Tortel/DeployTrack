@@ -26,7 +26,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseUser;
 import com.tortel.deploytrack.data.DatabaseManager;
@@ -55,9 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
 
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+            if (item.getItemId() == android.R.id.home) {
+                finish();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        });
+        toolbar.setNavigationOnClickListener((View v) -> {
+            this.finish();
+        });
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, new SettingsFragment());

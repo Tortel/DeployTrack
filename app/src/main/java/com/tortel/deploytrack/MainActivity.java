@@ -24,13 +24,16 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -71,6 +74,76 @@ public class MainActivity extends AppCompatActivity {
 
 		setContentView(R.layout.activity_main);
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+		MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+		toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+			Intent intent;
+			final String id = mAdapter.getId(mCurrentPosition);
+
+			switch (item.getItemId()) {
+				case R.id.menu_create_new:
+					intent = new Intent(this, CreateActivity.class);
+					startActivity(intent);
+					return true;
+				case R.id.menu_edit:
+					//If its the info fragment, ignore
+					if(id == null){
+						return true;
+					}
+					intent = new Intent(this, CreateActivity.class);
+					intent.putExtra("id", id);
+					startActivity(intent);
+					return true;
+				case R.id.menu_delete:
+					//If its the info fragment, ignore
+					if(id == null){
+						return true;
+					}
+					DeleteDialog dialog = new DeleteDialog();
+					Bundle args = new Bundle();
+					args.putString(DeleteDialog.KEY_ID, id);
+					dialog.setArguments(args);
+					dialog.show(getSupportFragmentManager(), "delete");
+					return true;
+				case R.id.menu_about:
+					Fragment about = new AboutDialog();
+					FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+					transaction.add(about, "about");
+					transaction.commit();
+					return true;
+				case R.id.menu_feedback:
+					intent = new Intent(Intent.ACTION_SEND);
+					intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
+					intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
+					intent.setType("plain/text");
+					if(isAvailable(intent)){
+						startActivity(intent);
+					}
+					return true;
+				case R.id.menu_screenshot:
+					if(!Prefs.isAboutScreenShotShown()){
+						ScreenShotModeDialog aboutDialog = new ScreenShotModeDialog();
+						aboutDialog.show(getSupportFragmentManager(), "screenshot");
+						Prefs.setAboutScreenShotShown(getApplicationContext());
+					}
+
+					mScreenShotMode = !mScreenShotMode;
+					Prefs.setScreenShotMode(mScreenShotMode, getApplicationContext());
+
+					// Propagate screen shot mode to the widgets
+					Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+					updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
+					sendBroadcast(updateWidgetIntent);
+
+					reload();
+					return true;
+				case R.id.menu_settings:
+					intent = new Intent(this, SettingsActivity.class);
+					startActivity(intent);
+					return true;
+			}
+			return super.onOptionsItemSelected(item);
+		});
 		
 		if(savedInstanceState != null){
 			mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
@@ -156,82 +229,6 @@ public class MainActivity extends AppCompatActivity {
 		setAnalyticsProperties();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent;
-		final String id = mAdapter.getId(mCurrentPosition);
-		
-		switch (item.getItemId()) {
-		case R.id.menu_create_new:
-			intent = new Intent(this, CreateActivity.class);
-			startActivity(intent);
-			return true;
-		case R.id.menu_edit:
-			//If its the info fragment, ignore
-			if(id == null){
-				return true;
-			}
-			intent = new Intent(this, CreateActivity.class);
-			intent.putExtra("id", id);
-			startActivity(intent);
-			return true;
-		case R.id.menu_delete:
-			//If its the info fragment, ignore
-			if(id == null){
-				return true;
-			}
-            DeleteDialog dialog = new DeleteDialog();
-            Bundle args = new Bundle();
-            args.putString(DeleteDialog.KEY_ID, id);
-            dialog.setArguments(args);
-            dialog.show(getSupportFragmentManager(), "delete");
-			return true;
-		case R.id.menu_about:
-			Fragment about = new AboutDialog();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(about, "about");
-            transaction.commit();
-			return true;
-		case R.id.menu_feedback:
-		    intent = new Intent(Intent.ACTION_SEND);
-		    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
-		    intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
-		    intent.setType("plain/text");
-		    if(isAvailable(intent)){
-		        startActivity(intent);
-		    }
-		    return true;
-        case R.id.menu_screenshot:
-            if(!Prefs.isAboutScreenShotShown()){
-                ScreenShotModeDialog aboutDialog = new ScreenShotModeDialog();
-                aboutDialog.show(getSupportFragmentManager(), "screenshot");
-                Prefs.setAboutScreenShotShown(getApplicationContext());
-            }
-
-            mScreenShotMode = !mScreenShotMode;
-            Prefs.setScreenShotMode(mScreenShotMode, getApplicationContext());
-
-            // Propagate screen shot mode to the widgets
-            Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-            updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
-            sendBroadcast(updateWidgetIntent);
-
-            reload();
-            return true;
-		case R.id.menu_settings:
-			intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	/**
 	 * If the user is logged in, make sure that sync is set up
 	 */
@@ -271,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(KEY_POSITION, mCurrentPosition);
         outState.putBoolean(KEY_SCREENSHOT, mScreenShotMode);

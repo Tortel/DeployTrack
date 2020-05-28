@@ -50,7 +50,7 @@ limitations under the License.
     <string name="about_screenshot">About Screen Shot Mode</string>
 
     <!-- Widget Configuration Strings -->
-    <string name="widget_pick">Pick an item to use for the widget</string>
+    <string name="widget_pick">Select Item</string>
     <string name="text_color">Text Color</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>

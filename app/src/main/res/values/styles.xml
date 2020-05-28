@@ -15,12 +15,14 @@ limitations under the License.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Dark theme -->
-    <style name="Theme.DeployThemeDark" parent="Theme.MaterialComponents">
+    <style name="Theme.DeployThemeDark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
         <item name="colorSecondary">@color/accent</item>
         <item name="colorSecondaryVariant">@color/accent_variant</item>
-        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+
+        <item name="colorOnPrimary">@android:color/primary_text_dark</item>
 
         <!-- Theme specific stuff -->
         <item name="tabIndicatorColor">@color/primary_dark</item>
@@ -37,12 +39,14 @@ limitations under the License.
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
     </style>
 
-    <style name="Theme.DeployThemeLight" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.DeployThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
         <item name="colorSecondary">@color/accent</item>
         <item name="colorSecondaryVariant">@color/accent_variant</item>
-        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+
+        <item name="colorOnPrimary">@android:color/primary_text_dark</item>
 
         <!-- Theme specific stuff -->
         <item name="tabIndicatorColor">@color/primary_light</item>

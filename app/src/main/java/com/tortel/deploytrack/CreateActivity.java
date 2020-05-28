@@ -25,14 +25,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -57,7 +60,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 	private static final String KEY_COLOR_COMPLETED = "completed";
 	private static final String KEY_COLOR_REMAINING = "remaining";
 	private static final String KEY_DISPLAY_TYPE = "display";
-	
+
+	private MaterialToolbar mToolbar;
 	private EditText mNameEdit;
 	private TextInputLayout mNameWrapper;
 	private EditText mStartInput;
@@ -94,15 +98,29 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_create);
-		if(getSupportActionBar() != null) {
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+
+		mToolbar = findViewById(R.id.topAppBar);
+		mToolbar.setOnMenuItemClickListener((MenuItem item) -> {
+			switch(item.getItemId()){
+				//Finish on the icon 'up' pressed
+				case android.R.id.home:
+					this.finish();
+					return true;
+				case R.id.menu_save:
+					saveDeployment();
+					return true;
+			}
+			return super.onOptionsItemSelected(item);
+		});
+		mToolbar.setNavigationOnClickListener((View v) -> {
+			this.finish();
+		});
 
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		
 		mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 		
-		mNameEdit = (EditText) findViewById(R.id.name);
+		mNameEdit = findViewById(R.id.name);
 		mNameEdit.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -124,27 +142,27 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 				// Do nothing
 			}
 		});
-		mNameWrapper = (TextInputLayout) findViewById(R.id.name_wraper);
+		mNameWrapper = findViewById(R.id.name_wraper);
 
-		mStartInput = (EditText) findViewById(R.id.button_start);
+		mStartInput = findViewById(R.id.button_start);
 		mStartInput.setOnClickListener(this);
 		mStartInput.setOnFocusChangeListener(this);
-		mStartWrapper = (TextInputLayout) findViewById(R.id.start_wrapper);
+		mStartWrapper = findViewById(R.id.start_wrapper);
 
-		mEndInput = (EditText) findViewById(R.id.button_end);
+		mEndInput = findViewById(R.id.button_end);
 		mEndInput.setOnClickListener(this);
 		mEndInput.setOnFocusChangeListener(this);
-		mEndWrapper = (TextInputLayout) findViewById(R.id.end_wrapper);
+		mEndWrapper = findViewById(R.id.end_wrapper);
 
-		mBarButton = (RadioButton) findViewById(R.id.layout_bar);
-		RadioButton circleButton = (RadioButton) findViewById(R.id.layout_circle);
+		mBarButton = findViewById(R.id.layout_bar);
+		RadioButton circleButton = findViewById(R.id.layout_circle);
 		
 		//Color pickers
-		ColorPicker completedPicker = (ColorPicker) findViewById(R.id.picker_completed);
-		ColorPicker remainingPicker = (ColorPicker) findViewById(R.id.picker_remain);
+		ColorPicker completedPicker = findViewById(R.id.picker_completed);
+		ColorPicker remainingPicker = findViewById(R.id.picker_remain);
 		
-		SVBar completedBar = (SVBar) findViewById(R.id.sv_completed);
-		SVBar remainingBar = (SVBar) findViewById(R.id.sv_remain);
+		SVBar completedBar = findViewById(R.id.sv_completed);
+		SVBar remainingBar = findViewById(R.id.sv_remain);
 		
 		String id = getIntent().getStringExtra("id");
 		if(id != null){
@@ -175,8 +193,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			
 			//Set the name
 			mNameEdit.setText(mDeployment.getName());
-			
-			getSupportActionBar().setTitle(R.string.edit);
+
+			mToolbar.setTitle(R.string.edit);
 		} else {
 			mDeployment = new Deployment();
 			
@@ -185,8 +203,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 			
 			mCompletedColor = Color.GREEN;
 			mRemainingColor = Color.RED;
-			
-			getSupportActionBar().setTitle(R.string.add_new);
+
+			mToolbar.setTitle(R.string.add_new);
 		}
 		
 		//If restore from rotation
@@ -243,7 +261,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Save everything
 		outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
@@ -259,26 +277,6 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 		} else {
 			outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_create, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
-		//Finish on the icon 'up' pressed
-		case android.R.id.home:
-			this.finish();
-			return true;
-			case R.id.menu_save:
-				saveDeployment();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**

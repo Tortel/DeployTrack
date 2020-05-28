@@ -13,143 +13,166 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_height="match_parent"
 	android:layout_width="match_parent"
-	tools:ignore="ButtonStyle">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/name_wraper"
+	<com.google.android.material.appbar.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<com.google.android.material.appbar.MaterialToolbar
+			android:id="@+id/topAppBar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			app:title="@string/settings"
+			style="@style/Widget.MaterialComponents.Toolbar.Primary"
+			app:navigationIcon="@drawable/ic_arrow_back_24dp"
+			app:menu="@menu/menu_create"
+			/>
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<ScrollView
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		tools:ignore="ButtonStyle">
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/name"
-			android:padding="5dip">
+			android:orientation="vertical" >
 
-			<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/name"
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/name_wraper"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences" />
-
-		</com.google.android.material.textfield.TextInputLayout>
-    
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-			tools:ignore="RtlHardcoded"
-			android:baselineAligned="false">
-
-			<com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/start_wrapper"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
+				android:hint="@string/name"
 				android:padding="5dip">
 
 				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/button_start"
+					android:id="@+id/name"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:padding="5dip"
-					android:drawableLeft="@drawable/ic_date_range_white_24dp"
-					android:drawablePadding="5dip"
-					android:background="@android:color/transparent"
-					android:editable="false"
-					android:hint="@string/start_date" />
+					android:inputType="text|textAutoComplete|textAutoCorrect|textCapSentences" />
 
 			</com.google.android.material.textfield.TextInputLayout>
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/end_wrapper"
-				android:layout_width="0dp"
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:padding="5dip">
+				android:orientation="horizontal"
+				tools:ignore="RtlHardcoded"
+				android:baselineAligned="false">
 
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/button_end"
-					android:layout_width="match_parent"
+				<com.google.android.material.textfield.TextInputLayout
+					android:id="@+id/start_wrapper"
+					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:padding="5dip"
-					android:drawableLeft="@drawable/ic_date_range_white_24dp"
-					android:drawablePadding="5dip"
-					android:background="@android:color/transparent"
-					android:editable="false"
-					android:hint="@string/end_date" />
+					android:layout_weight="1"
+					android:padding="5dip">
 
-			</com.google.android.material.textfield.TextInputLayout>
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/button_start"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="5dip"
+						android:drawableLeft="@drawable/ic_date_range_white_24dp"
+						android:drawablePadding="5dip"
+						android:background="@android:color/transparent"
+						android:editable="false"
+						android:hint="@string/start_date" />
 
-        </LinearLayout>
-	
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/color_completed"
-			android:padding="5dip" />
-	        
-	    <com.larswerkman.holocolorpicker.ColorPicker
-		    android:id="@+id/picker_completed"
-		    android:layout_width="match_parent"
-		    android:layout_height="200dip"
-		    android:layout_gravity="center" />
+				</com.google.android.material.textfield.TextInputLayout>
 
-	    <com.larswerkman.holocolorpicker.SVBar
-            android:id="@+id/sv_completed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="5dip"
-		    android:paddingRight="5dip" />
-	
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/color_remaining"
-			android:padding="5dip" />
-	        
-	    <com.larswerkman.holocolorpicker.ColorPicker
-		    android:id="@+id/picker_remain"
-		    android:layout_width="match_parent"
-		    android:layout_height="200dip"
-		    android:layout_gravity="center" />
+				<com.google.android.material.textfield.TextInputLayout
+					android:id="@+id/end_wrapper"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:padding="5dip">
 
-	    <com.larswerkman.holocolorpicker.SVBar
-            android:id="@+id/sv_remain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="5dip"
-		    android:paddingRight="5dip" />
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/button_end"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="5dip"
+						android:drawableLeft="@drawable/ic_date_range_white_24dp"
+						android:drawablePadding="5dip"
+						android:background="@android:color/transparent"
+						android:editable="false"
+						android:hint="@string/end_date" />
 
-		<RadioGroup
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:visibility="gone">
+				</com.google.android.material.textfield.TextInputLayout>
 
-			<RadioButton
-				android:id="@+id/layout_bar"
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:text="@string/bar_view" />
+			</LinearLayout>
 
-			<RadioButton
-				android:id="@+id/layout_circle"
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:checked="true"
-				android:text="@string/circle_view" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/color_completed"
+				android:padding="5dip" />
 
-		</RadioGroup>
-    
-    </LinearLayout>
-</ScrollView>
+			<com.larswerkman.holocolorpicker.ColorPicker
+				android:id="@+id/picker_completed"
+				android:layout_width="match_parent"
+				android:layout_height="200dip"
+				android:layout_gravity="center" />
+
+			<com.larswerkman.holocolorpicker.SVBar
+				android:id="@+id/sv_completed"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:paddingLeft="5dip"
+				android:paddingRight="5dip" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/color_remaining"
+				android:padding="5dip" />
+
+			<com.larswerkman.holocolorpicker.ColorPicker
+				android:id="@+id/picker_remain"
+				android:layout_width="match_parent"
+				android:layout_height="200dip"
+				android:layout_gravity="center" />
+
+			<com.larswerkman.holocolorpicker.SVBar
+				android:id="@+id/sv_remain"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:paddingLeft="5dip"
+				android:paddingRight="5dip" />
+
+			<RadioGroup
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:visibility="gone">
+
+				<RadioButton
+					android:id="@+id/layout_bar"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:text="@string/bar_view" />
+
+				<RadioButton
+					android:id="@+id/layout_circle"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:layout_weight="1"
+					android:checked="true"
+					android:text="@string/circle_view" />
+
+			</RadioGroup>
+
+		</LinearLayout>
+	</ScrollView>
+
+</LinearLayout>
