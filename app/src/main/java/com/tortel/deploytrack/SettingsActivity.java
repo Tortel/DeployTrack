@@ -15,16 +15,16 @@
  */
 package com.tortel.deploytrack;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+
 import android.view.MenuItem;
 import android.view.View;
 
@@ -69,20 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
             this.finish();
         });
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, new SettingsFragment());
         transaction.commit();
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
-		//Finish on the icon 'up' pressed
-		case android.R.id.home:
-			this.finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
     @Override
@@ -104,14 +93,17 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Fragment which shows the actual settings
      */
-    public static class SettingsFragment extends PreferenceFragment
+    public static class SettingsFragment extends PreferenceFragmentCompat
             implements SharedPreferences.OnSharedPreferenceChangeListener {
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+        }
 
-            addPreferencesFromResource(R.xml.preferences);
-
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences, rootKey);
             setSyncStatus();
         }
 
@@ -133,6 +125,8 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onResume() {
             super.onResume();
+            setSyncStatus();
+
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
         }
@@ -146,9 +140,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        public boolean onPreferenceTreeClick(Preference preference) {
             DialogFragment dialog;
-            FragmentManager fragMan = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+            FragmentManager fragMan = getActivity().getSupportFragmentManager();
             if(KEY_WELCOME.equals(preference.getKey())){
                 dialog = new WelcomeDialog();
                 dialog.show(fragMan, "welcome");
@@ -158,7 +152,7 @@ public class SettingsActivity extends AppCompatActivity {
                 dialog.show(fragMan, "screenshot");
                 return true;
             }
-            return super.onPreferenceTreeClick(preferenceScreen, preference);
+            return super.onPreferenceTreeClick(preference);
         }
 
         @Override

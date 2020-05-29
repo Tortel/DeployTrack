@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
 
