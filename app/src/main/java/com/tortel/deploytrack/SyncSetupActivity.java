@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
     private TextView mStatusTextView;
+    private SignInButton mSignInButton;
+    private Button mSignOutButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,11 +80,12 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
 
         mStatusTextView = findViewById(R.id.sync_status);
         // Set up the click listener
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(this);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        mSignInButton = findViewById(R.id.sign_in_button);
+        mSignInButton.setOnClickListener(this);
+        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
+        mSignOutButton = findViewById(R.id.sign_out_button);
+        mSignOutButton.setOnClickListener(this);
         // Make the privacy policy link clickable
         ((TextView) findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -120,8 +124,12 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
         if(currentUser != null){
             // If sync is enabled, show the email address it is using
             mStatusTextView.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
+            mSignInButton.setVisibility(View.GONE);
+            mSignOutButton.setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.pref_sync_not_enabled);
+            mSignOutButton.setVisibility(View.GONE);
+            mSignInButton.setVisibility(View.VISIBLE);
         }
     }
 
