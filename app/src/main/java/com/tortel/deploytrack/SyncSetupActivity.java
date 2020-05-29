@@ -17,7 +17,6 @@ package com.tortel.deploytrack;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
@@ -26,18 +25,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -46,10 +43,10 @@ import com.tortel.deploytrack.data.DatabaseManager;
 /**
  * Activity for setting up syncing with Firebase
  */
-public class SyncSetupActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class SyncSetupActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int RC_SIGN_IN = 321;
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mSignInClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -78,9 +75,12 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
             this.finish();
         });
 
-        mStatusTextView = (TextView) findViewById(R.id.sync_status);
+        mStatusTextView = findViewById(R.id.sync_status);
         // Set up the click listener
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(this);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         // Make the privacy policy link clickable
         ((TextView) findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
@@ -94,10 +94,7 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        mSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = firebaseAuth -> {
@@ -129,17 +126,6 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            //Finish on the icon 'up' pressed
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
@@ -159,18 +145,19 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            // Handle Firebase login
-            firebaseAuthWithGoogle(acct);
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            firebaseAuthWithGoogle(account);
+        } catch (ApiException e) {
+            Log.e("Google Sign-in failed with status code " + e.getStatusCode(), e);
         }
     }
 
@@ -212,12 +199,13 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.sign_in_button:
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                Intent signInIntent = mSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;
             case R.id.sign_out_button:
                 // Sign out
                 mAuth.signOut();
+                mSignInClient.signOut();
                 // Clear the user from the database manager
                 DatabaseManager.getInstance(this).setFirebaseUser(null);
                 // Update the UI
@@ -231,17 +219,4 @@ public class SyncSetupActivity extends AppCompatActivity implements GoogleApiCli
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("Google API connection failed");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if(mGoogleApiClient != null){
-            mGoogleApiClient.disconnect();
-        }
-    }
 }
