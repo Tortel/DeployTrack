@@ -78,6 +78,14 @@ limitations under the License.
 	</PreferenceCategory>
 	<PreferenceCategory
 	    android:title="@string/other">
+		<Preference android:title="@string/about"
+			android:summary="@string/about_app">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:targetPackage="com.tortel.deploytrack"
+				android:targetClass="com.tortel.deploytrack.AboutActivity"
+				/>
+		</Preference>
 	    <Preference android:title="@string/send_feedback"
 	        android:summary="@string/send_feedback_summary">
 	        <intent

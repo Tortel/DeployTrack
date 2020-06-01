@@ -29,8 +29,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,7 +40,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
-import com.tortel.deploytrack.dialog.AboutDialog;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
@@ -104,12 +101,6 @@ public class MainActivity extends AppCompatActivity {
 					args.putString(DeleteDialog.KEY_ID, id);
 					dialog.setArguments(args);
 					dialog.show(getSupportFragmentManager(), "delete");
-					return true;
-				case R.id.menu_about:
-					Fragment about = new AboutDialog();
-					FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-					transaction.add(about, "about");
-					transaction.commit();
 					return true;
 				case R.id.menu_feedback:
 					intent = new Intent(Intent.ACTION_SEND);

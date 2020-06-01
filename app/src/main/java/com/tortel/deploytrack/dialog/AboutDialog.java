@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 import com.tortel.deploytrack.R;
 
-public class AboutDialog extends DialogFragment {
+public abstract class AboutDialog extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,6 @@ public class AboutDialog extends DialogFragment {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			text.setText(Html.fromHtml(readRawTextFile(getContent()), Html.FROM_HTML_MODE_LEGACY));
 		} else {
-			//noinspection deprecation
 			text.setText(Html.fromHtml(readRawTextFile(getContent())));
 		}
 		Linkify.addLinks(text, Linkify.ALL);
@@ -94,12 +93,8 @@ public class AboutDialog extends DialogFragment {
 		return text.toString();
 	}
 
-    @StringRes int getTitleString(){
-        return R.string.app_name;
-    }
+    protected abstract @StringRes int getTitleString();
 
-    @RawRes int getContent(){
-        return R.raw.about;
-    }
+    protected abstract @RawRes int getContent();
 
 }

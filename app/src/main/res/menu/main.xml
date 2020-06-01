@@ -42,12 +42,6 @@ limitations under the License.
         />
 
     <item
-        android:id="@+id/menu_about"
-        app:showAsAction="never"
-        android:title="@string/about"
-        />
-
-    <item
         android:id="@+id/menu_settings"
         app:showAsAction="never"
         android:title="@string/settings"

@@ -122,4 +122,17 @@ limitations under the License.
     <string name="prefs_analytics">Enable Anonymous Statistics</string>
     <string name="prefs_analytics_summary">Help make the application better by reporting anonymous usage statistics</string>
 
+    <!-- About strings -->
+    <string name="about_app">About Deployment Tracker</string>
+    <string name="author">Author</string>
+    <string name="app_author">Scott Warner</string>
+    <string name="license">License</string>
+    <string name="apache2">Apache 2</string>
+    <string name="source">Source</string>
+    <string name="source_desc">View on GitHub</string>
+    <string name="changelog">Changelog</string>
+    <string name="version">Version %1$s</string>
+
+    <string name="libraries">Third Party Libraries Used</string>
+
 </resources>

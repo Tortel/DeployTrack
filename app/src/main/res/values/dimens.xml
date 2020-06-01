@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="about_app_icon">120dp</dimen>
+    <dimen name="about_app_icon_margin">16dp</dimen>
+    <dimen name="about_row_pad_vertical">8dp</dimen>
+    <dimen name="about_row_pad_horizontal">16dp</dimen>
+    <dimen name="about_row_icon">24dp</dimen>
+    <dimen name="about_row_text_padding">16dp</dimen>
+</resources>
