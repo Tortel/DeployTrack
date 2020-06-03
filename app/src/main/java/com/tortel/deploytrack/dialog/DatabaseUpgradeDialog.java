@@ -24,6 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -46,7 +48,7 @@ public class DatabaseUpgradeDialog extends DialogFragment {
         setCancelable(false);
 
         // Start the upgrade
-        new DatabaseUpgradeTask(getActivity()).execute();
+        doDatabaseUpgrade(getActivity());
     }
 
     @Override
@@ -87,32 +89,25 @@ public class DatabaseUpgradeDialog extends DialogFragment {
         getActivity().startActivity(intent);
     }
 
-    /**
-     * Class which handles the upgrade in the background
-     */
-    private class DatabaseUpgradeTask extends AsyncTask<Void, Void, Boolean> {
-        private final Context context;
+    private void doDatabaseUpgrade(@NonNull final Context context) {
+        (new Thread() {
+            @Override
+            public void run() {
+                if (DatabaseUpgrader.doDatabaseUpgrade(context)) {
+                    Handler mainHandler = new Handler(context.getMainLooper());
+                    mainHandler.post(() -> {
+                        Log.v("Sending widget update broadcast");
+                        Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+                        context.sendBroadcast(updateWidgetIntent);
 
-        public DatabaseUpgradeTask(Context context){
-            this.context = context.getApplicationContext();
-        }
+                        // Re-start the main activity
+                        restartMainActivity();
+                    });
+                } else {
+                    // Uh? What now?
 
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            return DatabaseUpgrader.doDatabaseUpgrade(context);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            // TODO - Wtf to do if it failed?
-
-            // Force the widgets to update
-            Log.v("Sending widget update broadcast");
-            Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-            getActivity().sendBroadcast(updateWidgetIntent);
-
-            // Re-start the main activity
-            restartMainActivity();
-        }
+                }
+            }
+        }).start();
     }
 }
