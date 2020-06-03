@@ -28,10 +28,6 @@ limitations under the License.
         <item name="tabIndicatorColor">@color/primary_dark</item>
         <item name="tabTextColor">@android:color/white</item>
 
-        <!-- Material text input text color -->
-        <item name="edittext_color">@android:color/primary_text_dark</item>
-        <item name="edittext_hint">@android:color/secondary_text_dark</item>
-
         <!-- Date picker theme info -->
         <item name="mdtp_theme_dark">true</item>
 
@@ -39,6 +35,7 @@ limitations under the License.
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
     </style>
 
+    <!-- Light theme -->
     <style name="Theme.DeployThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -51,10 +48,6 @@ limitations under the License.
         <!-- Theme specific stuff -->
         <item name="tabIndicatorColor">@color/primary_light</item>
         <item name="tabTextColor">@color/secondary_text</item>
-
-        <!-- Material text input text color -->
-        <item name="edittext_color">@android:color/primary_text_light</item>
-        <item name="edittext_hint">@android:color/darker_gray</item>
 
         <!-- Date picker theme info -->
         <item name="mdtp_theme_dark">false</item>
