@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
@@ -36,6 +36,7 @@ public class WidgetPickerActivity extends AppCompatActivity {
     private boolean mUseLightText = true;
     
     private int mCurrentPosition = 0;
+    private TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +65,29 @@ public class WidgetPickerActivity extends AppCompatActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(mAdapter);
 
-        SmartTabLayout indicator = (SmartTabLayout) findViewById(R.id.indicator);
-        indicator.setViewPager(pager);
-        indicator.setOnPageChangeListener(new PageChangeListener());
-        
+        mTabLayout = findViewById(R.id.tabs);
         pager.setCurrentItem(mCurrentPosition);
+        mTabLayout.addOnTabSelectedListener(mTabSelectedListener);
         
         Log.d("WidgetPicker started with mWidgetId "+ mWidgetId);
     }
-    
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mTabLayout != null) {
+            mTabLayout.removeOnTabSelectedListener(mTabSelectedListener);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mTabLayout != null) {
+            mTabLayout.addOnTabSelectedListener(mTabSelectedListener);
+        }
+    }
+
     public void onClick(View v){
         String id = mAdapter.getId(mCurrentPosition);
         switch(v.getId()){
@@ -116,19 +131,20 @@ public class WidgetPickerActivity extends AppCompatActivity {
      * Class to listen for page changes.
      * The page number is used for editing and deleting data
      */
-    private class PageChangeListener implements ViewPager.OnPageChangeListener{
+    private TabLayout.OnTabSelectedListener mTabSelectedListener = new TabLayout.OnTabSelectedListener() {
         @Override
-        public void onPageSelected(int position) {
-            mCurrentPosition = position;
+        public void onTabSelected(TabLayout.Tab tab) {
+            mCurrentPosition = tab.getPosition();
         }
-        
+
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            //Ignore
+        public void onTabUnselected(TabLayout.Tab tab) {
+            // Ignore
         }
+
         @Override
-        public void onPageScrollStateChanged(int state) {
-            //Ignore
+        public void onTabReselected(TabLayout.Tab tab) {
+            // Ignore
         }
-    }
+    };
 }

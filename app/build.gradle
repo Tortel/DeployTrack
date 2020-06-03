@@ -32,8 +32,6 @@ dependencies {
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
 
-    // https://github.com/ogaclejapan/SmartTabLayout
-    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     // https://github.com/wdullaer/MaterialDateTimePicker
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     // https://github.com/LarsWerkman/HoloColorPicker

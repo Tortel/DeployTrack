@@ -24,10 +24,6 @@ limitations under the License.
 
         <item name="colorOnPrimary">@android:color/primary_text_dark</item>
 
-        <!-- Theme specific stuff -->
-        <item name="tabIndicatorColor">@color/primary_dark</item>
-        <item name="tabTextColor">@android:color/white</item>
-
         <!-- Date picker theme info -->
         <item name="mdtp_theme_dark">true</item>
 
@@ -44,10 +40,6 @@ limitations under the License.
         <item name="android:statusBarColor">@color/primary_dark</item>
 
         <item name="colorOnPrimary">@android:color/primary_text_dark</item>
-
-        <!-- Theme specific stuff -->
-        <item name="tabIndicatorColor">@color/primary_light</item>
-        <item name="tabTextColor">@color/secondary_text</item>
 
         <!-- Date picker theme info -->
         <item name="mdtp_theme_dark">false</item>

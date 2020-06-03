@@ -89,7 +89,6 @@ public class AboutActivity extends AppCompatActivity {
                 "AndroidX Support Libraries",
                 "Material Components for Android",
                 "DecoView-Charting",
-                "SmartTabLayout",
                 "Material DateTime Picker",
                 "Holo ColorPicker",
                 "JodaTime",
@@ -100,7 +99,6 @@ public class AboutActivity extends AppCompatActivity {
                 "https://developer.android.com/jetpack/androidx",
                 "https://material.io/develop/android/",
                 "https://github.com/bmarrdev/android-DecoView-charting",
-                "https://github.com/ogaclejapan/SmartTabLayout",
                 "https://github.com/wdullaer/MaterialDateTimePicker",
                 "https://github.com/LarsWerkman/HoloColorPicker",
                 "http://www.joda.org/joda-time/",
@@ -108,7 +106,6 @@ public class AboutActivity extends AppCompatActivity {
                 "https://firebase.google.com/",
         };
         final String[] libraryLicense = {
-                "Apache 2",
                 "Apache 2",
                 "Apache 2",
                 "Apache 2",

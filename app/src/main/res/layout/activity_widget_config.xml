@@ -35,24 +35,21 @@ limitations under the License.
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:stl_defaultTabTextHorizontalPadding="24dp"
-        app:stl_indicatorColor="@color/primary"
-        app:stl_indicatorInterpolation="linear"
-        app:stl_indicatorThickness="3dp"
-        app:stl_titleOffset="auto_center"
-        app:stl_underlineThickness="1dp"
-        app:stl_defaultTabTextColor="?attr/tabTextColor" />
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        />
+        android:layout_height="0dip" >
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            app:tabMode="scrollable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+
+    </androidx.viewpager.widget.ViewPager>
 
     <View
         android:layout_width="match_parent"

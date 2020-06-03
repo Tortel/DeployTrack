@@ -34,12 +34,13 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 	
 	private int mCurrentPosition;
     private boolean mScreenShotMode = false;
+    private TabLayout mTabLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +192,15 @@ public class MainActivity extends AppCompatActivity {
         lbm.unregisterReceiver(mChangeListener);
     }
 
-    @Override
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mTabLayout != null) {
+			mTabLayout.removeOnTabSelectedListener(mTabSelectedListener);
+		}
+	}
+
+	@Override
 	public void onResume(){
 		super.onResume();
         Prefs.load(this);
@@ -218,14 +228,14 @@ public class MainActivity extends AppCompatActivity {
 		pager.setAdapter(mAdapter);
 		pager.setCurrentItem(mCurrentPosition);
 
-		SmartTabLayout indicator = findViewById(R.id.indicator);
-		indicator.setViewPager(pager);
-		indicator.setOnPageChangeListener(new PageChangeListener());
+		mTabLayout = findViewById(R.id.tabs);
+		mTabLayout.setupWithViewPager(pager);
+		mTabLayout.addOnTabSelectedListener(mTabSelectedListener);
 
         if(mScreenShotMode){
-            indicator.setVisibility(View.INVISIBLE);
+            mTabLayout.setVisibility(View.INVISIBLE);
         } else {
-            indicator.setVisibility(View.VISIBLE);
+            mTabLayout.setVisibility(View.VISIBLE);
         }
 
 		// Set the analytics properties
@@ -281,23 +291,25 @@ public class MainActivity extends AppCompatActivity {
 	 * Class to listen for page changes.
 	 * The page number is used for editing and deleting data
 	 */
-	private class PageChangeListener implements ViewPager.OnPageChangeListener{
+	private TabLayout.OnTabSelectedListener mTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+
 		@Override
-		public void onPageSelected(int position) {
-			mCurrentPosition = position;
+		public void onTabSelected(TabLayout.Tab tab) {
+			mCurrentPosition = tab.getPosition();
 			mAdapter.getItem(mCurrentPosition).onResume();
-			Log.v("Page changed to "+position);
+			Log.v("Page changed to " + mCurrentPosition);
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			//Ignore
+		public void onTabUnselected(TabLayout.Tab tab) {
+			// Ignore
 		}
+
 		@Override
-		public void onPageScrollStateChanged(int state) {
-			//Ignore
+		public void onTabReselected(TabLayout.Tab tab) {
+			// Ignore
 		}
-	}
+	};
 
     private BroadcastReceiver mChangeListener = new BroadcastReceiver() {
         @Override
