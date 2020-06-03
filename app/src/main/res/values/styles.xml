@@ -28,7 +28,7 @@ limitations under the License.
         <item name="mdtp_theme_dark">true</item>
 
         <!-- Use the 'legacy' text input' -->
-        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
     </style>
 
     <!-- Light theme -->
@@ -45,7 +45,7 @@ limitations under the License.
         <item name="mdtp_theme_dark">false</item>
 
         <!-- Use the 'legacy' text input' -->
-        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
     </style>
     
     <!-- Style for the percentage -->
@@ -60,7 +60,4 @@ limitations under the License.
     <!-- Date picker button fix. https://github.com/wdullaer/MaterialDateTimePicker/issues/523#issuecomment-477349333 -->
     <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
 
-    <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
-        <!-- Custom attrs -->
-    </style>
 </resources>
