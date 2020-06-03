@@ -25,6 +25,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,6 +47,8 @@ import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * The main activity that contains the fragments that show the graphs.
@@ -71,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
 
 		setContentView(R.layout.activity_main);
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+		if (BuildConfig.DEBUG) {
+			mFirebaseAnalytics.setAnalyticsCollectionEnabled(false);
+		}
+
+		// Disable crash reporting on debug builds
+		Fabric.with(this, new Crashlytics.Builder()
+				.core(new CrashlyticsCore.Builder()
+						.disabled(BuildConfig.DEBUG).build()).build());
 
 		MaterialToolbar toolbar = findViewById(R.id.topAppBar);
 		toolbar.setOnMenuItemClickListener((MenuItem item) -> {
