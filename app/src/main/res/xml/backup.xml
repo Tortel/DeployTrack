@@ -14,7 +14,7 @@
     limitations under the License.
 -->
 <full-backup-content>
-    <!-- Only backup our database and sharedprefs -->
-    <include domain="database" path="data2016.09.sqlite" />
+    <!-- Only backup our databases and sharedprefs -->
+    <include domain="database" path="." />
     <include domain="sharedpref" path="com.tortel.deploytrack_preferences.xml" />
 </full-backup-content>
