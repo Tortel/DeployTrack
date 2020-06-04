@@ -25,21 +25,15 @@ limitations under the License.
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp" >
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@string/app_name"
-                app:menu="@menu/main"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                />
-
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            app:menu="@menu/main"
+            android:elevation="0dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

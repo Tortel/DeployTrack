@@ -19,21 +19,15 @@ limitations under the License.
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<com.google.android.material.appbar.AppBarLayout
+	<com.google.android.material.appbar.MaterialToolbar
+		android:id="@+id/topAppBar"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<com.google.android.material.appbar.MaterialToolbar
-			android:id="@+id/topAppBar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			app:title="@string/settings"
-			style="@style/Widget.MaterialComponents.Toolbar.Primary"
-			app:navigationIcon="@drawable/ic_arrow_back_24dp"
-			app:menu="@menu/menu_create"
-			/>
-
-	</com.google.android.material.appbar.AppBarLayout>
+		android:layout_height="?attr/actionBarSize"
+		app:title="@string/settings"
+		style="@style/Widget.MaterialComponents.Toolbar.Primary"
+		app:navigationIcon="@drawable/ic_arrow_back_24dp"
+		app:menu="@menu/menu_create"
+		/>
 
 	<ScrollView
 		xmlns:tools="http://schemas.android.com/tools"
