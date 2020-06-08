@@ -17,6 +17,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+        debug {
+            versionNameSuffix '-dev'
+        }
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -51,7 +54,7 @@ dependencies {
     // Crashlytics crash reporting
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     // Firebase analytics
-    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.4.3'
 }
 
 // For use with Firebase
