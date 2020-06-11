@@ -19,8 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,7 +49,7 @@ class FirebaseDBManager implements ChildEventListener {
         } catch (Exception e) {
             Log.e("Exception enabling persistance", e);
             // If theres an error, log it
-            Crashlytics.logException(new Exception("Exception enabling persistance", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception enabling persistance", e));
         }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDbManager = dbManager;

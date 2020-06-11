@@ -17,7 +17,7 @@ package com.tortel.deploytrack;
 
 import java.util.List;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.tortel.deploytrack.data.*;
 import com.tortel.deploytrack.fragments.*;
 
@@ -88,7 +88,7 @@ class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 			super.destroyItem(container, position, object);
 		} catch (IndexOutOfBoundsException e) {
 		    // Hopefully this wont screw up the state too much
-            Crashlytics.logException(new Exception("OutOfBoundsException during destroyItem", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("OutOfBoundsException during destroyItem", e));
 		}
 	}
 

@@ -17,8 +17,8 @@ package com.tortel.deploytrack.data;
 
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.tortel.deploytrack.Log;
 
 import java.sql.SQLException;
@@ -66,7 +66,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Error saving Deployment", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception saving deployment", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception saving deployment", e));
         }
     }
 
@@ -97,7 +97,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception getting all Deployments", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception getting all deployments", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception getting all deployments", e));
         }
         return list;
     }
@@ -112,7 +112,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception getting Deployment", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception getting deployment", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception getting deployment", e));
         }
         return tmp;
     }
@@ -137,7 +137,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception deleting Deployment", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception deleting deployment", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception deleting deployment", e));
         }
     }
     
@@ -157,7 +157,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception getting widget info", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception getting all widget info", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception getting all widget info", e));
             return null;
         }
     }
@@ -176,7 +176,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception getting widget info", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception getting all widget info", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception getting all widget info", e));
             return null;
         }
     }
@@ -191,7 +191,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Exception saving widget info", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception saving widget info", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception saving widget info", e));
         }
     }
     
@@ -205,7 +205,7 @@ public class DatabaseManager {
         } catch(SQLException e){
             Log.e("Error deleting widget info", e);
             // Report this to firebase
-            Crashlytics.logException(new Exception("Exception deleting eidget info", e));
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception deleting eidget info", e));
         }
     }
 
