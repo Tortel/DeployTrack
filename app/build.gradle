@@ -40,11 +40,11 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.10.6'
+    implementation 'joda-time:joda-time:2.10.8'
 
     // http://ormlite.com/
-    implementation 'com.j256.ormlite:ormlite-core:5.1'
-    implementation 'com.j256.ormlite:ormlite-android:5.1'
+    implementation 'com.j256.ormlite:ormlite-core:5.3'
+    implementation 'com.j256.ormlite:ormlite-android:5.3'
 
     // Firebase
     implementation 'com.google.firebase:firebase-auth:20.0.1'
