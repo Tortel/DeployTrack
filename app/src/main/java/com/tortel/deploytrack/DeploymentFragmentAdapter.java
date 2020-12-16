@@ -30,13 +30,13 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
+public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 
 	private List<Deployment> mDeploymentList;
 	private Context mContext;
 	private SparseArray<DeploymentFragment> mFragmentList;
 	
-	DeploymentFragmentAdapter(Context context, FragmentManager fm){
+	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		this.mContext = context.getApplicationContext();
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
