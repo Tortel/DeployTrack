@@ -31,6 +31,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -39,7 +41,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tortel.deploytrack.Analytics;
-import com.tortel.deploytrack.CreateActivity;
 import com.tortel.deploytrack.DeploymentFragmentAdapter;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
@@ -149,20 +150,21 @@ public class MainFragment extends Fragment {
         toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             Intent intent;
             final String id = mAdapter.getId(mCurrentPosition);
+            NavDirections action = null;
 
             switch (item.getItemId()) {
                 case R.id.menu_create_new:
-                    intent = new Intent(getActivity(), CreateActivity.class);
-                    startActivity(intent);
+                    action = MainFragmentDirections.actionMainFragmentToCreateFragment();
+                    NavHostFragment.findNavController(this).navigate(action);
                     return true;
                 case R.id.menu_edit:
                     //If its the info fragment, ignore
                     if(id == null){
                         return true;
                     }
-                    intent = new Intent(getActivity(), CreateActivity.class);
-                    intent.putExtra("id", id);
-                    startActivity(intent);
+                    action = MainFragmentDirections.actionMainFragmentToCreateFragment();
+                    NavHostFragment.findNavController(this).navigate(action);
+                    // TODO - Pass the ID
                     return true;
                 case R.id.menu_delete:
                     //If its the info fragment, ignore

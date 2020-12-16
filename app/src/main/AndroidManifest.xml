@@ -51,9 +51,6 @@ limitations under the License.
 		    </intent-filter>
         </activity>
 
-        <!-- Create/edit activity -->
-        <activity android:name=".CreateActivity" />
-
         <!-- Settings activity -->
         <activity android:name=".SettingsActivity"
             android:label="@string/settings" />

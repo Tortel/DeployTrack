@@ -49,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
 		if (savedInstanceState == null) {
 			firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null);
 		}
-
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		if (fragmentManager.findFragmentById(R.id.content_frame) == null) {
-			MainFragment fragment = new MainFragment();
-			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-		}
 	}
 
 }

@@ -10,6 +10,10 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.36.0'
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+
+        // Keep this version in sync with the rest of the nav stuff
+        def nav_version = "2.3.2"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 }
 
