@@ -9,14 +9,20 @@
         android:name="com.tortel.deploytrack.fragments.MainFragment"
         android:label="MainFragment" >
         <action
-            android:id="@+id/action_mainFragment_to_createFragment"
-            app:destination="@id/createFragment" />
+            android:id="@+id/mainToCreateAction"
+            app:destination="@id/createFragment">
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/createFragment"
         android:name="com.tortel.deploytrack.fragments.CreateFragment"
         android:label="CreateFragment" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

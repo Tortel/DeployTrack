@@ -31,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -150,21 +149,20 @@ public class MainFragment extends Fragment {
         toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             Intent intent;
             final String id = mAdapter.getId(mCurrentPosition);
-            NavDirections action = null;
 
             switch (item.getItemId()) {
                 case R.id.menu_create_new:
-                    action = MainFragmentDirections.actionMainFragmentToCreateFragment();
-                    NavHostFragment.findNavController(this).navigate(action);
+                    MainFragmentDirections.MainToCreateAction createAction = MainFragmentDirections.mainToCreateAction();
+                    NavHostFragment.findNavController(this).navigate(createAction);
                     return true;
                 case R.id.menu_edit:
                     //If its the info fragment, ignore
                     if(id == null){
                         return true;
                     }
-                    action = MainFragmentDirections.actionMainFragmentToCreateFragment();
-                    NavHostFragment.findNavController(this).navigate(action);
-                    // TODO - Pass the ID
+                    MainFragmentDirections.MainToCreateAction editAction = MainFragmentDirections.mainToCreateAction();
+                    editAction.setId(id);
+                    NavHostFragment.findNavController(this).navigate(editAction);
                     return true;
                 case R.id.menu_delete:
                     //If its the info fragment, ignore

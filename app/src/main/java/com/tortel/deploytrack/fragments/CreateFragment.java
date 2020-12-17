@@ -36,7 +36,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -54,6 +53,9 @@ import com.tortel.deploytrack.dialog.SingleDatePickerDialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Fragment that handles creation/editing of deployment objects
+ */
 public class CreateFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG_DATE_DIALOG = "datePicker";
 
@@ -64,7 +66,6 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private static final String KEY_COLOR_REMAINING = "remaining";
     private static final String KEY_DISPLAY_TYPE = "display";
 
-    private MaterialToolbar mToolbar;
     private EditText mNameEdit;
     private TextInputLayout mNameWrapper;
     private EditText mStartInput;
@@ -108,8 +109,8 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_create, container, false);
 
-        mToolbar = view.findViewById(R.id.topAppBar);
-        mToolbar.setOnMenuItemClickListener((MenuItem item) -> {
+        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             switch(item.getItemId()){
                 case android.R.id.home:
                     NavHostFragment.findNavController(this).navigateUp();
@@ -120,7 +121,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             }
             return super.onOptionsItemSelected(item);
         });
-        mToolbar.setNavigationOnClickListener((View v) -> {
+        toolbar.setNavigationOnClickListener((View v) -> {
             NavHostFragment.findNavController(this).navigateUp();
         });
 
@@ -168,7 +169,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         SVBar completedBar = view.findViewById(R.id.sv_completed);
         SVBar remainingBar = view.findViewById(R.id.sv_remain);
 
-        String id = null; // TODO getIntent().getStringExtra("id");
+        String id = CreateFragmentArgs.fromBundle(getArguments()).getId();
         if (id != null) {
             //Starting in edit mode, load the old data
             mDeployment = DatabaseManager.getInstance(getContext()).getDeployment(id);
@@ -198,7 +199,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             //Set the name
             mNameEdit.setText(mDeployment.getName());
 
-            mToolbar.setTitle(R.string.edit);
+            toolbar.setTitle(R.string.edit);
         } else {
             mDeployment = new Deployment();
 
@@ -208,7 +209,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             mCompletedColor = Color.GREEN;
             mRemainingColor = Color.RED;
 
-            mToolbar.setTitle(R.string.add_new);
+            toolbar.setTitle(R.string.add_new);
         }
 
         //If restore from rotation
