@@ -10,8 +10,10 @@
         android:label="MainFragment" >
         <action
             android:id="@+id/mainToCreateAction"
-            app:destination="@id/createFragment">
-        </action>
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/mainToSettingsAction"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -24,5 +26,10 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.tortel.deploytrack.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

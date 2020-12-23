@@ -51,10 +51,6 @@ limitations under the License.
 		    </intent-filter>
         </activity>
 
-        <!-- Settings activity -->
-        <activity android:name=".SettingsActivity"
-            android:label="@string/settings" />
-
         <!-- Sync setup activity -->
         <activity android:name=".SyncSetupActivity" />
 

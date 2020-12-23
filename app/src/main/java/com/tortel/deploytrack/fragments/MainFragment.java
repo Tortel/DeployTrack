@@ -44,7 +44,6 @@ import com.tortel.deploytrack.DeploymentFragmentAdapter;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.SettingsActivity;
 import com.tortel.deploytrack.SyncSetupActivity;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
@@ -152,8 +151,8 @@ public class MainFragment extends Fragment {
 
             switch (item.getItemId()) {
                 case R.id.menu_create_new:
-                    MainFragmentDirections.MainToCreateAction createAction = MainFragmentDirections.mainToCreateAction();
-                    NavHostFragment.findNavController(this).navigate(createAction);
+                    NavHostFragment.findNavController(this)
+                            .navigate(MainFragmentDirections.mainToCreateAction());
                     return true;
                 case R.id.menu_edit:
                     //If its the info fragment, ignore
@@ -202,8 +201,8 @@ public class MainFragment extends Fragment {
                     reload();
                     return true;
                 case R.id.menu_settings:
-                    intent = new Intent(getActivity(), SettingsActivity.class);
-                    startActivity(intent);
+                    NavHostFragment.findNavController(this)
+                            .navigate(MainFragmentDirections.mainToSettingsAction());
                     return true;
             }
             return super.onOptionsItemSelected(item);

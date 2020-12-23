@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2020 Scott Warner
+ * Copyright (C) 2020 Scott Warner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,87 +13,96 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack;
+package com.tortel.deploytrack.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseUser;
+import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.MainActivity;
+import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 /**
- * Settings activity
+ * Fragment that handles settings
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsFragment extends Fragment {
     private static final String KEY_THEME = "pref_light_theme";
     private static final String KEY_WELCOME = "pref_show_welcome";
     private static final String KEY_ABOUT_SCREENSHOT = "pref_show_about_screenshot";
     private static final String KEY_SYNC = "pref_sync_info";
     private static final String KEY_ANALYTICS = "pref_analytics";
 
-	@Override
-	public void onCreate(Bundle savedInstanceState){
-        // Check for light theme
-        Prefs.load(this);
-        if(Prefs.useLightTheme()){
-            setTheme(R.style.Theme_DeployThemeLight);
-        }
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-        setContentView(R.layout.activity_settings);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
         toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == android.R.id.home) {
-                finish();
+                NavHostFragment.findNavController(this).navigateUp();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         });
         toolbar.setNavigationOnClickListener((View v) -> {
-            this.finish();
+            NavHostFragment.findNavController(this).navigateUp();
         });
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, new SettingsFragment());
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, new PreferenceFragment());
         transaction.commit();
-	}
+
+        return view;
+    }
 
     @Override
-	public void onStop(){
-	    super.onStop();
-	    sendWidgetUpdateBroadcast();
-	}
+    public void onStop() {
+        super.onStop();
+        sendWidgetUpdateBroadcast();
+    }
 
     /**
      * Send a broadcast to force the widgets to update
      */
-	private void sendWidgetUpdateBroadcast(){
-	    Log.v("Sending widget update broadcast");
-	    // Force the widgets to update
+    private void sendWidgetUpdateBroadcast(){
+        Log.v("Sending widget update broadcast");
+        // Force the widgets to update
         Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-        sendBroadcast(updateWidgetIntent);
-	}
+        getContext().sendBroadcast(updateWidgetIntent);
+    }
 
     /**
      * Fragment which shows the actual settings
      */
-    public static class SettingsFragment extends PreferenceFragmentCompat
+    public static class PreferenceFragment extends PreferenceFragmentCompat
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Override
@@ -142,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
             DialogFragment dialog;
-            FragmentManager fragMan = getActivity().getSupportFragmentManager();
+            FragmentManager fragMan = getParentFragmentManager();
             if(KEY_WELCOME.equals(preference.getKey())){
                 dialog = new WelcomeDialog();
                 dialog.show(fragMan, "welcome");
