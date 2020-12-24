@@ -152,14 +152,19 @@ public class SettingsFragment extends Fragment {
         public boolean onPreferenceTreeClick(Preference preference) {
             DialogFragment dialog;
             FragmentManager fragMan = getParentFragmentManager();
-            if(KEY_WELCOME.equals(preference.getKey())){
-                dialog = new WelcomeDialog();
-                dialog.show(fragMan, "welcome");
-                return true;
-            } else if(KEY_ABOUT_SCREENSHOT.equals(preference.getKey())){
-                dialog = new ScreenShotModeDialog();
-                dialog.show(fragMan, "screenshot");
-                return true;
+            switch (preference.getKey()) {
+                case KEY_WELCOME:
+                    dialog = new WelcomeDialog();
+                    dialog.show(fragMan, "welcome");
+                    return true;
+                case KEY_ABOUT_SCREENSHOT:
+                    dialog = new ScreenShotModeDialog();
+                    dialog.show(fragMan, "screenshot");
+                    return true;
+                case KEY_SYNC:
+                    NavHostFragment.findNavController(this)
+                            .navigate(SettingsFragmentDirections.settingsToSync());
+                    return true;
             }
             return super.onPreferenceTreeClick(preference);
         }
@@ -167,15 +172,18 @@ public class SettingsFragment extends Fragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             // For theme changes, restart the app to apply it right away
-            if(key.equals(KEY_THEME)){
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                getActivity().startActivity(intent);
-            } else if(key.equals(KEY_ANALYTICS)){
-                // Turn analytics on/off
-                boolean value = sharedPreferences.getBoolean(KEY_ANALYTICS, true);
-                Log.d("Analytics collection: "+value);
-                FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(value);
+            switch (key) {
+                case KEY_THEME:
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(intent);
+                    break;
+                case KEY_ANALYTICS:
+                    // Turn analytics on/off
+                    boolean value = sharedPreferences.getBoolean(KEY_ANALYTICS, true);
+                    Log.d("Analytics collection: "+value);
+                    FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(value);
+                    break;
             }
         }
     }

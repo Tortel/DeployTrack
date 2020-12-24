@@ -59,13 +59,7 @@ limitations under the License.
 		<Preference
 			android:key="pref_sync_info"
 			android:title="@string/pref_sync_not_enabled"
-			android:summary="@string/tap_to_change_sync">
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:targetPackage="com.tortel.deploytrack"
-				android:targetClass="com.tortel.deploytrack.SyncSetupActivity"
-				/>
-		</Preference>
+			android:summary="@string/tap_to_change_sync" />
 		<Preference
 			android:key="pref_privacy_policy"
 			android:title="@string/prefs_privacy_policy"
