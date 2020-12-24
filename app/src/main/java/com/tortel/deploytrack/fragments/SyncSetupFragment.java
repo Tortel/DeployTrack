@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack;
+package com.tortel.deploytrack.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,12 +44,15 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.Prefs;
+import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 
 /**
- * Activity for setting up syncing with Firebase
+ * Fragment that handles setting up Firebase sync
  */
-public class SyncSetupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SyncSetupFragment extends Fragment {
     private static final int RC_SIGN_IN = 321;
 
     private GoogleSignInClient mSignInClient;
@@ -55,39 +63,10 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
     private SignInButton mSignInButton;
     private Button mSignOutButton;
 
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        // Check for light theme
-        Prefs.load(this);
-        if(Prefs.useLightTheme()){
-            setTheme(R.style.Theme_DeployThemeLight);
-        }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sync_setup);
-        setTitle(R.string.menu_sync);
-
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
-            if (item.getItemId() == android.R.id.home) {
-                finish();
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        });
-        toolbar.setNavigationOnClickListener((View v) -> {
-            this.finish();
-        });
-
-        mStatusTextView = findViewById(R.id.sync_status);
-        // Set up the click listener
-        mSignInButton = findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(this);
-        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
-
-        mSignOutButton = findViewById(R.id.sign_out_button);
-        mSignOutButton.setOnClickListener(this);
-        // Make the privacy policy link clickable
-        ((TextView) findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -98,7 +77,7 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
-        mSignInClient = GoogleSignIn.getClient(this, gso);
+        mSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = firebaseAuth -> {
@@ -111,36 +90,66 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
                 Log.d("onAuthStateChanged:signed_out");
             }
         };
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        showSyncStatus();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
-    /**
-     * Update the mStatusTextView to reflect the current sync settings
-     */
-    private void showSyncStatus(){
-        FirebaseUser currentUser = DatabaseManager.getInstance(this).getFirebaseUser();
-        if(currentUser != null){
-            // If sync is enabled, show the email address it is using
-            mStatusTextView.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
-            mSignInButton.setVisibility(View.GONE);
-            mSignOutButton.setVisibility(View.VISIBLE);
-        } else {
-            mStatusTextView.setText(R.string.pref_sync_not_enabled);
-            mSignOutButton.setVisibility(View.GONE);
-            mSignInButton.setVisibility(View.VISIBLE);
-        }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_sync_setup, container, false);
+
+        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+            if (item.getItemId() == android.R.id.home) {
+                NavHostFragment.findNavController(this).navigateUp();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        });
+        toolbar.setNavigationOnClickListener((View v) -> {
+            NavHostFragment.findNavController(this).navigateUp();
+        });
+
+        mStatusTextView = view.findViewById(R.id.sync_status);
+        // Set up the click listener
+        mSignInButton = view.findViewById(R.id.sign_in_button);
+        mSignInButton.setOnClickListener(signInView -> {
+            Intent signInIntent = mSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        });
+        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        mSignOutButton = view.findViewById(R.id.sign_out_button);
+        mSignOutButton.setOnClickListener(signOutView -> {
+            // Sign out
+            mAuth.signOut();
+            mSignInClient.signOut();
+            // Clear the user from the database manager
+            DatabaseManager.getInstance(getContext()).setFirebaseUser(null);
+            // Update the UI
+            showSyncStatus();
+            // Un-set the preference
+            Prefs.setSyncEnabled(getContext(), false);
+
+            // Toast it
+            Toast.makeText(getContext(), R.string.signed_out, Toast.LENGTH_LONG).show();
+        });
+        // Make the privacy policy link clickable
+        ((TextView) view.findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
+
+        showSyncStatus();
+
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
@@ -174,7 +183,7 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
+                .addOnCompleteListener(getActivity(), task -> {
                     Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
 
                     // If sign in fails, display a message to the user. If sign in succeeds
@@ -182,49 +191,41 @@ public class SyncSetupActivity extends AppCompatActivity implements View.OnClick
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful()) {
                         Log.e("signInWithCredential", task.getException());
-                        Toast.makeText(SyncSetupActivity.this, "Authentication failed.",
+                        Toast.makeText(getContext(), "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         // Log it
                         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
 
                         // Set the user to start syncing
-                        DatabaseManager.getInstance(getApplicationContext())
+                        DatabaseManager.getInstance(getContext())
                                 .setFirebaseUser(task.getResult().getUser());
 
                         // Let the user know
-                        Toast.makeText(SyncSetupActivity.this, getString(R.string.signed_in, acct.getEmail()),
+                        Toast.makeText(getContext(), getString(R.string.signed_in, acct.getEmail()),
                                 Toast.LENGTH_LONG).show();
 
                         showSyncStatus();
                         // Record that sync is enabled
-                        Prefs.setSyncEnabled(getApplicationContext(), true);
+                        Prefs.setSyncEnabled(getContext(), true);
                     }
                 });
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.sign_in_button:
-                Intent signInIntent = mSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-                break;
-            case R.id.sign_out_button:
-                // Sign out
-                mAuth.signOut();
-                mSignInClient.signOut();
-                // Clear the user from the database manager
-                DatabaseManager.getInstance(this).setFirebaseUser(null);
-                // Update the UI
-                showSyncStatus();
-                // Un-set the preference
-                Prefs.setSyncEnabled(getApplicationContext(), false);
-
-                // Toast it
-                Toast.makeText(SyncSetupActivity.this, R.string.signed_out, Toast.LENGTH_LONG).show();
-                break;
+    /**
+     * Update the mStatusTextView to reflect the current sync settings
+     */
+    private void showSyncStatus(){
+        FirebaseUser currentUser = DatabaseManager.getInstance(getContext()).getFirebaseUser();
+        if(currentUser != null){
+            // If sync is enabled, show the email address it is using
+            mStatusTextView.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
+            mSignInButton.setVisibility(View.GONE);
+            mSignOutButton.setVisibility(View.VISIBLE);
+        } else {
+            mStatusTextView.setText(R.string.pref_sync_not_enabled);
+            mSignOutButton.setVisibility(View.GONE);
+            mSignInButton.setVisibility(View.VISIBLE);
         }
     }
-
 }

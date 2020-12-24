@@ -44,7 +44,6 @@ import com.tortel.deploytrack.DeploymentFragmentAdapter;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.SyncSetupActivity;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
@@ -254,7 +253,8 @@ public class MainFragment extends Fragment {
             // If sync is/was enabled, and no account was found, let the user know
             Snackbar.make(getView().findViewById(R.id.root), R.string.sync_account_error, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.menu_sync, view -> {
-                        startActivity(new Intent(getActivity(), SyncSetupActivity.class));
+                        NavHostFragment.findNavController(this)
+                                .navigate(MainFragmentDirections.mainToSyncAction());
                     }).show();
         }
     }

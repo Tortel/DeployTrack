@@ -14,6 +14,9 @@
         <action
             android:id="@+id/mainToSettingsAction"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/mainToSyncAction"
+            app:destination="@id/syncFragment" />
     </fragment>
 
     <fragment
@@ -30,6 +33,15 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.tortel.deploytrack.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/settingsToSync"
+            app:destination="@id/syncFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/syncFragment"
+        android:name="com.tortel.deploytrack.fragments.SyncSetupFragment"
+        android:label="SyncSetupFragment" />
 
 </navigation>
