@@ -11,6 +11,10 @@ android {
         versionName "3.0.7"
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
