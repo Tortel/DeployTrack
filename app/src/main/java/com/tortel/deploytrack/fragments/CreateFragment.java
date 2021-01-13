@@ -28,8 +28,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,16 +36,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.SVBar;
 import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.databinding.ActivityCreateBinding;
 import com.tortel.deploytrack.dialog.SingleDatePickerDialog;
 
 import java.text.SimpleDateFormat;
@@ -64,16 +60,8 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private static final String KEY_NAME = "name";
     private static final String KEY_COLOR_COMPLETED = "completed";
     private static final String KEY_COLOR_REMAINING = "remaining";
-    private static final String KEY_DISPLAY_TYPE = "display";
 
-    private EditText mNameEdit;
-    private TextInputLayout mNameWrapper;
-    private EditText mStartInput;
-    private TextInputLayout mStartWrapper;
-    private EditText mEndInput;
-    private TextInputLayout mEndWrapper;
-
-    private RadioButton mBarButton;
+    private ActivityCreateBinding binding;
 
     private SimpleDateFormat mDateFormat;
 
@@ -107,26 +95,23 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_create, container, false);
+        binding = ActivityCreateBinding.inflate(inflater, container, false);
 
-        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
-            switch(item.getItemId()){
-                case android.R.id.home:
-                    NavHostFragment.findNavController(this).navigateUp();
-                    return true;
-                case R.id.menu_save:
-                    saveDeployment();
-                    return true;
-            }
+        binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+             if (item.getItemId() == android.R.id.home) {
+                 NavHostFragment.findNavController(this).navigateUp();
+                 return true;
+             } else if (item.getItemId() == R.id.menu_save) {
+                 saveDeployment();
+                 return true;
+             }
             return super.onOptionsItemSelected(item);
         });
-        toolbar.setNavigationOnClickListener((View v) -> {
+        binding.toolbar.setNavigationOnClickListener((View v) -> {
             NavHostFragment.findNavController(this).navigateUp();
         });
 
-        mNameEdit = view.findViewById(R.id.name);
-        mNameEdit.addTextChangedListener(new TextWatcher() {
+        binding.name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
                 // Do nothing
@@ -136,7 +121,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Clear errors on text change
                 try{
-                    mNameWrapper.setErrorEnabled(false);
+                    binding.nameWraper.setErrorEnabled(false);
                 } catch(Exception e){
                     // Ignore
                 }
@@ -147,27 +132,12 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
                 // Do nothing
             }
         });
-        mNameWrapper = view.findViewById(R.id.name_wraper);
 
-        mStartInput = view.findViewById(R.id.button_start);
-        mStartInput.setOnClickListener(this);
-        mStartInput.setOnFocusChangeListener(this);
-        mStartWrapper = view.findViewById(R.id.start_wrapper);
-
-        mEndInput = view.findViewById(R.id.button_end);
-        mEndInput.setOnClickListener(this);
-        mEndInput.setOnFocusChangeListener(this);
-        mEndWrapper = view.findViewById(R.id.end_wrapper);
-
-        mBarButton = view.findViewById(R.id.layout_bar);
-        RadioButton circleButton = view.findViewById(R.id.layout_circle);
-
-        //Color pickers
-        ColorPicker completedPicker = view.findViewById(R.id.picker_completed);
-        ColorPicker remainingPicker = view.findViewById(R.id.picker_remain);
-
-        SVBar completedBar = view.findViewById(R.id.sv_completed);
-        SVBar remainingBar = view.findViewById(R.id.sv_remain);
+        // Wire up the start/end date buttons
+        binding.start.setOnClickListener(this);
+        binding.start.setOnFocusChangeListener(this);
+        binding.end.setOnClickListener(this);
+        binding.end.setOnFocusChangeListener(this);
 
         String id = CreateFragmentArgs.fromBundle(getArguments()).getId();
         if (id != null) {
@@ -186,20 +156,13 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             mEndDate.setTimeInMillis(mDeployment.getEndDate().getTime());
 
             //Set the buttons
-            mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
-            mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
-
-            // Set circle/bar selected
-            if(mDeployment.getDisplayType() == Deployment.DISPLAY_BAR){
-                mBarButton.setChecked(true);
-            } else {
-                circleButton.setChecked(true);
-            }
+            binding.start.setText(mDateFormat.format(mStartDate.getTime()));
+            binding.end.setText(mDateFormat.format(mEndDate.getTime()));
 
             //Set the name
-            mNameEdit.setText(mDeployment.getName());
+            binding.name.setText(mDeployment.getName());
 
-            toolbar.setTitle(R.string.edit);
+            binding.toolbar.setTitle(R.string.edit);
         } else {
             mDeployment = new Deployment();
 
@@ -209,7 +172,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             mCompletedColor = Color.GREEN;
             mRemainingColor = Color.RED;
 
-            toolbar.setTitle(R.string.add_new);
+            binding.toolbar.setTitle(R.string.add_new);
         }
 
         //If restore from rotation
@@ -217,53 +180,42 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             mStartDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
             mEndDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
 
-            mNameEdit.setText(savedInstanceState.getString(KEY_NAME));
+            binding.name.setText(savedInstanceState.getString(KEY_NAME));
 
             mCompletedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
             mRemainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
 
             //Set the date buttons, if set
             if(mStartDate != null){
-                mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+                binding.start.setText(mDateFormat.format(mStartDate.getTime()));
             }
 
             if(mStartDate != null && mEndDate != null && mEndDate.after(mStartDate)){
-                mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
-            }
-
-            int viewType = savedInstanceState.getInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
-            if(viewType == Deployment.DISPLAY_BAR){
-                mBarButton.setChecked(true);
-            } else {
-                circleButton.setChecked(true);
+                binding.end.setText(mDateFormat.format(mEndDate.getTime()));
             }
         }
 
-        remainingPicker.setOldCenterColor(mRemainingColor);
-        remainingPicker.setNewCenterColor(mRemainingColor);
-        remainingPicker.addSVBar(remainingBar);
-        remainingPicker.setColor(mRemainingColor);
-        remainingPicker.setShowOldCenterColor(false);
-        remainingPicker.setOnColorChangedListener(new RemainingColorChangeListener());
+        binding.remainPicker.setOldCenterColor(mRemainingColor);
+        binding.remainPicker.setNewCenterColor(mRemainingColor);
+        binding.remainPicker.addSVBar(binding.remainSv);
+        binding.remainPicker.setColor(mRemainingColor);
+        binding.remainPicker.setShowOldCenterColor(false);
+        binding.remainPicker.setOnColorChangedListener(new RemainingColorChangeListener());
 
-        completedPicker.setOldCenterColor(mCompletedColor);
-        completedPicker.setNewCenterColor(mCompletedColor);
-        completedPicker.addSVBar(completedBar);
-        completedPicker.setColor(mCompletedColor);
-        completedPicker.setShowOldCenterColor(false);
-        completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
+        binding.completedPicker.setOldCenterColor(mCompletedColor);
+        binding.completedPicker.setNewCenterColor(mCompletedColor);
+        binding.completedPicker.addSVBar(binding.completedSv);
+        binding.completedPicker.setColor(mCompletedColor);
+        binding.completedPicker.setShowOldCenterColor(false);
+        binding.completedPicker.setOnColorChangedListener(new CompletedColorChangeListener());
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -280,16 +232,10 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
         outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
 
-        outState.putString(KEY_NAME, mNameEdit.getText().toString());
+        outState.putString(KEY_NAME, binding.name.getText().toString());
 
         outState.putInt(KEY_COLOR_COMPLETED, mCompletedColor);
         outState.putInt(KEY_COLOR_REMAINING, mRemainingColor);
-
-        if(mBarButton.isChecked()){
-            outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_BAR);
-        } else {
-            outState.putInt(KEY_DISPLAY_TYPE, Deployment.DISPLAY_CIRCLE);
-        }
     }
 
     /**
@@ -298,29 +244,29 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private void saveDeployment(){
         boolean hasError = false;
 
-        if(mStartDate == null || "".equals(mStartInput.getText().toString())){
-            mStartWrapper.setErrorEnabled(true);
-            mStartWrapper.setError(getString(R.string.invalid_start));
+        if(mStartDate == null || "".equals(binding.start.getText().toString())){
+            binding.startWrapper.setErrorEnabled(true);
+            binding.startWrapper.setError(getString(R.string.invalid_start));
             hasError = true;
         } else {
-            mStartWrapper.setErrorEnabled(false);
+            binding.startWrapper.setErrorEnabled(false);
         }
 
-        if(mEndDate == null || !mEndDate.after(mStartDate) || "".equals(mEndInput.getText().toString())){
-            mEndWrapper.setErrorEnabled(true);
-            mEndWrapper.setError(getString(R.string.invalid_end));
+        if(mEndDate == null || !mEndDate.after(mStartDate) || "".equals(binding.end.getText().toString())){
+            binding.endWrapper.setErrorEnabled(true);
+            binding.endWrapper.setError(getString(R.string.invalid_end));
             hasError = true;
         } else {
-            mEndWrapper.setErrorEnabled(false);
+            binding.endWrapper.setErrorEnabled(false);
         }
 
-        String name = mNameEdit.getText().toString().trim();
+        String name = binding.name.getText().toString().trim();
         if("".equals(name)){
-            mNameWrapper.setErrorEnabled(true);
-            mNameWrapper.setError(getString(R.string.invalid_name));
+            binding.nameWraper.setErrorEnabled(true);
+            binding.nameWraper.setError(getString(R.string.invalid_name));
             hasError = true;
         } else {
-            mNameWrapper.setErrorEnabled(false);
+            binding.nameWraper.setErrorEnabled(false);
         }
 
         // Stop now if there was an error
@@ -334,16 +280,10 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         mDeployment.setName(name);
         mDeployment.setCompletedColor(mCompletedColor);
         mDeployment.setRemainingColor(mRemainingColor);
-        // Set the display type
-        if(mBarButton.isChecked()){
-            mDeployment.setDisplayType(Deployment.DISPLAY_BAR);
-        } else {
-            mDeployment.setDisplayType(Deployment.DISPLAY_CIRCLE);
-        }
         // Save it
         DatabaseManager.getInstance(getContext()).saveDeployment(mDeployment);
         // Log the event
-        if (false) {// TODO (getIntent().hasExtra("id")) {
+        if (mDeployment.getUuid() != null) {
             mFirebaseAnalytics.logEvent(Analytics.EVENT_EDITED_DEPLOYMENT, null);
         } else {
             mFirebaseAnalytics.logEvent(Analytics.EVENT_CREATED_DEPLOYMENT, null);
@@ -359,13 +299,10 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public void onClick(View view){
         Log.d("OnClick called");
-        switch(view.getId()){
-            case R.id.button_start:
-                showStartDatePicker();
-                break;
-            case R.id.button_end:
-                showEndDatePicker();
-                break;
+        if (view.getId() == binding.start.getId()) {
+            showStartDatePicker();
+        } else if (view.getId() == binding.end.getId()) {
+            showEndDatePicker();
         }
     }
 
@@ -373,16 +310,13 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public void onFocusChange(View view, boolean hasFocus) {
         Log.d("onFocusChange called with hasFocus: "+hasFocus);
         if(hasFocus){
-            switch (view.getId()){
-                case R.id.button_start:
-                    showStartDatePicker();
-                    break;
-                case R.id.button_end:
-                    showEndDatePicker();
-                    break;
+            if (view.getId() == binding.start.getId()) {
+                showStartDatePicker();
+            } else if (view.getId() == binding.end.getId()) {
+                showEndDatePicker();
             }
             // Shift the focus off the date 'buttons'
-            mNameEdit.requestFocus();
+            binding.name.requestFocus();
         }
     }
 
@@ -409,9 +343,9 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public void setStartDate(int year, int month, int day){
         Log.v("Setting start date to "+day+"/"+month+"/"+year);
         mStartDate.set(year, month, day, 0, 0);
-        mStartInput.setText(mDateFormat.format(mStartDate.getTime()));
+        binding.start.setText(mDateFormat.format(mStartDate.getTime()));
 
-        mStartWrapper.setErrorEnabled(false);
+        binding.startWrapper.setErrorEnabled(false);
     }
 
     /**
@@ -439,9 +373,9 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public void setEndDate(int year, int month, int day){
         Log.v("Setting end date to "+day+"/"+month+"/"+year);
         mEndDate.set(year, month, day, 0, 0);
-        mEndInput.setText(mDateFormat.format(mEndDate.getTime()));
+        binding.end.setText(mDateFormat.format(mEndDate.getTime()));
 
-        mEndWrapper.setErrorEnabled(false);
+        binding.endWrapper.setErrorEnabled(false);
     }
 
     /*

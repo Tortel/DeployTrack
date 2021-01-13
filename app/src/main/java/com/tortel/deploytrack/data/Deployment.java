@@ -53,7 +53,7 @@ public class Deployment implements Comparable<Deployment> {
 	@DatabaseField
 	private int remainingColor;
 	@DatabaseField
-	private int displayType;
+	private int displayType = DISPLAY_CIRCLE;
     @DatabaseField(id = true)
     private String uuid;
 
