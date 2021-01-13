@@ -293,7 +293,6 @@ public class MainFragment extends Fragment {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             mCurrentPosition = tab.getPosition();
-            mAdapter.getItem(mCurrentPosition).onResume();
             Log.v("Page changed to " + mCurrentPosition);
         }
 
