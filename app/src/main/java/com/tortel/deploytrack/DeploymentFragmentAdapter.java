@@ -24,9 +24,12 @@ import com.tortel.deploytrack.fragments.*;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -136,4 +139,9 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 		return position;
 	}
 
+	@Nullable
+	@Override
+	public Parcelable saveState() {
+		return null;
+	}
 }

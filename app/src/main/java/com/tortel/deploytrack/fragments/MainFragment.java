@@ -32,9 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -46,6 +44,7 @@ import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.DatabaseUpgrader;
+import com.tortel.deploytrack.databinding.FragmentMainBinding;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
@@ -66,7 +65,8 @@ public class MainFragment extends Fragment {
 
     private int mCurrentPosition;
     private boolean mScreenShotMode = false;
-    private TabLayout mTabLayout;
+
+    private FragmentMainBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,8 +109,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (mTabLayout != null) {
-            mTabLayout.removeOnTabSelectedListener(mTabSelectedListener);
+        if (binding != null) {
+            binding.tabs.removeOnTabSelectedListener(mTabSelectedListener);
         }
     }
 
@@ -141,73 +141,79 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        binding = FragmentMainBinding.inflate(inflater, container, false);
 
-        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+        binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             Intent intent;
-            final String id = mAdapter.getId(mCurrentPosition);
+            final String mDeploymentId = mAdapter.getId(mCurrentPosition);
+            final int itemId = item.getItemId();
 
-            switch (item.getItemId()) {
-                case R.id.menu_create_new:
-                    NavHostFragment.findNavController(this)
-                            .navigate(MainFragmentDirections.mainToCreateAction());
+            if (itemId == R.id.menu_create_new) {
+                NavHostFragment.findNavController(this)
+                        .navigate(MainFragmentDirections.mainToCreateAction());
+                return true;
+            } else if (itemId == R.id.menu_edit) {
+                // If its the info fragment, ignore
+                if(mDeploymentId == null){
                     return true;
-                case R.id.menu_edit:
-                    //If its the info fragment, ignore
-                    if(id == null){
-                        return true;
-                    }
-                    MainFragmentDirections.MainToCreateAction editAction = MainFragmentDirections.mainToCreateAction();
-                    editAction.setId(id);
-                    NavHostFragment.findNavController(this).navigate(editAction);
+                }
+                MainFragmentDirections.MainToCreateAction editAction = MainFragmentDirections.mainToCreateAction();
+                editAction.setId(mDeploymentId);
+                NavHostFragment.findNavController(this).navigate(editAction);
+                return true;
+            } else if (itemId == R.id.menu_delete) {
+                // If its the info fragment, ignore
+                if(mDeploymentId == null){
                     return true;
-                case R.id.menu_delete:
-                    //If its the info fragment, ignore
-                    if(id == null){
-                        return true;
-                    }
-                    DeleteDialog dialog = new DeleteDialog();
-                    Bundle args = new Bundle();
-                    args.putString(DeleteDialog.KEY_ID, id);
-                    dialog.setArguments(args);
-                    dialog.show(getParentFragmentManager(), "delete");
-                    return true;
-                case R.id.menu_feedback:
-                    intent = new Intent(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
-                    intent.setType("plain/text");
-                    if(isAvailable(intent)){
-                        startActivity(intent);
-                    }
-                    return true;
-                case R.id.menu_screenshot:
-                    if(!Prefs.isAboutScreenShotShown()){
-                        ScreenShotModeDialog aboutDialog = new ScreenShotModeDialog();
-                        aboutDialog.show(getParentFragmentManager(), "screenshot");
-                        Prefs.setAboutScreenShotShown(getContext());
-                    }
+                }
+                DeleteDialog dialog = new DeleteDialog();
+                Bundle args = new Bundle();
+                args.putString(DeleteDialog.KEY_ID, mDeploymentId);
+                dialog.setArguments(args);
+                dialog.show(getParentFragmentManager(), "delete");
+                return true;
+            } else if (itemId == R.id.menu_feedback) {
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
+                intent.setType("plain/text");
+                if (isAvailable(intent)) {
+                    startActivity(intent);
+                }
+                return true;
+            } else if (itemId == R.id.menu_screenshot) {
+                if (!Prefs.isAboutScreenShotShown()) {
+                    ScreenShotModeDialog aboutDialog = new ScreenShotModeDialog();
+                    aboutDialog.show(getParentFragmentManager(), "screenshot");
+                    Prefs.setAboutScreenShotShown(getContext());
+                }
 
-                    mScreenShotMode = !mScreenShotMode;
-                    Prefs.setScreenShotMode(mScreenShotMode, getContext());
+                mScreenShotMode = !mScreenShotMode;
+                Prefs.setScreenShotMode(mScreenShotMode, getContext());
 
-                    // Propagate screen shot mode to the widgets
-                    Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-                    updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
-                    getActivity().sendBroadcast(updateWidgetIntent);
+                // Propagate screen shot mode to the widgets
+                Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+                updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
+                getActivity().sendBroadcast(updateWidgetIntent);
 
-                    reload();
-                    return true;
-                case R.id.menu_settings:
-                    NavHostFragment.findNavController(this)
-                            .navigate(MainFragmentDirections.mainToSettingsAction());
-                    return true;
+                reload();
+                return true;
+            } else if (itemId == R.id.menu_settings) {
+                NavHostFragment.findNavController(this)
+                        .navigate(MainFragmentDirections.mainToSettingsAction());
+                return true;
             }
+
             return super.onOptionsItemSelected(item);
         });
 
-        return view;
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private void reload(){
@@ -217,25 +223,22 @@ public class MainFragment extends Fragment {
         }
         mAdapter.reloadData();
 
-        ViewPager pager = getView().findViewById(R.id.pager);
-
         // Make sure that the position does not go past the end
         if (mCurrentPosition >= mAdapter.getCount()) {
             mCurrentPosition = Math.max(0, mCurrentPosition - 1);
         }
 
         // Re-set the adapter and position
-        pager.setAdapter(mAdapter);
-        pager.setCurrentItem(mCurrentPosition);
+        binding.pager.setAdapter(mAdapter);
+        binding.pager.setCurrentItem(mCurrentPosition);
 
-        mTabLayout = getView().findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(pager);
-        mTabLayout.addOnTabSelectedListener(mTabSelectedListener);
+        binding.tabs.setupWithViewPager(binding.pager);
+        binding.tabs.addOnTabSelectedListener(mTabSelectedListener);
 
         if(mScreenShotMode){
-            mTabLayout.setVisibility(View.INVISIBLE);
+            binding.tabs.setVisibility(View.INVISIBLE);
         } else {
-            mTabLayout.setVisibility(View.VISIBLE);
+            binding.tabs.setVisibility(View.VISIBLE);
         }
 
         // Set the analytics properties
@@ -251,7 +254,7 @@ public class MainFragment extends Fragment {
             DatabaseManager.getInstance(getContext()).setFirebaseUser(auth.getCurrentUser());
         } else if(Prefs.isSyncEnabled(getContext())){
             // If sync is/was enabled, and no account was found, let the user know
-            Snackbar.make(getView().findViewById(R.id.root), R.string.sync_account_error, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.root, R.string.sync_account_error, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.menu_sync, view -> {
                         NavHostFragment.findNavController(this)
                                 .navigate(MainFragmentDirections.mainToSyncAction());
