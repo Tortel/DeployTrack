@@ -16,6 +16,8 @@
 package com.tortel.deploytrack.fragments;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,8 +33,8 @@ import com.tortel.deploytrack.R;
 public class NoDataFragment extends Fragment {
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
 		TextView view = new TextView(getActivity());
 		view.setText(getActivity().getResources().getString(R.string.howto_add));
 		view.setGravity(Gravity.CENTER);
@@ -40,7 +42,7 @@ public class NoDataFragment extends Fragment {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
 		/*
 		 * This is a fix for some stupid bug:
