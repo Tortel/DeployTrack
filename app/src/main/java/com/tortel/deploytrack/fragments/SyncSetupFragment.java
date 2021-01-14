@@ -22,10 +22,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,7 +38,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,21 +47,27 @@ import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.databinding.ActivitySyncSetupBinding;
 
 /**
  * Fragment that handles setting up Firebase sync
  */
 public class SyncSetupFragment extends Fragment {
-    private static final int RC_SIGN_IN = 321;
 
     private GoogleSignInClient mSignInClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private TextView mStatusTextView;
-    private SignInButton mSignInButton;
-    private Button mSignOutButton;
 
+    private ActivitySyncSetupBinding binding;
+
+    ActivityResultLauncher<Intent> mLoginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // The Task returned from this call is always completed, no need to attach
+                // a listener.
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                handleSignInResult(task);
+            });
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +82,7 @@ public class SyncSetupFragment extends Fragment {
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
-        mSignInClient = GoogleSignIn.getClient(getContext(), gso);
+        mSignInClient = GoogleSignIn.getClient(requireContext(), gso);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = firebaseAuth -> {
@@ -90,37 +95,33 @@ public class SyncSetupFragment extends Fragment {
                 Log.d("onAuthStateChanged:signed_out");
             }
         };
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_sync_setup, container, false);
+        binding = ActivitySyncSetupBinding.inflate(inflater, container, false);
 
-        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+        binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == android.R.id.home) {
                 NavHostFragment.findNavController(this).navigateUp();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         });
-        toolbar.setNavigationOnClickListener((View v) -> {
+        binding.toolbar.setNavigationOnClickListener((View v) -> {
             NavHostFragment.findNavController(this).navigateUp();
         });
 
-        mStatusTextView = view.findViewById(R.id.sync_status);
         // Set up the click listener
-        mSignInButton = view.findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(signInView -> {
+        binding.signInButton.setOnClickListener(signInView -> {
             Intent signInIntent = mSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            mLoginLauncher.launch(signInIntent);
         });
-        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
+        binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        mSignOutButton = view.findViewById(R.id.sign_out_button);
-        mSignOutButton.setOnClickListener(signOutView -> {
+        binding.signOutButton.setOnClickListener(signOutView -> {
             // Sign out
             mAuth.signOut();
             mSignInClient.signOut();
@@ -135,11 +136,11 @@ public class SyncSetupFragment extends Fragment {
             Toast.makeText(getContext(), R.string.signed_out, Toast.LENGTH_LONG).show();
         });
         // Make the privacy policy link clickable
-        ((TextView) view.findViewById(R.id.sync_details)).setMovementMethod(LinkMovementMethod.getInstance());
+        binding.syncDetails.setMovementMethod(LinkMovementMethod.getInstance());
 
         showSyncStatus();
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -153,19 +154,6 @@ public class SyncSetupFragment extends Fragment {
         super.onStop();
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
         }
     }
 
@@ -219,13 +207,13 @@ public class SyncSetupFragment extends Fragment {
         FirebaseUser currentUser = DatabaseManager.getInstance(getContext()).getFirebaseUser();
         if(currentUser != null){
             // If sync is enabled, show the email address it is using
-            mStatusTextView.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
-            mSignInButton.setVisibility(View.GONE);
-            mSignOutButton.setVisibility(View.VISIBLE);
+            binding.syncStatus.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
+            binding.signInButton.setVisibility(View.GONE);
+            binding.signOutButton.setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText(R.string.pref_sync_not_enabled);
-            mSignOutButton.setVisibility(View.GONE);
-            mSignInButton.setVisibility(View.VISIBLE);
+            binding.syncStatus.setText(R.string.pref_sync_not_enabled);
+            binding.signOutButton.setVisibility(View.GONE);
+            binding.signInButton.setVisibility(View.VISIBLE);
         }
     }
 }
