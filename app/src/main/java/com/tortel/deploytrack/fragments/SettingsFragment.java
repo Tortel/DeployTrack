@@ -150,21 +150,23 @@ public class SettingsFragment extends Fragment {
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
-            DialogFragment dialog;
-            FragmentManager fragMan = getParentFragmentManager();
-            switch (preference.getKey()) {
-                case KEY_WELCOME:
-                    dialog = new WelcomeDialog();
-                    dialog.show(fragMan, "welcome");
-                    return true;
-                case KEY_ABOUT_SCREENSHOT:
-                    dialog = new ScreenShotModeDialog();
-                    dialog.show(fragMan, "screenshot");
-                    return true;
-                case KEY_SYNC:
-                    NavHostFragment.findNavController(this)
-                            .navigate(SettingsFragmentDirections.settingsToSync());
-                    return true;
+            if (preference.hasKey()) {
+                DialogFragment dialog;
+                FragmentManager fragMan = getParentFragmentManager();
+                switch (preference.getKey()) {
+                    case KEY_WELCOME:
+                        dialog = new WelcomeDialog();
+                        dialog.show(fragMan, "welcome");
+                        return true;
+                    case KEY_ABOUT_SCREENSHOT:
+                        dialog = new ScreenShotModeDialog();
+                        dialog.show(fragMan, "screenshot");
+                        return true;
+                    case KEY_SYNC:
+                        NavHostFragment.findNavController(this)
+                                .navigate(SettingsFragmentDirections.settingsToSync());
+                        return true;
+                }
             }
             return super.onPreferenceTreeClick(preference);
         }

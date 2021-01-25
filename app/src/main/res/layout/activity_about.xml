@@ -22,7 +22,7 @@ limitations under the License.
     android:layout_width="fill_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="@string/about"
@@ -60,10 +60,10 @@ limitations under the License.
 
                 <ImageView
                     android:src="@drawable/ic_baseline_info_24"
-                    android:tint="?attr/colorOnBackground"
                     android:layout_width="@dimen/about_row_icon"
                     android:layout_height="@dimen/about_row_icon"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="?attr/colorOnBackground" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -102,10 +102,10 @@ limitations under the License.
 
                 <ImageView
                     android:src="@drawable/ic_baseline_create_24"
-                    android:tint="?attr/colorOnBackground"
                     android:layout_width="@dimen/about_row_icon"
                     android:layout_height="@dimen/about_row_icon"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="?attr/colorOnBackground" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -145,10 +145,10 @@ limitations under the License.
 
                 <ImageView
                     android:src="@drawable/ic_baseline_description_24"
-                    android:tint="?attr/colorOnBackground"
                     android:layout_width="@dimen/about_row_icon"
                     android:layout_height="@dimen/about_row_icon"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="?attr/colorOnBackground" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -188,10 +188,10 @@ limitations under the License.
 
                 <ImageView
                     android:src="@drawable/ic_baseline_code_24"
-                    android:tint="?attr/colorOnBackground"
                     android:layout_width="@dimen/about_row_icon"
                     android:layout_height="@dimen/about_row_icon"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="?attr/colorOnBackground" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -231,10 +231,10 @@ limitations under the License.
 
                 <ImageView
                     android:src="@drawable/ic_privacy_tip_24px"
-                    android:tint="?attr/colorOnBackground"
                     android:layout_width="@dimen/about_row_icon"
                     android:layout_height="@dimen/about_row_icon"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="?attr/colorOnBackground" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"

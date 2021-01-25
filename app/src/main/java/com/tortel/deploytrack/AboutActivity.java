@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import com.tortel.deploytrack.databinding.ActivityAboutBinding;
+import com.tortel.deploytrack.databinding.ListLibraryBinding;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -43,43 +43,37 @@ public class AboutActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_about);
+        ActivityAboutBinding binding = ActivityAboutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+        binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == android.R.id.home) {
                 finish();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         });
-        toolbar.setNavigationOnClickListener((View v) -> {
+        binding.toolbar.setNavigationOnClickListener((View v) -> {
             this.finish();
         });
 
-        RecyclerView recyclerView = findViewById(R.id.libraries);
         // Disable nested scrolling
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new LibraryAdapter());
+        binding.libraries.setNestedScrollingEnabled(false);
+        binding.libraries.setLayoutManager(new LinearLayoutManager(this));
+        binding.libraries.setHasFixedSize(true);
+        binding.libraries.setAdapter(new LibraryAdapter());
 
-        TextView versionView = findViewById(R.id.version);
-        versionView.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
+        binding.version.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
     }
 
     public void itemClicked(View v) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        switch (v.getId()) {
-            case R.id.license:
-                intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack/blob/master/LICENSE.txt"));
-                break;
-            case R.id.source:
-                intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack"));
-                break;
-            case R.id.privacy:
-                intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack/blob/master/PrivacyPolicy.md"));
-                break;
+        if (v.getId() == R.id.license) {
+            intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack/blob/master/LICENSE.txt"));
+        } else if (v.getId() == R.id.source) {
+            intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack"));
+        } else if (v.getId() == R.id.privacy) {
+            intent.setData(Uri.parse("https://github.com/Tortel/DeployTrack/blob/master/PrivacyPolicy.md"));
         }
         startActivity(intent);
     }
@@ -120,9 +114,9 @@ public class AboutActivity extends AppCompatActivity {
         @NonNull
         @Override
         public LibraryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_library, parent, false);
-            return new LibraryViewHolder(view);
+            ListLibraryBinding binding =
+                    ListLibraryBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new LibraryViewHolder(binding);
         }
 
         @Override
@@ -137,16 +131,13 @@ public class AboutActivity extends AppCompatActivity {
 
         public class LibraryViewHolder extends RecyclerView.ViewHolder {
             int position = -1;
-            TextView mTitle;
-            TextView mSubtitle;
+            private final ListLibraryBinding binding;
 
-            public LibraryViewHolder(@NonNull View itemView) {
-                super(itemView);
+            public LibraryViewHolder(@NonNull ListLibraryBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
 
-                mTitle = itemView.findViewById(R.id.library_title);
-                mSubtitle = itemView.findViewById(R.id.library_subtitle);
-
-                itemView.findViewById(R.id.library_row).setOnClickListener((View v) -> {
+                binding.libraryRow.setOnClickListener((View v) -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(libraryURLs[position]));
                     AboutActivity.this.startActivity(intent);
@@ -155,8 +146,8 @@ public class AboutActivity extends AppCompatActivity {
 
             public void setPosition(int position) {
                 this.position = position;
-                mTitle.setText(libraryNames[position]);
-                mSubtitle.setText(libraryLicense[position]);
+                binding.libraryTitle.setText(libraryNames[position]);
+                binding.librarySubtitle.setText(libraryLicense[position]);
             }
         }
     }
