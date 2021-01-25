@@ -17,7 +17,8 @@ package com.tortel.deploytrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import androidx.preference.PreferenceManager;
 
 /**
  * Class to assist with preferences
@@ -42,7 +43,7 @@ public class Prefs {
     private static boolean welcomeShown;
     private static boolean aboutScreenShotShown;
 	
-	public static void load(Context context){
+	public static void load(Context context) {
         SharedPreferences prefs = getPrefs(context);
 		
 		animationEnabled = prefs.getBoolean(KEY_ANIMATION, true);
@@ -58,13 +59,12 @@ public class Prefs {
     /**
      * Get the SharedPreferences
      */
-    private static SharedPreferences getPrefs(Context context){
+    private static SharedPreferences getPrefs(Context context) {
         context = context.getApplicationContext();
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 	
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isAnimationEnabled() {
+	public static boolean isAnimationEnabled() {
 		return animationEnabled;
 	}
 
@@ -72,15 +72,15 @@ public class Prefs {
 		return mainDisplayType;
 	}
 	
-	public static boolean hideDate(){
+	public static boolean hideDate() {
 	    return hideDate;
 	}
 
-    public static boolean hideDays(){
+    public static boolean hideDays() {
         return hideDays;
     }
 
-	public static boolean hidePercent(){
+	public static boolean hidePercent() {
 		return hidePercent;
 	}
 	
@@ -88,15 +88,15 @@ public class Prefs {
         return lightTheme;
     }
 
-    public static boolean isWelcomeShown(){
+    public static boolean isWelcomeShown() {
         return welcomeShown;
     }
 
-    public static boolean isAboutScreenShotShown(){
+    public static boolean isAboutScreenShotShown() {
         return aboutScreenShotShown;
     }
 
-    public static void setWelcomeShown(Context context){
+    public static void setWelcomeShown(Context context) {
         SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_WELCOME, true).apply();
         welcomeShown = true;
@@ -105,14 +105,14 @@ public class Prefs {
     /**
      * Check if sync is or was enabled
      */
-    public static boolean isSyncEnabled(Context context){
+    public static boolean isSyncEnabled(Context context) {
         return getPrefs(context).getBoolean(KEY_SYNC_ENABLED, false);
     }
 
     /**
      * Set if sync is enabled or not
      */
-    public static void setSyncEnabled(Context context, boolean enabled){
+    public static void setSyncEnabled(Context context, boolean enabled) {
         getPrefs(context).edit()
                 .putBoolean(KEY_SYNC_ENABLED, enabled)
                 .apply();
@@ -121,13 +121,13 @@ public class Prefs {
     /**
      * Set the preference that the welcome screen has been shown
      */
-    public static void setAboutScreenShotShown(Context context){
+    public static void setAboutScreenShotShown(Context context) {
         SharedPreferences prefs = getPrefs(context);
         prefs.edit().putBoolean(KEY_SCREENSHOT, true).apply();
         aboutScreenShotShown = true;
     }
 
-    public static void setScreenShotMode(boolean screenShotMode, Context context){
+    public static void setScreenShotMode(boolean screenShotMode, Context context) {
         if(screenShotMode){
             hideDate = true;
             hideDays = true;
@@ -137,7 +137,7 @@ public class Prefs {
         }
     }
 
-    public static class ViewTypes{
+    public static class ViewTypes {
 		public static final int PERCENT = 0;
 		public static final int COMPLETE = 1;
 		public static final int REMAINING = 2;

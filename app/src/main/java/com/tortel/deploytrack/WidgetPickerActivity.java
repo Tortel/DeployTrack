@@ -44,14 +44,14 @@ public class WidgetPickerActivity extends AppCompatActivity {
         
         // Check for light theme
         Prefs.load(this);
-        if(Prefs.useLightTheme()){
+        if (Prefs.useLightTheme()) {
             setTheme(R.style.Theme_DeployThemeLight);
         }
         
         setContentView(R.layout.activity_widget_config);
         
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if(extras != null) {
             mWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         mResultIntent = new Intent();
@@ -88,42 +88,38 @@ public class WidgetPickerActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         String id = mAdapter.getId(mCurrentPosition);
-        switch(v.getId()){
-        case R.id.button_save:
-            if(id != null){
+
+        if (v.getId() == R.id.button_save) {
+            if (id != null) {
                 DatabaseManager db = DatabaseManager.getInstance(this);
-    
+
                 //Get the data
                 Deployment deployment = db.getDeployment(id);
-    
+
                 //Save it
                 WidgetInfo info = new WidgetInfo(mWidgetId, deployment);
                 info.setLightText(mUseLightText);
                 db.saveWidgetInfo(info);
-                
+
                 //Set it all up
                 RemoteViews remoteView = WidgetProvider.updateWidgetView(this, info);
-                
+
                 mWidgetManager.updateAppWidget(mWidgetId, remoteView);
                 mResultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
                 setResult(RESULT_OK, mResultIntent);
-                
-                Log.d("WidgetPicker ending for widgetId "+ mWidgetId
-                        +" with deployment "+id);
+
+                Log.d("WidgetPicker ending for widgetId " + mWidgetId
+                        + " with deployment " + id);
             }
             finish();
-            break;
-        case R.id.button_cancel:
+        } else if (v.getId() == R.id.button_cancel) {
             finish();
-            break;
-        case R.id.widget_dark_text:
+        } else if (v.getId() == R.id.widget_dark_text) {
             mUseLightText = false;
-            break;
-        case R.id.widget_light_text:
+        } else if (v.getId() == R.id.widget_light_text) {
             mUseLightText = true;
-            break;
         }
     }
     

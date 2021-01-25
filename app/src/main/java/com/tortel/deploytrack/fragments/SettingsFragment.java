@@ -40,6 +40,7 @@ import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
 import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.databinding.FragmentSettingsBinding;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
@@ -62,17 +63,16 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        FragmentSettingsBinding binding = FragmentSettingsBinding.inflate(inflater, container, false);
 
-        MaterialToolbar toolbar = view.findViewById(R.id.topAppBar);
-        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+        binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == android.R.id.home) {
                 NavHostFragment.findNavController(this).navigateUp();
                 return true;
             }
             return super.onOptionsItemSelected(item);
         });
-        toolbar.setNavigationOnClickListener((View v) -> {
+        binding.toolbar.setNavigationOnClickListener((View v) -> {
             NavHostFragment.findNavController(this).navigateUp();
         });
 
@@ -80,7 +80,7 @@ public class SettingsFragment extends Fragment {
         transaction.replace(R.id.content_frame, new PreferenceFragment());
         transaction.commit();
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
