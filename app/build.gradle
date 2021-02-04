@@ -33,17 +33,16 @@ android {
 
 dependencies {
     // Navigation
-    def nav_version = '2.3.2'
+    def nav_version = '2.3.3'
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha04"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha06"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.preference:preference:1.1.1'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
@@ -60,14 +59,18 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-core:5.3'
     implementation 'com.j256.ormlite:ormlite-android:5.3'
 
-    // Firebase
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
-    implementation 'com.google.firebase:firebase-database:19.6.0'
+    // Google Services Auth
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
     // Crashlytics crash reporting
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics'
     // Firebase analytics
-    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation 'com.google.firebase:firebase-core'
 }
 
 // For use with Firebase
