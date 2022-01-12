@@ -56,8 +56,7 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.13'
 
     // http://ormlite.com/
-    implementation 'com.j256.ormlite:ormlite-core:5.3'
-    implementation 'com.j256.ormlite:ormlite-android:5.3'
+    implementation 'com.j256.ormlite:ormlite-android:6.1'
 
     // Google Services Auth
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
