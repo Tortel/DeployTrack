@@ -104,7 +104,7 @@ public class WidgetProvider extends AppWidgetProvider {
             cancelScreenShotMode.putExtra(KEY_SCREENSHOT_MODE, false);
 
             PendingIntent screenshotPending = PendingIntent.getBroadcast(context, 0,
-                    cancelScreenShotMode, PendingIntent.FLAG_CANCEL_CURRENT);
+                    cancelScreenShotMode, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             long triggerTime = new Date().getTime() + SCREENSHOT_TIMEOUT * MILIS_PER_MIN;
             alarmManager.set(AlarmManager.RTC, triggerTime, screenshotPending);
@@ -114,7 +114,7 @@ public class WidgetProvider extends AppWidgetProvider {
             DateTime tomorrow = new DateTime(now.plusDays(1)).withTimeAtStartOfDay();
 
             PendingIntent pending = PendingIntent.getBroadcast(context, 0,
-                    new Intent(UPDATE_INTENT), PendingIntent.FLAG_CANCEL_CURRENT);
+                    new Intent(UPDATE_INTENT), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             //Adding 100msec to make sure its triggered after midnight
             Log.d("Scheduling update for "+tomorrow.getMillis() + 100);
@@ -306,7 +306,7 @@ public class WidgetProvider extends AppWidgetProvider {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, array);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews
                 .setOnClickPendingIntent(R.id.widget_pie, pendingIntent);
         
