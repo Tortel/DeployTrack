@@ -3,17 +3,17 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         google()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.36.0'
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
         // Keep this version in sync with the rest of the nav stuff
-        def nav_version = "2.3.3"
+        def nav_version = "2.3.5"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 }
@@ -22,7 +22,6 @@ allprojects {
     repositories {
         maven { url "https://jitpack.io" }
         mavenCentral()
-        jcenter()
         google()
     }
 }
