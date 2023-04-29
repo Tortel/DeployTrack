@@ -26,6 +26,7 @@ limitations under the License.
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup"
+        android:dataExtractionRules="@xml/extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
@@ -35,7 +36,6 @@ limitations under the License.
         <!-- Main activity -->
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

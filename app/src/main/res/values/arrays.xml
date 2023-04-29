@@ -20,7 +20,7 @@ limitations under the License.
         <item>Days Complete</item>
         <item>Days Remaining</item>
     </string-array>
-    
+
     <string-array name="prefs_main_view_values">
         <item>0</item>
         <item>1</item>
