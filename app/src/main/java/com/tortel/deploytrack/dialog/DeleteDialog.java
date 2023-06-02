@@ -28,8 +28,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.DatabaseManager;
-import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.data.ormlite.DatabaseManager;
+import com.tortel.deploytrack.data.ormlite.Deployment;
 
 /**
  * Dialog confirming deletion

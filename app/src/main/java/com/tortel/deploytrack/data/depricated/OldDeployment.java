@@ -17,7 +17,7 @@ package com.tortel.deploytrack.data.depricated;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.data.ormlite.Deployment;
 
 import java.util.Date;
 import java.util.UUID;

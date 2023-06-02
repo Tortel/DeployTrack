@@ -18,7 +18,8 @@ package com.tortel.deploytrack;
 import java.util.List;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.data.ormlite.DatabaseManager;
+import com.tortel.deploytrack.data.ormlite.Deployment;
 import com.tortel.deploytrack.fragments.*;
 
 import android.content.Context;

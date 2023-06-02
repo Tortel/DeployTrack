@@ -17,8 +17,8 @@ package com.tortel.deploytrack.data.depricated;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.tortel.deploytrack.data.Deployment;
-import com.tortel.deploytrack.data.WidgetInfo;
+import com.tortel.deploytrack.data.ormlite.Deployment;
+import com.tortel.deploytrack.data.ormlite.WidgetInfo;
 
 /**
  * Class to save info dialog_about a homescreen widget

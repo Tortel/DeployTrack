@@ -18,7 +18,6 @@ package com.tortel.deploytrack.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +32,7 @@ import android.widget.TextView;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.data.ormlite.DatabaseUpgrader;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 /**

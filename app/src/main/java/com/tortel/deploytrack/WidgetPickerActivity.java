@@ -24,7 +24,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.google.android.material.tabs.TabLayout;
-import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.data.ormlite.DatabaseManager;
+import com.tortel.deploytrack.data.ormlite.Deployment;
+import com.tortel.deploytrack.data.ormlite.WidgetInfo;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 public class WidgetPickerActivity extends AppCompatActivity {

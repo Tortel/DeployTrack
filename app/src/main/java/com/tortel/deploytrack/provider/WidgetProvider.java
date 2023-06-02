@@ -25,7 +25,10 @@ import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.*;
+import com.tortel.deploytrack.data.ormlite.DatabaseManager;
+import com.tortel.deploytrack.data.ormlite.DatabaseUpgrader;
+import com.tortel.deploytrack.data.ormlite.Deployment;
+import com.tortel.deploytrack.data.ormlite.WidgetInfo;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
