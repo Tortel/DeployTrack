@@ -162,7 +162,13 @@ public class DatabaseManager {
     public WidgetInfo getWidgetInfo(int id) {
         Log.v("Getting widget info for " + id);
         try {
-            return mDao.getWidgetInfo(id);
+            WidgetInfo info = mDao.getWidgetInfo(id);
+            // Populate the deployment object
+            if (info != null) {
+                Deployment deployment = mDao.getDeployment(info.getDeploymentId());
+                info.setDeployment(deployment);
+            }
+            return info;
         } catch (Exception e) {
             Log.e("Exception getting widget info", e);
             // Report this to firebase
