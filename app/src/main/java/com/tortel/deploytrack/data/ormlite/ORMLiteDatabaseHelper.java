@@ -29,23 +29,23 @@ import java.sql.SQLException;
 /**
  * Manage the database file
  */
-class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+class ORMLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "data2016.09.sqlite";
 
     private static final int DATABASE_VERSION = 1;
 
-    private Dao<Deployment, String> deploymentDao;
-    private Dao<WidgetInfo, Integer> widgetInfoDao;
+    private Dao<ORMLiteDeployment, String> deploymentDao;
+    private Dao<ORMLiteWidgetInfo, Integer> widgetInfoDao;
 
-    DatabaseHelper(Context context){
+    ORMLiteDatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase databse, ConnectionSource connectionSource){
         try{
-            TableUtils.createTable(connectionSource, Deployment.class);
-            TableUtils.createTable(connectionSource, WidgetInfo.class);
+            TableUtils.createTable(connectionSource, ORMLiteDeployment.class);
+            TableUtils.createTable(connectionSource, ORMLiteWidgetInfo.class);
         } catch(SQLException e) {
             Log.e("Cant create database", e);
             throw new RuntimeException(e);
@@ -57,8 +57,8 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try{
             // Drop everything
             if(oldVersion == 0){
-                TableUtils.dropTable(connectionSource, Deployment.class, true);
-                TableUtils.dropTable(connectionSource, WidgetInfo.class, true);
+                TableUtils.dropTable(connectionSource, ORMLiteDeployment.class, true);
+                TableUtils.dropTable(connectionSource, ORMLiteWidgetInfo.class, true);
             }
         } catch(SQLException e){
             Log.e("Error while recreating database", e);
@@ -66,10 +66,10 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    Dao<Deployment, String> getDeploymentDao(){
+    Dao<ORMLiteDeployment, String> getDeploymentDao(){
         if(deploymentDao == null){
             try{
-            	deploymentDao = getDao(Deployment.class);
+                deploymentDao = getDao(ORMLiteDeployment.class);
             } catch(SQLException e){
                 Log.e("Error getting Deployment DAO", e);
             }
@@ -77,10 +77,10 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return deploymentDao;
     }
     
-    Dao<WidgetInfo, Integer> getWidgetInfoDao(){
+    Dao<ORMLiteWidgetInfo, Integer> getWidgetInfoDao(){
         if(widgetInfoDao == null){
             try{
-                widgetInfoDao = getDao(WidgetInfo.class);
+                widgetInfoDao = getDao(ORMLiteWidgetInfo.class);
             } catch(SQLException e){
                 Log.e("Error getting widget info DAO", e);
             }

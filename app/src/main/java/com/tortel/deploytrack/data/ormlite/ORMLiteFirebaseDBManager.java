@@ -34,15 +34,15 @@ import java.util.List;
 /**
  * Handles interaction with the firebase database
  */
-class FirebaseDBManager implements ChildEventListener {
-    private static FirebaseDBManager instance;
+class ORMLiteFirebaseDBManager implements ChildEventListener {
+    private static ORMLiteFirebaseDBManager instance;
 
-    private DatabaseManager mDbManager;
+    private ORMLiteDatabaseManager mDbManager;
     private DatabaseReference mDatabase;
     private FirebaseUser mUser;
     private LocalBroadcastManager mBroadcastManager;
 
-    private FirebaseDBManager(DatabaseManager dbManager, Context context){
+    private ORMLiteFirebaseDBManager(ORMLiteDatabaseManager dbManager, Context context){
         // Enable persistence
         try {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -62,9 +62,9 @@ class FirebaseDBManager implements ChildEventListener {
      * @param context
      * @return
      */
-    public static FirebaseDBManager getInstance(DatabaseManager dbManager, Context context) {
+    public static ORMLiteFirebaseDBManager getInstance(ORMLiteDatabaseManager dbManager, Context context) {
         if (instance == null) {
-            instance = new FirebaseDBManager(dbManager, context);
+            instance = new ORMLiteFirebaseDBManager(dbManager, context);
         }
         // Make sure that the database manager is properly set
         if (instance.mDbManager != dbManager) {
@@ -115,7 +115,7 @@ class FirebaseDBManager implements ChildEventListener {
     /**
      * Save a deployment to Firebase
      */
-    void saveDeployment(Deployment deployment){
+    void saveDeployment(ORMLiteDeployment deployment){
         if(mUser == null){
             return;
         }
@@ -132,9 +132,9 @@ class FirebaseDBManager implements ChildEventListener {
             return;
         }
 
-        List<Deployment> localDeployments = mDbManager.getAllDeployments();
+        List<ORMLiteDeployment> localDeployments = mDbManager.getAllDeployments();
         DatabaseReference deploymentNode = getDeploymentNode();
-        for(Deployment deployment : localDeployments){
+        for(ORMLiteDeployment deployment : localDeployments){
             checkForOrAdd(deploymentNode, deployment);
         }
 
@@ -143,7 +143,7 @@ class FirebaseDBManager implements ChildEventListener {
     /**
      * Check if the deployment is saved in firebase. If not, add it
      */
-    private void checkForOrAdd(final DatabaseReference rootNode, final Deployment deployment){
+    private void checkForOrAdd(final DatabaseReference rootNode, final ORMLiteDeployment deployment){
         rootNode.child(deployment.getUuid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -173,24 +173,24 @@ class FirebaseDBManager implements ChildEventListener {
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-        Deployment newDeployment = dataSnapshot.getValue(Deployment.class);
+        ORMLiteDeployment newDeployment = dataSnapshot.getValue(ORMLiteDeployment.class);
         Log.d("FB onChildAdded: Deployment with UUID "+newDeployment.getUuid());
 
         // Check if this new deployment is present locally
-        Deployment localDeployment = mDbManager.getDeployment(newDeployment.getUuid());
+        ORMLiteDeployment localDeployment = mDbManager.getDeployment(newDeployment.getUuid());
         // Add it if it is not
         if(localDeployment == null){
             Log.d("DB onChildAdded: Deployment with UUID "+newDeployment.getUuid()+" not present, saving locally");
             mDbManager.saveDeployment(newDeployment);
             // Update the UI
-            mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_ADDED));
+            mBroadcastManager.sendBroadcast(new Intent(ORMLiteDatabaseManager.DATA_ADDED));
         }
     }
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-        Deployment updatedDeployment = dataSnapshot.getValue(Deployment.class);
-        Deployment localDeployment = mDbManager.getDeployment(updatedDeployment.getUuid());
+        ORMLiteDeployment updatedDeployment = dataSnapshot.getValue(ORMLiteDeployment.class);
+        ORMLiteDeployment localDeployment = mDbManager.getDeployment(updatedDeployment.getUuid());
         Log.d("FB onChildChanged: Deployment with UUID "+updatedDeployment.getUuid());
 
         if(localDeployment == null){
@@ -206,13 +206,13 @@ class FirebaseDBManager implements ChildEventListener {
         // Save it
         mDbManager.saveDeployment(localDeployment);
         // Update the UI
-        mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_CHANGED));
+        mBroadcastManager.sendBroadcast(new Intent(ORMLiteDatabaseManager.DATA_CHANGED));
     }
 
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
-        Deployment removedDeployment = dataSnapshot.getValue(Deployment.class);
-        Deployment localDeployment = mDbManager.getDeployment(removedDeployment.getUuid());
+        ORMLiteDeployment removedDeployment = dataSnapshot.getValue(ORMLiteDeployment.class);
+        ORMLiteDeployment localDeployment = mDbManager.getDeployment(removedDeployment.getUuid());
         Log.d("FB onChildRemoved: Deployment with UUID "+removedDeployment.getUuid()+" removed from firebase");
 
         if(localDeployment != null){
@@ -220,7 +220,7 @@ class FirebaseDBManager implements ChildEventListener {
             mDbManager.deleteDeployment(localDeployment.getUuid(), false);
 
             // Update the UI
-            mBroadcastManager.sendBroadcast(new Intent(DatabaseManager.DATA_DELETED));
+            mBroadcastManager.sendBroadcast(new Intent(ORMLiteDatabaseManager.DATA_DELETED));
         }
     }
 

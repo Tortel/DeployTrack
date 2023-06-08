@@ -29,9 +29,9 @@ import java.util.UUID;
 /**
  * Class for handing the major database upgrade
  */
-public class DatabaseUpgrader {
+public class ORMLiteDatabaseUpgrader {
     // Hide
-    private DatabaseUpgrader(){}
+    private ORMLiteDatabaseUpgrader(){}
 
     /**
      * Checks if the database needs to be upgraded
@@ -45,13 +45,13 @@ public class DatabaseUpgrader {
      * @param context the context
      */
     public static boolean doDatabaseUpgrade(Context context){
-        DatabaseManager dbManager = DatabaseManager.getInstance(context);
+        ORMLiteDatabaseManager dbManager = ORMLiteDatabaseManager.getInstance(context);
         OldDatabaseHelper oldDbHelper = new OldDatabaseHelper(context);
         Log.d("Starting DB upgrade");
         try{
             Dao<OldDeployment, Integer> oldDeploymentDao = oldDbHelper.getDeploymentDao();
             Dao<OldWidgetInfo, Integer> oldWidgetDao = oldDbHelper.getWidgetInfoDao();
-            SparseArray<Deployment> deploymentById = new SparseArray<>();
+            SparseArray<ORMLiteDeployment> deploymentById = new SparseArray<>();
 
             // Get all the data from the old database and shove it in the new one
             List<OldDeployment> oldDeployments = oldDeploymentDao.queryForAll();
@@ -61,7 +61,7 @@ public class DatabaseUpgrader {
                 if(cur.getUuid() == null){
                     cur.setUuid(UUID.randomUUID());
                 }
-                Deployment updated = cur.getUpdatedObject();
+                ORMLiteDeployment updated = cur.getUpdatedObject();
 
                 // Add it to our map of deployment objects for updating any WidgetInfo objects
                 deploymentById.put(cur.getId(), updated);
@@ -76,8 +76,8 @@ public class DatabaseUpgrader {
             for(OldWidgetInfo cur : oldWidgetInfo){
                 Log.d("Updating WidgetInfo with ID "+cur.getId());
 
-                Deployment deployment = deploymentById.get(cur.getDeployment().getId());
-                WidgetInfo updated = cur.getUpdatedObject(deployment);
+                ORMLiteDeployment deployment = deploymentById.get(cur.getDeployment().getId());
+                ORMLiteWidgetInfo updated = cur.getUpdatedObject(deployment);
 
                 dbManager.saveWidgetInfo(updated);
             }

@@ -17,8 +17,8 @@ package com.tortel.deploytrack.data.depricated;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.tortel.deploytrack.data.ormlite.Deployment;
-import com.tortel.deploytrack.data.ormlite.WidgetInfo;
+import com.tortel.deploytrack.data.ormlite.ORMLiteDeployment;
+import com.tortel.deploytrack.data.ormlite.ORMLiteWidgetInfo;
 
 /**
  * Class to save info dialog_about a homescreen widget
@@ -74,8 +74,8 @@ public class OldWidgetInfo {
     /**
      * Get the newer WidgetInfo class with all the data here
      */
-    public WidgetInfo getUpdatedObject(Deployment deployment){
-        WidgetInfo updated = new WidgetInfo();
+    public ORMLiteWidgetInfo getUpdatedObject(ORMLiteDeployment deployment){
+        ORMLiteWidgetInfo updated = new ORMLiteWidgetInfo();
 
         updated.setId(id);
         updated.setDeployment(deployment);

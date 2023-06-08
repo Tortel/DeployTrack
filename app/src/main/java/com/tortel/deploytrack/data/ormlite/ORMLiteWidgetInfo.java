@@ -22,11 +22,11 @@ import com.j256.ormlite.table.DatabaseTable;
  * Class to save info dialog_about a homescreen widget
  */
 @DatabaseTable
-public class WidgetInfo {
+public class ORMLiteWidgetInfo {
     @DatabaseField(id = true)
     private int id;
     @DatabaseField(canBeNull = false, foreign=true)
-    private Deployment deployment;
+    private ORMLiteDeployment deployment;
     @DatabaseField(defaultValue="false")
     private boolean lightText;
     @DatabaseField(defaultValue="0")
@@ -38,11 +38,11 @@ public class WidgetInfo {
     @DatabaseField(defaultValue="0")
     private int maxHeight;
     
-    public WidgetInfo(){
+    public ORMLiteWidgetInfo(){
         //For ORMLite
     }
     
-    public WidgetInfo(int id, Deployment deployment){
+    public ORMLiteWidgetInfo(int id, ORMLiteDeployment deployment){
         this.id = id;
         this.deployment = deployment;
     }
@@ -55,7 +55,7 @@ public class WidgetInfo {
         if(o == null || !o.getClass().equals(getClass())){
             return false;
         }
-        WidgetInfo other = (WidgetInfo) o;
+        ORMLiteWidgetInfo other = (ORMLiteWidgetInfo) o;
         return other.id == id;
     }
     
@@ -65,10 +65,10 @@ public class WidgetInfo {
     public void setId(int id) {
         this.id = id;
     }
-    public Deployment getDeployment() {
+    public ORMLiteDeployment getDeployment() {
         return deployment;
     }
-    public void setDeployment(Deployment deployment) {
+    public void setDeployment(ORMLiteDeployment deployment) {
         this.deployment = deployment;
     }
     public boolean isLightText() {

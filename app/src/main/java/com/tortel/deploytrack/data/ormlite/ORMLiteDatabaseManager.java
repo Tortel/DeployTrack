@@ -29,32 +29,32 @@ import java.util.UUID;
 /**
  * Class to manage interaction with the database
  */
-public class DatabaseManager {
+public class ORMLiteDatabaseManager {
     public static final String DATA_ADDED = "com.tortel.deploytrack.DATA_ADDED";
     public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
     public static final String DATA_CHANGED = "com.tortel.deploytrack.DATA_CHANGED";
 
-    private static DatabaseManager instance;
+    private static ORMLiteDatabaseManager instance;
 
-    private final DatabaseHelper mHelper;
-    private final FirebaseDBManager mFirebaseDBManager;
+    private final ORMLiteDatabaseHelper mHelper;
+    private final ORMLiteFirebaseDBManager mFirebaseDBManager;
 
-    public static DatabaseManager getInstance(Context context){
+    public static ORMLiteDatabaseManager getInstance(Context context){
         if(instance == null){
-            instance = new DatabaseManager(context);
+            instance = new ORMLiteDatabaseManager(context);
         }
         return instance;
     }
 
-    private DatabaseManager(Context context){
-        mHelper = new DatabaseHelper(context.getApplicationContext());
-        mFirebaseDBManager = FirebaseDBManager.getInstance(this, context.getApplicationContext());
+    private ORMLiteDatabaseManager(Context context){
+        mHelper = new ORMLiteDatabaseHelper(context.getApplicationContext());
+        mFirebaseDBManager = ORMLiteFirebaseDBManager.getInstance(this, context.getApplicationContext());
     }
 
     /**
      * Save a deployment object to the database
      */
-    public void saveDeployment(Deployment deployment){
+    public void saveDeployment(ORMLiteDeployment deployment){
         try{
             // Set a UUID if there isnt one
             if(deployment.getUuid() == null){
@@ -89,8 +89,8 @@ public class DatabaseManager {
     /**
      * Get all the saved GeoEvents
      */
-    public List<Deployment> getAllDeployments(){
-        List<Deployment> list = null;
+    public List<ORMLiteDeployment> getAllDeployments(){
+        List<ORMLiteDeployment> list = null;
         try{
             list = mHelper.getDeploymentDao().queryForAll();
             Collections.sort(list);
@@ -105,8 +105,8 @@ public class DatabaseManager {
     /**
      * Get a specific Deployment from the database
      */
-    public Deployment getDeployment(String uuid){
-        Deployment tmp = null;
+    public ORMLiteDeployment getDeployment(String uuid){
+        ORMLiteDeployment tmp = null;
         try{
             tmp = mHelper.getDeploymentDao().queryForId(uuid);
         } catch(SQLException e){
@@ -144,12 +144,12 @@ public class DatabaseManager {
     /**
      * Gets the widget information for the specified ID
      */
-    public List<WidgetInfo> getAllWidgetInfo(){
+    public List<ORMLiteWidgetInfo> getAllWidgetInfo(){
         Log.v("Getting all widget information");
         try{
-            List<WidgetInfo> list = mHelper.getWidgetInfoDao().queryForAll();
+            List<ORMLiteWidgetInfo> list = mHelper.getWidgetInfoDao().queryForAll();
             if(list != null){
-                for(WidgetInfo info : list){
+                for(ORMLiteWidgetInfo info : list){
                     mHelper.getDeploymentDao().refresh(info.getDeployment());
                 }
             }
@@ -165,10 +165,10 @@ public class DatabaseManager {
     /**
      * Gets the widget information for the specified ID
      */
-    public WidgetInfo getWidgetInfo(int id){
+    public ORMLiteWidgetInfo getWidgetInfo(int id){
         Log.v("Getting widget info for "+id);
         try{
-            WidgetInfo info = mHelper.getWidgetInfoDao().queryForId(id);
+            ORMLiteWidgetInfo info = mHelper.getWidgetInfoDao().queryForId(id);
             if(info != null){
                 mHelper.getDeploymentDao().refresh(info.getDeployment());
             }
@@ -184,7 +184,7 @@ public class DatabaseManager {
     /**
      * Saves the WidgetInfo
      */
-    public void saveWidgetInfo(WidgetInfo info){
+    public void saveWidgetInfo(ORMLiteWidgetInfo info){
         Log.v("Saving widget info for "+info.getId());
         try{
             mHelper.getWidgetInfoDao().createOrUpdate(info);

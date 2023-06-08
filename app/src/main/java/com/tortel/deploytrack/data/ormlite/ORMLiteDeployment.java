@@ -30,7 +30,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class Deployment implements Comparable<Deployment> {
+public class ORMLiteDeployment implements Comparable<ORMLiteDeployment> {
 	/**
 	 * Use a circle-style display
 	 */
@@ -60,7 +60,7 @@ public class Deployment implements Comparable<Deployment> {
 	/**
 	 * Update the fields to match the other deployment
      */
-	void updateData(Deployment other){
+	void updateData(ORMLiteDeployment other){
 		this.name = other.name;
 		this.startDate = other.startDate;
 		this.endDate = other.endDate;
@@ -70,7 +70,7 @@ public class Deployment implements Comparable<Deployment> {
 	}
 
 	@Override
-	public int compareTo(@NonNull Deployment other) {
+	public int compareTo(@NonNull ORMLiteDeployment other) {
 		/*
 		 * Compare start dates, and if they are the same, use end dates
 		 */
@@ -208,8 +208,8 @@ public class Deployment implements Comparable<Deployment> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Deployment){
-			Deployment o = (Deployment) obj;
+		if(obj instanceof ORMLiteDeployment){
+			ORMLiteDeployment o = (ORMLiteDeployment) obj;
 			return uuid != null &&
 					uuid.equals(o.uuid);
 		}

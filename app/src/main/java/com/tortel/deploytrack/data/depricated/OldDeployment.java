@@ -17,7 +17,7 @@ package com.tortel.deploytrack.data.depricated;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.tortel.deploytrack.data.ormlite.Deployment;
+import com.tortel.deploytrack.data.ormlite.ORMLiteDeployment;
 
 import java.util.Date;
 import java.util.UUID;
@@ -65,8 +65,8 @@ public class OldDeployment {
 	/**
 	 * Create a new Deployment object with all the information
      */
-	public Deployment getUpdatedObject(){
-		Deployment updated = new Deployment();
+	public ORMLiteDeployment getUpdatedObject(){
+		ORMLiteDeployment updated = new ORMLiteDeployment();
 		updated.setUuid(uuid);
 		updated.setName(name);
 		updated.setCompletedColor(completedColor);
