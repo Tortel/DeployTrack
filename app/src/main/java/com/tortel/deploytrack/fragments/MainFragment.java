@@ -42,8 +42,8 @@ import com.tortel.deploytrack.DeploymentFragmentAdapter;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.ormlite.DatabaseManager;
-import com.tortel.deploytrack.data.ormlite.DatabaseUpgrader;
+import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.data.RoomMigrationManager;
 import com.tortel.deploytrack.databinding.FragmentMainBinding;
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog;
 import com.tortel.deploytrack.dialog.DeleteDialog;
@@ -82,7 +82,7 @@ public class MainFragment extends Fragment {
             }
         } else {
             // Check if we need to upgrade the database
-            if (DatabaseUpgrader.needsUpgrade(getContext())) {
+            if (RoomMigrationManager.needsMigration(getContext())) {
                 DatabaseUpgradeDialog upgradeDialog = new DatabaseUpgradeDialog();
                 upgradeDialog.show(getParentFragmentManager(), "upgrade");
             } else {

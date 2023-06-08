@@ -31,8 +31,8 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.ormlite.DatabaseManager;
-import com.tortel.deploytrack.data.ormlite.Deployment;
+import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.data.Deployment;
 import com.tortel.deploytrack.databinding.FragmentDeploymentBinding;
 
 /**

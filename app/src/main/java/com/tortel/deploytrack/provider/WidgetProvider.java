@@ -25,10 +25,10 @@ import com.tortel.deploytrack.Analytics;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.Prefs;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.ormlite.DatabaseManager;
-import com.tortel.deploytrack.data.ormlite.DatabaseUpgrader;
-import com.tortel.deploytrack.data.ormlite.Deployment;
-import com.tortel.deploytrack.data.ormlite.WidgetInfo;
+import com.tortel.deploytrack.data.DatabaseManager;
+import com.tortel.deploytrack.data.Deployment;
+import com.tortel.deploytrack.data.RoomMigrationManager;
+import com.tortel.deploytrack.data.WidgetInfo;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -72,8 +72,8 @@ public class WidgetProvider extends AppWidgetProvider {
         // The standard widget intents are handled in the super call
         if(UPDATE_INTENT.equals(intent.getAction())) {
             // Check if the database needs to be upgraded
-            if(DatabaseUpgrader.needsUpgrade(context)){
-                DatabaseUpgrader.doDatabaseUpgrade(context);
+            if(RoomMigrationManager.needsMigration(context)){
+                RoomMigrationManager.doMigration(context);
             }
             mScreenShotMode = intent.getBooleanExtra(KEY_SCREENSHOT_MODE, false);
             Log.v("Update intent received");
@@ -90,8 +90,8 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds) {
         // Check if the database needs to be upgraded
-        if (DatabaseUpgrader.needsUpgrade(context)) {
-            DatabaseUpgrader.doDatabaseUpgrade(context);
+        if(RoomMigrationManager.needsMigration(context)){
+            RoomMigrationManager.doMigration(context);
         }
 
         updateAllWidgets(context, appWidgetManager);

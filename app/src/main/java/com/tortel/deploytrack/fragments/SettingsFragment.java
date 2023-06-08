@@ -38,7 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.ormlite.DatabaseManager;
+import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.databinding.FragmentSettingsBinding;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;

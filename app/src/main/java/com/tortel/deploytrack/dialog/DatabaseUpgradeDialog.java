@@ -32,7 +32,7 @@ import android.widget.TextView;
 import com.tortel.deploytrack.Log;
 import com.tortel.deploytrack.MainActivity;
 import com.tortel.deploytrack.R;
-import com.tortel.deploytrack.data.ormlite.DatabaseUpgrader;
+import com.tortel.deploytrack.data.RoomMigrationManager;
 import com.tortel.deploytrack.provider.WidgetProvider;
 
 /**
@@ -92,20 +92,16 @@ public class DatabaseUpgradeDialog extends DialogFragment {
         (new Thread() {
             @Override
             public void run() {
-                if (DatabaseUpgrader.doDatabaseUpgrade(context)) {
-                    Handler mainHandler = new Handler(context.getMainLooper());
-                    mainHandler.post(() -> {
-                        Log.v("Sending widget update broadcast");
-                        Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-                        context.sendBroadcast(updateWidgetIntent);
+                RoomMigrationManager.doMigration(context);
+                Handler mainHandler = new Handler(context.getMainLooper());
+                mainHandler.post(() -> {
+                    Log.v("Sending widget update broadcast");
+                    Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
+                    context.sendBroadcast(updateWidgetIntent);
 
-                        // Re-start the main activity
-                        restartMainActivity();
-                    });
-                } else {
-                    // Uh? What now?
-
-                }
+                    // Re-start the main activity
+                    restartMainActivity();
+                });
             }
         }).start();
     }
