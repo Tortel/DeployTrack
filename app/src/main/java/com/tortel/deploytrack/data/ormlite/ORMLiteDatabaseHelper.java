@@ -29,8 +29,8 @@ import java.sql.SQLException;
 /**
  * Manage the database file
  */
-class ORMLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABASE_NAME = "data2016.09.sqlite";
+public class ORMLiteDatabaseHelper extends OrmLiteSqliteOpenHelper {
+    public static final String DATABASE_NAME = "data2016.09.sqlite";
 
     private static final int DATABASE_VERSION = 1;
 

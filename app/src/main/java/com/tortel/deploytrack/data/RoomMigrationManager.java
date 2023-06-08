@@ -17,6 +17,17 @@ package com.tortel.deploytrack.data;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
+import com.tortel.deploytrack.Log;
+import com.tortel.deploytrack.data.ormlite.ORMLiteDatabaseHelper;
+import com.tortel.deploytrack.data.ormlite.ORMLiteDatabaseManager;
+import com.tortel.deploytrack.data.ormlite.ORMLiteDeployment;
+import com.tortel.deploytrack.data.ormlite.ORMLiteWidgetInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class to handle the ORMLite -> Room database migration
  */
@@ -28,7 +39,7 @@ public class RoomMigrationManager {
      * @return if the migration needs to be run or not
      */
     public static boolean needsMigration(Context context) {
-        return false;
+        return context.getDatabasePath(ORMLiteDatabaseHelper.DATABASE_NAME).exists();
     }
 
     /**
@@ -36,6 +47,70 @@ public class RoomMigrationManager {
      * @param context
      */
     public static void doMigration(Context context) {
+        Log.d("Starting Room database migration");
+        ORMLiteDatabaseManager ormManager = ORMLiteDatabaseManager.getInstance(context);
+        DatabaseManager databaseManager = DatabaseManager.getInstance(context);
 
+        List<ORMLiteDeployment> oldDeployments = ormManager.getAllDeployments();
+        List<ORMLiteWidgetInfo> oldWidgetInfos = ormManager.getAllWidgetInfo();
+
+        List<Deployment> newDeployments = new ArrayList<>(oldDeployments.size());
+        List<WidgetInfo> newWidgetInfos = new ArrayList<>(oldWidgetInfos.size());
+
+        // Convert the old data classes to the new ones
+        for (ORMLiteDeployment oldDeployment : oldDeployments) {
+            newDeployments.add(convertORMDeployment(oldDeployment));
+        }
+        for (ORMLiteWidgetInfo oldWidgetInfo : oldWidgetInfos) {
+            newWidgetInfos.add(convertORMWidgetInfo(oldWidgetInfo));
+        }
+
+        // Save it all
+        databaseManager.saveAllDeployments(newDeployments.toArray(new Deployment[]{}));
+        databaseManager.saveAllWidgetInfo(newWidgetInfos.toArray(new WidgetInfo[]{}));
+
+        // Delete the old stuff
+        if (!context.getDatabasePath(ORMLiteDatabaseHelper.DATABASE_NAME).delete()) {
+            Log.e("Unable to delete old database");
+        }
+        // Done!
+    }
+
+    /**
+     * Convert the old ORMLiteDeployment to the new class
+     */
+    @NonNull
+    private static Deployment convertORMDeployment(@NonNull ORMLiteDeployment old) {
+        Deployment newDeployment = new Deployment();
+        newDeployment.setUuid(old.getUuid());
+        newDeployment.setName(old.getName());
+
+        newDeployment.setStartDate(old.getStartDate());
+        newDeployment.setEndDate(old.getEndDate());
+
+        newDeployment.setCompletedColor(old.getCompletedColor());
+        newDeployment.setRemainingColor(old.getRemainingColor());
+
+        return newDeployment;
+    }
+
+    /**
+     * Convert an old ORMLiteWidgetInfo to the new class
+     */
+    @NonNull
+    private static WidgetInfo convertORMWidgetInfo(@NonNull ORMLiteWidgetInfo old) {
+        WidgetInfo newWidgetInfo = new WidgetInfo();
+        newWidgetInfo.setId(old.getId());
+        newWidgetInfo.setDeploymentId(old.getDeployment().getUuid());
+
+        newWidgetInfo.setLightText(old.isLightText());
+
+        newWidgetInfo.setMinWidth(old.getMinWidth());
+        newWidgetInfo.setMaxWidth(old.getMaxWidth());
+
+        newWidgetInfo.setMinHeight(old.getMinHeight());
+        newWidgetInfo.setMaxHeight(old.getMaxHeight());
+
+        return newWidgetInfo;
     }
 }

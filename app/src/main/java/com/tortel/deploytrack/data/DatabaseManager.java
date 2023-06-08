@@ -70,6 +70,32 @@ public class DatabaseManager {
     }
 
     /**
+     * Bulk save deployments
+     */
+    void saveAllDeployments(Deployment... deployments) {
+        try {
+            mDao.insert(deployments);
+        } catch (Exception e) {
+            Log.e("Exception saving deployments");
+            // Report this to firebase
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception saving deployments", e));
+        }
+    }
+
+    /**
+     * Bulk save WidgetInfo
+     */
+    void saveAllWidgetInfo(WidgetInfo... widgetInfos) {
+        try {
+            mDao.insert(widgetInfos);
+        } catch (Exception e) {
+            Log.e("Exception saving widget info");
+            // Report this to firebase
+            FirebaseCrashlytics.getInstance().recordException(new Exception("Exception saving widget info", e));
+        }
+    }
+
+    /**
      * Set the Firebase user object, enabling Firebase sync
      */
     public void setFirebaseUser(FirebaseUser fbUser) {

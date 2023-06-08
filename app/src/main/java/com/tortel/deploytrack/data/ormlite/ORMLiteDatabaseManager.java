@@ -34,16 +34,11 @@ public class ORMLiteDatabaseManager {
     public static final String DATA_DELETED = "com.tortel.deploytrack.DATA_DELETED";
     public static final String DATA_CHANGED = "com.tortel.deploytrack.DATA_CHANGED";
 
-    private static ORMLiteDatabaseManager instance;
-
     private final ORMLiteDatabaseHelper mHelper;
     private final ORMLiteFirebaseDBManager mFirebaseDBManager;
 
     public static ORMLiteDatabaseManager getInstance(Context context){
-        if(instance == null){
-            instance = new ORMLiteDatabaseManager(context);
-        }
-        return instance;
+        return new ORMLiteDatabaseManager(context);
     }
 
     private ORMLiteDatabaseManager(Context context){
