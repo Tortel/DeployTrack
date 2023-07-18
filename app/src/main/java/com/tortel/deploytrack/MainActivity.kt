@@ -31,13 +31,16 @@ class MainActivity : AppCompatActivity() {
             setTheme(R.style.Theme_DeployThemeLight)
         }
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+
         val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         if (BuildConfig.DEBUG) {
             // Mark debug builds in crashlytics
             FirebaseCrashlytics.getInstance().setCustomKey("debug", true)
             firebaseAnalytics.setAnalyticsCollectionEnabled(false)
         }
+
         if (savedInstanceState == null) {
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null)
         }

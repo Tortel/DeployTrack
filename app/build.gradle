@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 28
         versionName "3.0.7"
 
@@ -31,19 +32,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility = '17'
+        targetCompatibility = '17'
     }
     namespace 'com.tortel.deploytrack'
     return void
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation-jvm:+'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.annotation:annotation:+'
 
     // Versions
     def room_version = "2.5.2"
-    def nav_version = '2.6.0'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
