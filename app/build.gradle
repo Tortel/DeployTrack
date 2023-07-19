@@ -42,13 +42,14 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.annotation:annotation:1.6.0'
+    implementation "androidx.core:core-ktx:1.10.1"
 
     // Versions
     def room_version = "2.5.2"
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
@@ -63,7 +64,7 @@ dependencies {
     // Appcompat/Material
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
 
     // https://github.com/bmarrdev/android-DecoView-charting
     implementation 'com.github.bmarrdev:android-DecoView-charting:1.2'
