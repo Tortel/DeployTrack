@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "46dc616d6c9dfe1d31e29269cb9c4d12",
+    "identityHash": "6a3317ff0bac5e53dcb759093c8cd852",
     "entities": [
       {
         "tableName": "Deployment",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT, `startDate` INTEGER, `endDate` INTEGER, `completedColor` INTEGER NOT NULL, `remainingColor` INTEGER NOT NULL, `displayType` INTEGER NOT NULL, `uuid` TEXT NOT NULL, PRIMARY KEY(`uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT, `startDate` INTEGER, `endDate` INTEGER, `completedColor` INTEGER NOT NULL, `remainingColor` INTEGER NOT NULL, `uuid` TEXT NOT NULL, PRIMARY KEY(`uuid`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -35,12 +35,6 @@
           {
             "fieldPath": "remainingColor",
             "columnName": "remainingColor",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "displayType",
-            "columnName": "displayType",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -142,7 +136,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '46dc616d6c9dfe1d31e29269cb9c4d12')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6a3317ff0bac5e53dcb759093c8cd852')"
     ]
   }
 }
