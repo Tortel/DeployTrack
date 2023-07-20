@@ -48,6 +48,7 @@ import com.tortel.deploytrack.dialog.SingleDatePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * Fragment that handles creation/editing of deployment objects
@@ -60,6 +61,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private static final String KEY_NAME = "name";
     private static final String KEY_COLOR_COMPLETED = "completed";
     private static final String KEY_COLOR_REMAINING = "remaining";
+    private static final String KEY_DEPLOYMENT_ID = "id";
 
     private ActivityCreateBinding binding;
 
@@ -74,6 +76,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private Calendar mEndDate;
 
     // The data to save;
+    private String mDeploymentId;
     private Deployment mDeployment;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -83,12 +86,12 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
 
         mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
         // Register for date changes
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mDateChangeReceiver,
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(mDateChangeReceiver,
                 new IntentFilter(SingleDatePickerDialog.ACTION_DATE_SELECTED));
     }
 
@@ -139,32 +142,35 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         binding.end.setOnClickListener(this);
         binding.end.setOnFocusChangeListener(this);
 
-        String id = CreateFragmentArgs.fromBundle(getArguments()).getId();
-        if (id != null) {
-            //Starting in edit mode, load the old data
-            mDeployment = DatabaseManager.getInstance(getContext()).getDeployment(id);
+        mDeploymentId = null;
+        if (getArguments() != null) {
+            mDeploymentId = CreateFragmentArgs.fromBundle(getArguments()).getId();
+        }
+        if (mDeploymentId != null) {
+            // Starting in edit mode, load the old data
+            mDeployment = DatabaseManager.getInstance(requireContext()).getDeployment(mDeploymentId);
 
-            //Set the colors
+            // Set the colors
             mCompletedColor = mDeployment.getCompletedColor();
             mRemainingColor = mDeployment.getRemainingColor();
 
-            //Set the dates
+            // Set the dates
             mStartDate = Calendar.getInstance();
             mEndDate = Calendar.getInstance();
 
             mStartDate.setTimeInMillis(mDeployment.getStartDate().getTime());
             mEndDate.setTimeInMillis(mDeployment.getEndDate().getTime());
 
-            //Set the buttons
+            // Set the buttons
             binding.start.setText(mDateFormat.format(mStartDate.getTime()));
             binding.end.setText(mDateFormat.format(mEndDate.getTime()));
 
-            //Set the name
+            // Set the name
             binding.name.setText(mDeployment.getName());
 
             binding.toolbar.setTitle(R.string.edit);
         } else {
-            mDeployment = new Deployment();
+            mDeployment = null;
 
             mStartDate = Calendar.getInstance();
             mEndDate = (Calendar) mStartDate.clone();
@@ -175,8 +181,10 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             binding.toolbar.setTitle(R.string.add_new);
         }
 
-        //If restore from rotation
-        if(savedInstanceState != null){
+        // If restore from rotation
+        if (savedInstanceState != null) {
+            mDeploymentId = savedInstanceState.getString(KEY_DEPLOYMENT_ID);
+
             mStartDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
             mEndDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
 
@@ -222,13 +230,14 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public void onDestroy() {
         super.onDestroy();
         // Unregister our date change receiver
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mDateChangeReceiver);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mDateChangeReceiver);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save everything
+        outState.putString(KEY_DEPLOYMENT_ID, mDeploymentId);
         outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
         outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
 
@@ -244,7 +253,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private void saveDeployment(){
         boolean hasError = false;
 
-        if(mStartDate == null || "".equals(binding.start.getText().toString())){
+        if (mStartDate == null || "".equals(binding.start.getText().toString())) {
             binding.startWrapper.setErrorEnabled(true);
             binding.startWrapper.setError(getString(R.string.invalid_start));
             hasError = true;
@@ -252,7 +261,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             binding.startWrapper.setErrorEnabled(false);
         }
 
-        if(mEndDate == null || !mEndDate.after(mStartDate) || "".equals(binding.end.getText().toString())){
+        if (mEndDate == null || !mEndDate.after(mStartDate) || "".equals(binding.end.getText().toString())) {
             binding.endWrapper.setErrorEnabled(true);
             binding.endWrapper.setError(getString(R.string.invalid_end));
             hasError = true;
@@ -261,7 +270,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         }
 
         String name = binding.name.getText().toString().trim();
-        if("".equals(name)){
+        if ("".equals(name)) {
             binding.nameWraper.setErrorEnabled(true);
             binding.nameWraper.setError(getString(R.string.invalid_name));
             hasError = true;
@@ -270,20 +279,18 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         }
 
         // Stop now if there was an error
-        if(hasError){
+        if (hasError) {
             return;
         }
 
         // Set the values
-        mDeployment.setStartDate(mStartDate.getTime());
-        mDeployment.setEndDate(mEndDate.getTime());
-        mDeployment.setName(name);
-        mDeployment.setCompletedColor(mCompletedColor);
-        mDeployment.setRemainingColor(mRemainingColor);
+        String id = mDeploymentId == null ? UUID.randomUUID().toString() : mDeploymentId;
+        mDeployment = new Deployment(name, id, mStartDate.getTime(), mEndDate.getTime(), mCompletedColor, mRemainingColor);
+
         // Save it
-        DatabaseManager.getInstance(getContext()).saveDeployment(mDeployment);
+        DatabaseManager.getInstance(requireContext()).saveDeployment(mDeployment);
         // Log the event
-        if (mDeployment.getUuid() != null) {
+        if (mDeploymentId != null) {
             mFirebaseAnalytics.logEvent(Analytics.EVENT_EDITED_DEPLOYMENT, null);
         } else {
             mFirebaseAnalytics.logEvent(Analytics.EVENT_CREATED_DEPLOYMENT, null);
@@ -309,7 +316,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
         Log.d("onFocusChange called with hasFocus: "+hasFocus);
-        if(hasFocus){
+        if (hasFocus) {
             if (view.getId() == binding.start.getId()) {
                 showStartDatePicker();
             } else if (view.getId() == binding.end.getId()) {
@@ -326,7 +333,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private void showStartDatePicker(){
         FragmentManager fm = getParentFragmentManager();
         Fragment startDialog = fm.findFragmentByTag(TAG_DATE_DIALOG);
-        if(startDialog != null && startDialog.isVisible()){
+        if (startDialog != null && startDialog.isVisible()) {
             Log.d("Date dialog is visible, not showing");
             return;
         }
@@ -354,7 +361,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private void showEndDatePicker(){
         FragmentManager fm = getParentFragmentManager();
         Fragment endDialog = fm.findFragmentByTag(TAG_DATE_DIALOG);
-        if(endDialog != null && endDialog.isVisible()){
+        if (endDialog != null && endDialog.isVisible()) {
             Log.d("End dialog is visible, not showing");
             return;
         }
@@ -404,7 +411,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             SingleDatePickerDialog.PickerType type = intent.getIntExtra(SingleDatePickerDialog.EXTRA_TYPE, 0) == 0 ?
                     SingleDatePickerDialog.PickerType.START : SingleDatePickerDialog.PickerType.END;
 
-            if(type  == SingleDatePickerDialog.PickerType.START){
+            if (type  == SingleDatePickerDialog.PickerType.START) {
                 setStartDate(year, month, day);
             } else {
                 setEndDate(year, month, day);

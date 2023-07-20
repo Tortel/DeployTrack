@@ -81,17 +81,8 @@ public class RoomMigrationManager {
      */
     @NonNull
     private static Deployment convertORMDeployment(@NonNull ORMLiteDeployment old) {
-        Deployment newDeployment = new Deployment();
-        newDeployment.setUuid(old.getUuid());
-        newDeployment.setName(old.getName());
-
-        newDeployment.setStartDate(old.getStartDate());
-        newDeployment.setEndDate(old.getEndDate());
-
-        newDeployment.setCompletedColor(old.getCompletedColor());
-        newDeployment.setRemainingColor(old.getRemainingColor());
-
-        return newDeployment;
+        return new Deployment(old.getName(), old.getUuid(), old.getStartDate(),
+                old.getEndDate(), old.getCompletedColor(), old.getRemainingColor());
     }
 
     /**

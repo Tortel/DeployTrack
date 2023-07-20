@@ -16,48 +16,33 @@
 package com.tortel.deploytrack.data
 
 import android.annotation.SuppressLint
+
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+
 import com.google.firebase.database.Exclude
+
 import org.joda.time.DateTime
 import org.joda.time.Days
+
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.UUID
 
 @Entity
 @TypeConverters(DateConverter::class)
-class Deployment : Comparable<Deployment> {
-    var name: String? = null
-    var startDate: Date? = null
-    var endDate: Date? = null
-    var completedColor = 0
-    var remainingColor = 0
-
-    @PrimaryKey
-    var uuid = UUID.randomUUID().toString()
-
-    /**
-     * Update the fields to match the other deployment
-     */
-    fun updateData(other: Deployment) {
-        name = other.name
-        startDate = other.startDate
-        endDate = other.endDate
-        completedColor = other.completedColor
-        remainingColor = other.remainingColor
-    }
+data class Deployment(val name: String, @PrimaryKey val uuid: String, val startDate: Date, val endDate: Date,
+                      val completedColor: Int, val remainingColor: Int) : Comparable<Deployment> {
 
     override fun compareTo(other: Deployment): Int {
         /*
          * Compare start dates, and if they are the same, use end dates
          */
-        val startCompare = startDate!!.compareTo(other.startDate)
+        val startCompare = startDate.compareTo(other.startDate)
         return if (startCompare == 0) {
-            endDate!!.compareTo(other.endDate)
+            endDate.compareTo(other.endDate)
         } else startCompare
     }
 
@@ -69,26 +54,14 @@ class Deployment : Comparable<Deployment> {
     @get:Ignore
     val formattedStart: String
         get() {
-            if (Companion.format == null) {
-                this.format
-            }
-            return Companion.format!!.format(startDate!!)
+            return format.format(startDate)
         }
 
     @get:Exclude
     @get:Ignore
     val formattedEnd: String
         get() {
-            if (Companion.format == null) {
-                this.format
-            }
-            return Companion.format!!.format(endDate!!)
-        }
-
-    @get:SuppressLint("SimpleDateFormat")
-    private val format: Unit
-        private get() {
-            Companion.format = SimpleDateFormat("MMM dd, yyyy")
+            return format.format(endDate)
         }
 
     @get:Exclude
@@ -119,7 +92,7 @@ class Deployment : Comparable<Deployment> {
     val completed: Int
         get() {
             val start = start
-            //Check if it has even started
+            // Check if it has even started
             return if (start.isAfterNow) {
                 0
             } else Days.daysBetween(start, DateTime()).days.coerceAtMost(length)
@@ -141,11 +114,6 @@ class Deployment : Comparable<Deployment> {
     val percentage: Int
         get() = (completed.toDouble() / length.toDouble() * 100).toInt()
 
-    @Ignore
-    @Exclude
-    fun setUuid(uuid: UUID) {
-        this.uuid = uuid.toString()
-    }
 
     override fun equals(other: Any?): Boolean {
         if (other is Deployment) {
@@ -159,7 +127,8 @@ class Deployment : Comparable<Deployment> {
     }
 
     companion object {
-        private var format: SimpleDateFormat? = null
+        @SuppressLint("SimpleDateFormat")
+        private val format: SimpleDateFormat = SimpleDateFormat("MMM dd, yyyy")
     }
 }
 

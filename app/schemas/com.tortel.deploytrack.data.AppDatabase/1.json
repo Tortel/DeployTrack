@@ -2,29 +2,35 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6a3317ff0bac5e53dcb759093c8cd852",
+    "identityHash": "0a5e23275ed303734abeed7d584caab7",
     "entities": [
       {
         "tableName": "Deployment",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT, `startDate` INTEGER, `endDate` INTEGER, `completedColor` INTEGER NOT NULL, `remainingColor` INTEGER NOT NULL, `uuid` TEXT NOT NULL, PRIMARY KEY(`uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `uuid` TEXT NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER NOT NULL, `completedColor` INTEGER NOT NULL, `remainingColor` INTEGER NOT NULL, PRIMARY KEY(`uuid`))",
         "fields": [
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "startDate",
             "columnName": "startDate",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "endDate",
             "columnName": "endDate",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "completedColor",
@@ -36,12 +42,6 @@
             "fieldPath": "remainingColor",
             "columnName": "remainingColor",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "uuid",
-            "columnName": "uuid",
-            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -136,7 +136,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6a3317ff0bac5e53dcb759093c8cd852')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a5e23275ed303734abeed7d584caab7')"
     ]
   }
 }

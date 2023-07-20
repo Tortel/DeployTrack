@@ -202,7 +202,9 @@ class FirebaseDBManager implements ChildEventListener {
             Log.d("FB onChildChanged: Deployment with UUID " + updatedDeployment.getUuid() + " not present locally");
         } else {
             // Update all the fields
-            localDeployment.updateData(updatedDeployment);
+            localDeployment = new Deployment(updatedDeployment.getName(), updatedDeployment.getUuid(),
+                    updatedDeployment.getStartDate(), updatedDeployment.getEndDate(),
+                    updatedDeployment.getCompletedColor(), updatedDeployment.getRemainingColor());
             Log.d("FB onChildChanged: Deployment with UUID " + updatedDeployment.getUuid() + " - updating local version");
         }
 
