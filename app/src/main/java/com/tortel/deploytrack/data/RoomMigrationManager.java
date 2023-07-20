@@ -90,18 +90,7 @@ public class RoomMigrationManager {
      */
     @NonNull
     private static WidgetInfo convertORMWidgetInfo(@NonNull ORMLiteWidgetInfo old) {
-        WidgetInfo newWidgetInfo = new WidgetInfo();
-        newWidgetInfo.setId(old.getId());
-        newWidgetInfo.setDeploymentId(old.getDeployment().getUuid());
-
-        newWidgetInfo.setLightText(old.isLightText());
-
-        newWidgetInfo.setMinWidth(old.getMinWidth());
-        newWidgetInfo.setMaxWidth(old.getMaxWidth());
-
-        newWidgetInfo.setMinHeight(old.getMinHeight());
-        newWidgetInfo.setMaxHeight(old.getMaxHeight());
-
-        return newWidgetInfo;
+        return new WidgetInfo(old.getId(), old.getDeployment().getUuid(), old.isLightText(),
+                old.getMinWidth(), old.getMinHeight(), old.getMaxWidth(), old.getMaxHeight());
     }
 }

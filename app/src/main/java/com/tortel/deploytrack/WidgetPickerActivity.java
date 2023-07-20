@@ -97,15 +97,15 @@ public class WidgetPickerActivity extends AppCompatActivity {
             if (id != null) {
                 DatabaseManager db = DatabaseManager.getInstance(this);
 
-                //Get the data
+                // Get the data
                 Deployment deployment = db.getDeployment(id);
 
-                //Save it
-                WidgetInfo info = new WidgetInfo(mWidgetId, deployment);
-                info.setLightText(mUseLightText);
+                // Save it
+                WidgetInfo info = new WidgetInfo(mWidgetId, deployment.getUuid(),
+                        mUseLightText, 0, 0, 0, 0);
                 db.saveWidgetInfo(info);
 
-                //Set it all up
+                // Set it all up
                 RemoteViews remoteView = WidgetProvider.updateWidgetView(this, info);
 
                 mWidgetManager.updateAppWidget(mWidgetId, remoteView);

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack.data;
+package com.tortel.deploytrack.data
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-@Database(entities = {Deployment.class, WidgetInfo.class}, version = 1)
-public abstract class AppDatabase extends RoomDatabase {
-    public abstract DataDao getDao();
+@Database(entities = [Deployment::class, WidgetInfo::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
+
+    abstract val dao: DataDao
+
 }

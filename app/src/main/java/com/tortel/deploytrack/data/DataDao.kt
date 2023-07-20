@@ -13,46 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tortel.deploytrack.data;
+package com.tortel.deploytrack.data
 
-import androidx.annotation.NonNull;
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import java.util.List;
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
-public interface DataDao {
+interface DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Deployment... deployments);
+    fun insert(vararg deployments: Deployment)
 
-    @Insert(onConflict =  OnConflictStrategy.REPLACE)
-    void insert(WidgetInfo... widgetInfos);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(vararg widgetInfos: WidgetInfo)
 
     @Delete
-    int delete(Deployment deployment);
+    fun delete(deployment: Deployment): Int
 
     @Query("DELETE FROM deployment WHERE uuid = :uuid")
-    int deleteByUuid(String uuid);
+    fun deleteByUuid(uuid: String): Int
 
     @Delete
-    int delete(WidgetInfo widgetInfo);
+    fun delete(widgetInfo: WidgetInfo): Int
 
     @Query("DELETE from widgetinfo WHERE id = :id")
-    int deleteById(int id);
+    fun deleteById(id: Int): Int
 
-    @Query("SELECT * FROM deployment")
-    List<Deployment> getAllDeployments();
+    @get:Query("SELECT * FROM deployment")
+    val allDeployments: List<Deployment>
 
-    @Query("SELECT * FROM widgetinfo")
-    List<WidgetInfo> getAllWidgetInfo();
+    @get:Query("SELECT * FROM widgetinfo")
+    val allWidgetInfo: List<WidgetInfo>
 
     @Query("SELECT * FROM widgetinfo WHERE id = :id")
-    WidgetInfo getWidgetInfo(int id);
+    fun getWidgetInfo(id: Int): WidgetInfo?
 
     @Query("SELECT * FROM deployment WHERE uuid = :uuid")
-    Deployment getDeployment(@NonNull String uuid);
+    fun getDeployment(uuid: String): Deployment?
 }
