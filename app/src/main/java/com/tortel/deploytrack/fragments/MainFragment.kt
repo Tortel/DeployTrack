@@ -63,6 +63,12 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+
+        val lbm = LocalBroadcastManager.getInstance(requireContext())
+        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_DELETED))
+        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_ADDED))
+        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_CHANGED))
+
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(KEY_POSITION)
             mScreenShotMode = savedInstanceState.getBoolean(KEY_SCREENSHOT, false)
@@ -70,15 +76,16 @@ class MainFragment : Fragment() {
                 Prefs.setScreenShotMode(true, context)
             }
         } else {
+
             // Check if we need to upgrade the database
-            if (RoomMigrationManager.needsMigration(context)) {
+            if (RoomMigrationManager.needsMigration(requireContext())) {
                 val upgradeDialog = DatabaseUpgradeDialog()
                 upgradeDialog.show(parentFragmentManager, "upgrade")
             } else {
                 // Only show the welcome dialog if its the first time the app is opened,
                 // and the DB doesn't need to be upgraded
                 if (!Prefs.isWelcomeShown()) {
-                    Prefs.setWelcomeShown(context)
+                    Prefs.setWelcomeShown(requireContext())
                     val dialog = WelcomeDialog()
                     dialog.show(parentFragmentManager, "welcome")
                 }
@@ -87,11 +94,6 @@ class MainFragment : Fragment() {
             // Sync should only need to be set up once
             setupSync()
         }
-
-        val lbm = LocalBroadcastManager.getInstance(requireContext())
-        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_DELETED))
-        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_ADDED))
-        lbm.registerReceiver(mChangeListener, IntentFilter(DatabaseManager.DATA_CHANGED))
     }
 
     override fun onPause() {
