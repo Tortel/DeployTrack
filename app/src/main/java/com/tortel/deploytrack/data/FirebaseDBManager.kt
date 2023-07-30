@@ -187,7 +187,7 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
         }
 
         // Save it
-        mDbManager.saveDeployment(localDeployment!!)
+        mDbManager.saveDeployment(localDeployment)
         // Update the UI
         mBroadcastManager.sendBroadcast(Intent(DatabaseManager.DATA_CHANGED))
     }
@@ -229,7 +229,7 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
          * @param context
          * @return
          */
-        fun getInstance(dbManager: DatabaseManager, context: Context): FirebaseDBManager? {
+        fun getInstance(dbManager: DatabaseManager, context: Context): FirebaseDBManager {
             if (instance == null) {
                 instance = FirebaseDBManager(dbManager, context)
             }
@@ -237,7 +237,7 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
             if (instance!!.mDbManager != dbManager) {
                 instance!!.mDbManager = dbManager
             }
-            return instance
+            return instance!!
         }
     }
 }
