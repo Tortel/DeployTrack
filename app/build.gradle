@@ -48,8 +48,9 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.6.0'
     implementation "androidx.core:core-ktx:1.10.1"
 
-    // Versions
-    def room_version = "2.5.2"
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.47'
+    kapt 'com.google.dagger:dagger-compiler:2.47'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -58,6 +59,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // Room
+    def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // RxJava for Room
