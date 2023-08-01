@@ -24,6 +24,7 @@ limitations under the License.
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup"
         android:dataExtractionRules="@xml/extraction_rules"
