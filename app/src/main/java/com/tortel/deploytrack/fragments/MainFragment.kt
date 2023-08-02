@@ -26,6 +26,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
@@ -48,12 +49,14 @@ import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog
 import com.tortel.deploytrack.dialog.DeleteDialog
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog
 import com.tortel.deploytrack.dialog.WelcomeDialog
+import com.tortel.deploytrack.model.MainFragmentModel
 import com.tortel.deploytrack.provider.WidgetProvider
 
 /**
  * Main fragment that displays the charts and such
  */
 class MainFragment : Fragment() {
+    private val viewModel: MainFragmentModel by viewModels()
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
     private var mAdapter: DeploymentFragmentAdapter? = null
     private var mCurrentPosition = 0

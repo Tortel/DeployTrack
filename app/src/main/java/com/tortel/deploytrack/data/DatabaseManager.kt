@@ -94,7 +94,7 @@ class DatabaseManager private constructor(context: Context) {
     /**
      * Get all the saved GeoEvents
      */
-    val allDeployments: List<Deployment>?
+    val allDeployments: List<Deployment>
         get() {
             try {
                 val list = mDao.allDeployments.sorted();
@@ -104,7 +104,7 @@ class DatabaseManager private constructor(context: Context) {
                 // Report this to firebase
                 FirebaseCrashlytics.getInstance().recordException(Exception("Exception getting all deployments", e))
             }
-            return null
+            return emptyList()
         }
 
     /**
