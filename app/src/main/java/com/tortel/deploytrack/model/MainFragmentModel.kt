@@ -18,10 +18,12 @@ package com.tortel.deploytrack.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tortel.deploytrack.data.DatabaseManager
 import com.tortel.deploytrack.data.Deployment
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -39,17 +41,14 @@ class MainFragmentModel : ViewModel() {
     val screenShotMode: Boolean
         get() = mScreenShotMode
 
-    private var mDeploymentList : MutableLiveData<ArrayList<Deployment>> = MutableLiveData();
-    val deploymentList: LiveData<ArrayList<Deployment>>
+    private var mDeploymentList : MutableLiveData<List<Deployment>> = MutableLiveData();
+    val deploymentList: LiveData<List<Deployment>>
         get() = mDeploymentList
 
-    suspend fun loadData() {
-        var deployments: List<Deployment>
-        withContext(Dispatchers.IO) {
-            deployments = mDatabaseManager.allDeployments
-        }
-        withContext(Dispatchers.Main) {
-            mDeploymentList.postValue(ArrayList<Deployment>(deployments))
+    fun loadData() {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            val deployments = mDatabaseManager.allDeployments
+            mDeploymentList.postValue(deployments)
         }
     }
 
