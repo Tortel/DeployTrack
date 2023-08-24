@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 28
-        versionName "3.0.7"
+        versionCode 29
+        versionName "3.0.8"
     }
 
     buildFeatures {
