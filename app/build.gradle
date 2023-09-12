@@ -12,12 +12,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 28
         versionName "3.0.7"
 
