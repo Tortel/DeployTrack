@@ -43,8 +43,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '17'
-        targetCompatibility = '17'
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     namespace 'com.tortel.deploytrack'
     return void
@@ -52,16 +52,16 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
     implementation 'androidx.annotation:annotation:1.8.0'
     implementation "androidx.core:core-ktx:1.13.1"
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.50'
-    kapt 'com.google.dagger:dagger-compiler:2.50'
+    implementation 'com.google.dagger:dagger:2.51.1'
+    kapt 'com.google.dagger:dagger-compiler:2.51.1'
     // Hilt
-    implementation 'com.google.dagger:hilt-android:2.50'
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.50'
+    implementation 'com.google.dagger:hilt-android:2.51.1'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.51.1'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -99,7 +99,7 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.12.6'
+    implementation 'joda-time:joda-time:2.12.7'
 
     // http://ormlite.com/
     implementation 'com.j256.ormlite:ormlite-android:6.1'
