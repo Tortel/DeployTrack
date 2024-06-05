@@ -3,6 +3,7 @@
 bin/
 gen/
 .settings/
+.kotlin/
 
 .gradle
 /local.properties
