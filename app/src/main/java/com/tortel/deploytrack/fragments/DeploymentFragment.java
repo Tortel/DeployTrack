@@ -316,7 +316,7 @@ public class DeploymentFragment extends Fragment {
 		if(savedInstanceState != null){
 			String id = savedInstanceState.getString("id");
 			if (id != null) {
-				mDeployment = DatabaseManager.getInstance(getActivity()).getDeployment(id);
+				mDeployment = DatabaseManager.getInstance(getActivity()).getDeploymentSync(id);
 			}
 		}
 	}

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0a5e23275ed303734abeed7d584caab7",
+    "identityHash": "71235b7be75a58dccd4c567aa0b8c92d",
     "entities": [
       {
         "tableName": "Deployment",
@@ -56,7 +56,7 @@
       },
       {
         "tableName": "WidgetInfo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `deploymentId` TEXT, `lightText` INTEGER NOT NULL, `minWidth` INTEGER NOT NULL, `minHeight` INTEGER NOT NULL, `maxWidth` INTEGER NOT NULL, `maxHeight` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`deploymentId`) REFERENCES `Deployment`(`uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `deploymentId` TEXT NOT NULL, `isLightText` INTEGER NOT NULL, `minWidth` INTEGER NOT NULL, `minHeight` INTEGER NOT NULL, `maxWidth` INTEGER NOT NULL, `maxHeight` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`deploymentId`) REFERENCES `Deployment`(`uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -68,11 +68,11 @@
             "fieldPath": "deploymentId",
             "columnName": "deploymentId",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "lightText",
-            "columnName": "lightText",
+            "fieldPath": "isLightText",
+            "columnName": "isLightText",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -136,7 +136,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a5e23275ed303734abeed7d584caab7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '71235b7be75a58dccd4c567aa0b8c92d')"
     ]
   }
 }

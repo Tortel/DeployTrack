@@ -15,10 +15,10 @@
  */
 package com.tortel.deploytrack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.tortel.deploytrack.data.DatabaseManager;
 import com.tortel.deploytrack.data.Deployment;
 import com.tortel.deploytrack.fragments.*;
 
@@ -43,15 +43,12 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
 		super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		this.mContext = context.getApplicationContext();
-		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
 		mFragmentList = new SparseArray<>();
+		mDeploymentList = new ArrayList<>(0);
 	}
 
-	/**
-	 * Reload all the deployments from the database
-	 */
-	public void reloadData(){
-		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
+	public void setList(List<Deployment> newList) {
+		mDeploymentList = newList;
 		mFragmentList.clear();
 		this.notifyDataSetChanged();
 	}
@@ -99,10 +96,10 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	@NonNull
 	@Override
 	public Fragment getItem(int position) {
-		if(position >= mDeploymentList.size()){
+		if (position >= mDeploymentList.size()) {
 			return new NoDataFragment();
 		}
-		if(mFragmentList.get(position) == null ||
+		if (mFragmentList.get(position) == null ||
 				mFragmentList.get(position).getDeployment() == null){
 			Deployment deployment = mDeploymentList.get(position);
 			mFragmentList.put(position, DeploymentFragment.newInstance(deployment));
@@ -117,7 +114,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	
 	@Override
 	public CharSequence getPageTitle(int position){
-		if(mDeploymentList.size() == 0){
+		if (mDeploymentList.isEmpty()) {
 			return mContext.getText(R.string.info);
 		}
 		return mDeploymentList.get(position).getName();

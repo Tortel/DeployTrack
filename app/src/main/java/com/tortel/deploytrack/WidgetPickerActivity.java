@@ -98,7 +98,7 @@ public class WidgetPickerActivity extends AppCompatActivity {
                 DatabaseManager db = DatabaseManager.getInstance(this);
 
                 // Get the data
-                Deployment deployment = db.getDeployment(id);
+                Deployment deployment = db.getDeploymentSync(id);
 
                 // Save it
                 WidgetInfo info = new WidgetInfo(mWidgetId, deployment.getUuid(),

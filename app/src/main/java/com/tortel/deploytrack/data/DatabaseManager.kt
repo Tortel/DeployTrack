@@ -16,6 +16,7 @@
 package com.tortel.deploytrack.data
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 
 import androidx.room.Room.databaseBuilder
 
@@ -23,11 +24,15 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 import com.tortel.deploytrack.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Class to manage interaction with the database
  */
-class DatabaseManager private constructor(context: Context) {
+@Singleton
+class DatabaseManager @Inject constructor(@ApplicationContext context: Context) {
     private val mAppDatabase: AppDatabase
     private val mDao: DataDao
     private val mFirebaseDBManager: FirebaseDBManager
@@ -94,31 +99,25 @@ class DatabaseManager private constructor(context: Context) {
     /**
      * Get all the saved GeoEvents
      */
-    val allDeployments: List<Deployment>
+    val allDeployments: LiveData<List<Deployment>>
         get() {
-            try {
-                val list = mDao.allDeployments.sorted();
-                return list
-            } catch (e: Exception) {
-                Log.e("Exception getting all Deployments", e)
-                // Report this to firebase
-                FirebaseCrashlytics.getInstance().recordException(Exception("Exception getting all deployments", e))
-            }
-            return emptyList()
+            return mDao.allDeployments
+        }
+
+    val allDeploymentsSync: List<Deployment>
+        get() {
+            return mDao.allDeploymentsSync
         }
 
     /**
      * Get a specific Deployment from the database
      */
-    fun getDeployment(uuid: String?): Deployment? {
-        try {
-            return mDao.getDeployment(uuid!!)
-        } catch (e: Exception) {
-            Log.e("Exception getting Deployment", e)
-            // Report this to firebase
-            FirebaseCrashlytics.getInstance().recordException(Exception("Exception getting deployment", e))
-        }
-        return null
+    fun getDeployment(uuid: String): LiveData<Deployment>? {
+        return mDao.getDeployment(uuid)
+    }
+
+    fun getDeploymentSync(uuid: String): Deployment? {
+        return mDao.getDeploymentSync(uuid)
     }
 
     /**
@@ -171,7 +170,7 @@ class DatabaseManager private constructor(context: Context) {
             // Populate the deployment object
             if (info != null) {
                 val deployment = mDao.getDeployment(info.deploymentId)
-                info.deployment = deployment
+                //info.deployment = deployment
             }
             info
         } catch (e: Exception) {

@@ -15,6 +15,7 @@
  */
 package com.tortel.deploytrack.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -42,7 +43,10 @@ interface DataDao {
     fun deleteById(id: Int): Int
 
     @get:Query("SELECT * FROM deployment")
-    val allDeployments: List<Deployment>
+    val allDeployments: LiveData<List<Deployment>>
+
+    @get:Query("SELECT * FROM deployment")
+    val allDeploymentsSync: List<Deployment>
 
     @get:Query("SELECT * FROM widgetinfo")
     val allWidgetInfo: List<WidgetInfo>
@@ -51,5 +55,8 @@ interface DataDao {
     fun getWidgetInfo(id: Int): WidgetInfo?
 
     @Query("SELECT * FROM deployment WHERE uuid = :uuid")
-    fun getDeployment(uuid: String): Deployment?
+    fun getDeployment(uuid: String): LiveData<Deployment>?
+
+    @Query("SELECT * FROM deployment WHERE uuid = :uuid")
+    fun getDeploymentSync(uuid: String): Deployment?
 }

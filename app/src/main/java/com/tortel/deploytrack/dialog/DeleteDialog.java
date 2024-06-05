@@ -46,7 +46,7 @@ public class DeleteDialog extends DialogFragment {
         setRetainInstance(true);
 
         mId = getArguments().getString(KEY_ID);
-        Deployment deployment = DatabaseManager.getInstance(getActivity()).getDeployment(mId);
+        Deployment deployment = DatabaseManager.getInstance(getActivity()).getDeploymentSync(mId);
         mName = deployment.getName();
     }
     @Override

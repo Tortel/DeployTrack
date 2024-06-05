@@ -2,6 +2,7 @@
 buildscript {
     ext.kotlin_version = '2.0.0'
     ext.nav_version = '2.7.7'
+    ext.hilt_version = '2.51.1'
 
     repositories {
         mavenCentral()
@@ -19,7 +20,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.google.dagger.hilt.android' version '2.50' apply false
+    id 'com.google.dagger.hilt.android' version "2.51.1" apply false
     id 'com.github.ben-manes.versions' version '0.51.0'
 }
 

@@ -110,9 +110,9 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
         if (mUser == null) {
             return
         }
-        val localDeployments = mDbManager.allDeployments
+        val localDeployments = mDbManager.allDeploymentsSync
         val deploymentNode = deploymentNode
-        for (deployment in localDeployments!!) {
+        for (deployment in localDeployments) {
             checkForOrAdd(deploymentNode, deployment)
         }
     }
@@ -168,7 +168,7 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
         val updatedDeployment = dataSnapshot.getValue(
             Deployment::class.java
         )
-        var localDeployment = mDbManager.getDeployment(
+        var localDeployment = mDbManager.getDeploymentSync(
             updatedDeployment!!.uuid
         )
         Log.d("FB onChildChanged: Deployment with UUID " + updatedDeployment.uuid)
@@ -196,7 +196,7 @@ internal class FirebaseDBManager private constructor(dbManager: DatabaseManager,
         val removedDeployment = dataSnapshot.getValue(
             Deployment::class.java
         )
-        val localDeployment = mDbManager.getDeployment(
+        val localDeployment = mDbManager.getDeploymentSync(
             removedDeployment!!.uuid
         )
         Log.d("FB onChildRemoved: Deployment with UUID " + removedDeployment.uuid + " removed from firebase")

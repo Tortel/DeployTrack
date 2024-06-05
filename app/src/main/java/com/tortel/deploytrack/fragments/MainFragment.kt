@@ -27,6 +27,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
@@ -43,6 +44,7 @@ import com.tortel.deploytrack.Log
 import com.tortel.deploytrack.Prefs
 import com.tortel.deploytrack.R
 import com.tortel.deploytrack.data.DatabaseManager
+import com.tortel.deploytrack.data.Deployment
 import com.tortel.deploytrack.data.RoomMigrationManager
 import com.tortel.deploytrack.databinding.FragmentMainBinding
 import com.tortel.deploytrack.dialog.DatabaseUpgradeDialog
@@ -51,11 +53,16 @@ import com.tortel.deploytrack.dialog.ScreenShotModeDialog
 import com.tortel.deploytrack.dialog.WelcomeDialog
 import com.tortel.deploytrack.model.MainFragmentModel
 import com.tortel.deploytrack.provider.WidgetProvider
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Main fragment that displays the charts and such
  */
+@AndroidEntryPoint
 class MainFragment : Fragment() {
+    @Inject lateinit var mDatabaseManager: DatabaseManager;
+
     private val viewModel: MainFragmentModel by viewModels()
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
     private var mAdapter: DeploymentFragmentAdapter? = null
@@ -93,6 +100,14 @@ class MainFragment : Fragment() {
                     dialog.show(parentFragmentManager, "welcome")
                 }
             }
+
+            val deploymentObserver = Observer { newList: List<Deployment> ->
+                mAdapter?.setList(newList);
+                reload();
+            }
+
+            mDatabaseManager.allDeployments.observe(this, deploymentObserver)
+
             mCurrentPosition = 0
             // Sync should only need to be set up once
             setupSync()
@@ -206,7 +221,7 @@ class MainFragment : Fragment() {
         if (mAdapter == null) {
             mAdapter = DeploymentFragmentAdapter(activity, childFragmentManager)
         }
-        mAdapter?.reloadData()
+        //mAdapter?.reloadData()
 
         // Make sure that the position does not go past the end
         if (mCurrentPosition >= mAdapter!!.count) {

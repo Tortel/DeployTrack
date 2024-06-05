@@ -148,7 +148,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         }
         if (mDeploymentId != null) {
             // Starting in edit mode, load the old data
-            mDeployment = DatabaseManager.getInstance(requireContext()).getDeployment(mDeploymentId);
+            mDeployment = DatabaseManager.getInstance(requireContext()).getDeploymentSync(mDeploymentId);
 
             // Set the colors
             mCompletedColor = mDeployment.getCompletedColor();
