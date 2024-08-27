@@ -228,6 +228,11 @@ public class MainFragment extends Fragment {
             mCurrentPosition = Math.max(0, mCurrentPosition - 1);
         }
 
+        // Short circut if binding is null
+        if (binding == null) {
+            return;
+        }
+
         // Re-set the adapter and position
         binding.pager.setAdapter(mAdapter);
         binding.pager.setCurrentItem(mCurrentPosition);
@@ -235,7 +240,7 @@ public class MainFragment extends Fragment {
         binding.tabs.setupWithViewPager(binding.pager);
         binding.tabs.addOnTabSelectedListener(mTabSelectedListener);
 
-        if(mScreenShotMode){
+        if (mScreenShotMode) {
             binding.tabs.setVisibility(View.INVISIBLE);
         } else {
             binding.tabs.setVisibility(View.VISIBLE);
