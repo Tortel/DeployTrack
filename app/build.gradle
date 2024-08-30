@@ -7,8 +7,8 @@ android {
         applicationId "com.tortel.deploytrack"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 31
-        versionName "3.0.10"
+        versionCode 32
+        versionName "3.0.11"
     }
 
     buildFeatures {
