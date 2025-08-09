@@ -25,9 +25,10 @@ limitations under the License.
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
         app:title="@string/about"
         app:navigationIcon="@drawable/ic_arrow_back_24dp"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        style="@style/Widget.Material3.Toolbar"
         />
 
     <androidx.core.widget.NestedScrollView

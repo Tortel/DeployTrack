@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/library_row"
     android:layout_width="match_parent"
@@ -29,10 +30,10 @@ limitations under the License.
 
     <ImageView
         android:src="@drawable/ic_baseline_library_books_24"
-        android:tint="?attr/colorOnBackground"
         android:layout_width="@dimen/about_row_icon"
         android:layout_height="@dimen/about_row_icon"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:tint="?attr/colorOnBackground" />
 
     <LinearLayout
         android:layout_width="fill_parent"

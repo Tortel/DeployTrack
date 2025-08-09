@@ -24,7 +24,7 @@ limitations under the License.
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
 		app:title="@string/settings"
-		style="@style/Widget.MaterialComponents.Toolbar.Primary"
+		style="@style/Widget.Material3.Toolbar"
 		app:navigationIcon="@drawable/ic_arrow_back_24dp"
 		app:menu="@menu/menu_create"
 		/>

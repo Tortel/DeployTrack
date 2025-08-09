@@ -32,12 +32,12 @@ limitations under the License.
             app:title="@string/app_name"
             app:menu="@menu/main"
             android:elevation="0dp"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            style="@style/Widget.Material3.Toolbar"
             />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            style="@style/Widget.Material3.TabLayout"
             app:tabMode="scrollable"
             app:tabGravity="fill"
             android:layout_width="match_parent"

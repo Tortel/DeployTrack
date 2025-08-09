@@ -62,7 +62,7 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setAccentColor(getResources().getColor(R.color.primary));
+        setAccentColor(getResources().getColor(R.color.md_theme_primary));
         if(bundle != null){
             mType = bundle.getInt(EXTRA_TYPE) == 0 ? PickerType.START : PickerType.END;
         }

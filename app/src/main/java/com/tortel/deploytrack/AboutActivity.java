@@ -39,7 +39,7 @@ public class AboutActivity extends AppCompatActivity {
         // Check for light theme
         Prefs.load(this);
         if(Prefs.useLightTheme()){
-            setTheme(R.style.Theme_DeployThemeLight);
+            setTheme(R.style.DeployTheme);
         }
         super.onCreate(savedInstanceState);
 

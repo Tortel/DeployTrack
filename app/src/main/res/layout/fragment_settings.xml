@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,7 +24,7 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="@string/settings"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        style="@style/Widget.Material3.Toolbar"
         app:navigationIcon="@drawable/ic_arrow_back_24dp"
         />
 
@@ -33,4 +33,4 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+</com.google.android.material.appbar.AppBarLayout>

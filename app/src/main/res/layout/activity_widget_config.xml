@@ -17,6 +17,7 @@ limitations under the License.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -27,7 +28,7 @@ limitations under the License.
         android:layout_height="?attr/actionBarSize"
         app:title="@string/widget_pick"
         android:elevation="0dp"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        style="@style/Widget.Material3.Toolbar"
         />
 
     <androidx.viewpager.widget.ViewPager
@@ -38,7 +39,7 @@ limitations under the License.
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            style="@style/Widget.Material3.TabLayout"
             app:tabMode="scrollable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
