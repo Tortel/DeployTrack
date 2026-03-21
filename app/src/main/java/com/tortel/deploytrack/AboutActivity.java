@@ -42,8 +42,10 @@ public class AboutActivity extends AppCompatActivity {
 		androidx.activity.EdgeToEdge.enable(this);
         // Check for light theme
         Prefs.load(this);
-        if(Prefs.useLightTheme()){
+        if (Prefs.useLightTheme()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
         super.onCreate(savedInstanceState);
 

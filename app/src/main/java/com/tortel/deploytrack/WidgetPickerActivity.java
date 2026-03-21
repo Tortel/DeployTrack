@@ -52,6 +52,8 @@ public class WidgetPickerActivity extends AppCompatActivity {
         Prefs.load(this);
         if (Prefs.useLightTheme()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
         
         setContentView(R.layout.activity_widget_config);
