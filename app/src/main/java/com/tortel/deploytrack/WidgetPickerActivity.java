@@ -18,6 +18,11 @@ package com.tortel.deploytrack;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -40,15 +45,30 @@ public class WidgetPickerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+		androidx.activity.EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         
         // Check for light theme
         Prefs.load(this);
         if (Prefs.useLightTheme()) {
-            setTheme(R.style.DeployTheme);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         
         setContentView(R.layout.activity_widget_config);
+
+        View rootView = findViewById(R.id.rootView);
+
+        // Apply the insets listener
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, windowInsets) -> {
+            // Get the heights of the system bars (status bar, navigation bar, etc.)
+            androidx.core.graphics.Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Apply the insets as padding to the view
+            // This pushes the content of the view inwards so it doesn't overlap the system bars
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            // Return CONSUMED if you don't want the insets to be passed down to child views
+            // Or return windowInsets if you want children to also have a chance to handle them.
+            return WindowInsetsCompat.CONSUMED;
+        });
         
         Bundle extras = getIntent().getExtras();
         if(extras != null) {

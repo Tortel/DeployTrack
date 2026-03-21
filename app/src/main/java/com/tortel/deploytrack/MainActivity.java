@@ -16,8 +16,12 @@
 package com.tortel.deploytrack;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -34,11 +38,27 @@ public class MainActivity extends AppCompatActivity {
         // Check for light theme
         Prefs.load(this);
         if(Prefs.useLightTheme()){
-            setTheme(R.style.DeployTheme);
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+		androidx.activity.EdgeToEdge.enable(this);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
+
+		View rootView = findViewById(R.id.rootView);
+
+        // Apply the insets listener
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, windowInsets) -> {
+            // Get the heights of the system bars (status bar, navigation bar, etc.)
+            androidx.core.graphics.Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Apply the insets as padding to the view
+            // This pushes the content of the view inwards so it doesn't overlap the system bars
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            // Return CONSUMED if you don't want the insets to be passed down to child views
+            // Or return windowInsets if you want children to also have a chance to handle them.
+            return WindowInsetsCompat.CONSUMED; 
+        });
+
 		FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		if (BuildConfig.DEBUG) {
 			// Mark debug builds in crashlytics

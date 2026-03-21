@@ -26,6 +26,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,16 +38,31 @@ import com.tortel.deploytrack.databinding.ListLibraryBinding;
 public class AboutActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {  
+		androidx.activity.EdgeToEdge.enable(this);
         // Check for light theme
         Prefs.load(this);
         if(Prefs.useLightTheme()){
-            setTheme(R.style.DeployTheme);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onCreate(savedInstanceState);
 
         ActivityAboutBinding binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        View rootView = findViewById(R.id.rootView);
+
+        // Apply the insets listener
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, windowInsets) -> {
+            // Get the heights of the system bars (status bar, navigation bar, etc.)
+            androidx.core.graphics.Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Apply the insets as padding to the view
+            // This pushes the content of the view inwards so it doesn't overlap the system bars
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            // Return CONSUMED if you don't want the insets to be passed down to child views
+            // Or return windowInsets if you want children to also have a chance to handle them.
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         binding.toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == android.R.id.home) {
