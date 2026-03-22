@@ -26,6 +26,7 @@ limitations under the License.
 		app:title="@string/settings"
 		style="@style/Widget.Material3.Toolbar"
 		app:navigationIcon="@drawable/ic_arrow_back_24dp"
+		app:navigationIconTint="?attr/colorOnBackground"
 		app:menu="@menu/menu_create"
 		/>
 

@@ -23,6 +23,7 @@ limitations under the License.
         android:title="@string/save"
         android:icon="@drawable/ic_save_white_24dp"
         app:showAsAction="always|withText"
+        app:iconTint="?attr/colorOnBackground" 
         />
 
 </menu>

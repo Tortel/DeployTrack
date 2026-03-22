@@ -27,6 +27,7 @@ limitations under the License.
         app:title="@string/menu_sync"
         style="@style/Widget.Material3.Toolbar"
         app:navigationIcon="@drawable/ic_arrow_back_24dp"
+        app:navigationIconTint="?attr/colorOnBackground"
         />
 
     <ScrollView

@@ -28,6 +28,7 @@ limitations under the License.
         app:title="@string/widget_pick"
         android:elevation="0dp"
         style="@style/Widget.Material3.Toolbar"
+        app:navigationIconTint="?attr/colorOnBackground"
         />
 
     <androidx.viewpager.widget.ViewPager

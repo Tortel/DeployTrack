@@ -29,6 +29,7 @@ limitations under the License.
         android:fitsSystemWindows="true"
         app:title="@string/about"
         app:navigationIcon="@drawable/ic_arrow_back_24dp"
+        app:navigationIconTint="?attr/colorOnBackground"
         style="@style/Widget.Material3.Toolbar"
         />
 
