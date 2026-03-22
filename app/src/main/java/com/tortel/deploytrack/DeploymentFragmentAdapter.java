@@ -39,7 +39,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	private Context mContext;
 	private SparseArray<DeploymentFragment> mFragmentList;
 	
-	public DeploymentFragmentAdapter(Context context, FragmentManager fm){
+	public DeploymentFragmentAdapter(@NonNull Context context, @NonNull FragmentManager fm){
 		super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		this.mContext = context.getApplicationContext();
 		mDeploymentList = DatabaseManager.getInstance(mContext).getAllDeployments();
@@ -116,7 +116,7 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	
 	@Override
 	public CharSequence getPageTitle(int position){
-		if(mDeploymentList.size() == 0){
+		if(mDeploymentList.isEmpty()){
 			return mContext.getText(R.string.info);
 		}
 		return mDeploymentList.get(position).getName();
@@ -126,9 +126,8 @@ public class DeploymentFragmentAdapter extends FragmentStatePagerAdapter {
 	public int getItemPosition(@NonNull Object object) {
 		Log.v("Checking position of " + object);
 		int position = POSITION_NONE;
-		if (mDeploymentList != null && object instanceof DeploymentFragment) {
-			DeploymentFragment fragment = (DeploymentFragment) object;
-			Deployment deployment = fragment.getDeployment();
+		if (mDeploymentList != null && object instanceof DeploymentFragment fragment) {
+            Deployment deployment = fragment.getDeployment();
 			position = mDeploymentList.indexOf(deployment);
 			if (position < 0) {
 				position = POSITION_NONE;

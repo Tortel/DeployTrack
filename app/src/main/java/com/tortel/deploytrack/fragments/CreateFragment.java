@@ -81,14 +81,12 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
         mDateFormat = new SimpleDateFormat("MMM dd, yyyy");
 
         // Register for date changes
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mDateChangeReceiver,
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(mDateChangeReceiver,
                 new IntentFilter(SingleDatePickerDialog.ACTION_DATE_SELECTED));
     }
 
@@ -139,7 +137,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         binding.end.setOnClickListener(this);
         binding.end.setOnFocusChangeListener(this);
 
-        String id = CreateFragmentArgs.fromBundle(getArguments()).getId();
+        String id = getArguments() == null ? null : CreateFragmentArgs.fromBundle(getArguments()).getId();
         if (id != null) {
             //Starting in edit mode, load the old data
             mDeployment = DatabaseManager.getInstance(getContext()).getDeployment(id);
@@ -175,8 +173,8 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             binding.toolbar.setTitle(R.string.add_new);
         }
 
-        //If restore from rotation
-        if(savedInstanceState != null){
+        // If restore from rotation
+        if (savedInstanceState != null) {
             mStartDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_START));
             mEndDate.setTimeInMillis(savedInstanceState.getLong(KEY_TIME_END));
 
@@ -185,12 +183,12 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             mCompletedColor = savedInstanceState.getInt(KEY_COLOR_COMPLETED);
             mRemainingColor = savedInstanceState.getInt(KEY_COLOR_REMAINING);
 
-            //Set the date buttons, if set
-            if(mStartDate != null){
+            // Set the date buttons, if set
+            if (mStartDate != null) {
                 binding.start.setText(mDateFormat.format(mStartDate.getTime()));
             }
 
-            if(mStartDate != null && mEndDate != null && mEndDate.after(mStartDate)){
+            if (mStartDate != null && mEndDate != null && mEndDate.after(mStartDate)) {
                 binding.end.setText(mDateFormat.format(mEndDate.getTime()));
             }
         }
@@ -222,7 +220,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     public void onDestroy() {
         super.onDestroy();
         // Unregister our date change receiver
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mDateChangeReceiver);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mDateChangeReceiver);
     }
 
     @Override
@@ -232,7 +230,8 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         outState.putLong(KEY_TIME_START, mStartDate.getTimeInMillis());
         outState.putLong(KEY_TIME_END, mEndDate.getTimeInMillis());
 
-        outState.putString(KEY_NAME, binding.name.getText().toString());
+        String name = binding.name.getText() == null ? "" : binding.name.getText().toString();
+        outState.putString(KEY_NAME, name);
 
         outState.putInt(KEY_COLOR_COMPLETED, mCompletedColor);
         outState.putInt(KEY_COLOR_REMAINING, mRemainingColor);
@@ -244,7 +243,10 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
     private void saveDeployment(){
         boolean hasError = false;
 
-        if(mStartDate == null || "".equals(binding.start.getText().toString())){
+        String startDateString = binding.start.getText() == null ? "" : binding.start.getText().toString();
+        String endDateString = binding.end.getText() == null ? "" : binding.end.getText().toString();
+
+        if (mStartDate == null || startDateString.isEmpty()) {
             binding.startWrapper.setErrorEnabled(true);
             binding.startWrapper.setError(getString(R.string.invalid_start));
             hasError = true;
@@ -252,7 +254,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             binding.startWrapper.setErrorEnabled(false);
         }
 
-        if(mEndDate == null || !mEndDate.after(mStartDate) || "".equals(binding.end.getText().toString())){
+        if (mEndDate == null || !mEndDate.after(mStartDate) || endDateString.isEmpty()) {
             binding.endWrapper.setErrorEnabled(true);
             binding.endWrapper.setError(getString(R.string.invalid_end));
             hasError = true;
@@ -260,8 +262,8 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
             binding.endWrapper.setErrorEnabled(false);
         }
 
-        String name = binding.name.getText().toString().trim();
-        if("".equals(name)){
+        String name = binding.name.getText() == null ? "" : binding.name.getText().toString().trim();
+        if (name.isEmpty()) {
             binding.nameWraper.setErrorEnabled(true);
             binding.nameWraper.setError(getString(R.string.invalid_name));
             hasError = true;
@@ -270,7 +272,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener, Vi
         }
 
         // Stop now if there was an error
-        if(hasError){
+        if (hasError) {
             return;
         }
 

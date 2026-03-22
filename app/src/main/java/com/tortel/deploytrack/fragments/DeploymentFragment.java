@@ -70,7 +70,6 @@ public class DeploymentFragment extends Fragment {
 	public static DeploymentFragment newInstance(Deployment deployment) {
 		DeploymentFragment fragment = new DeploymentFragment();
 		fragment.mDeployment = deployment;
-		fragment.setRetainInstance(false);
 		return fragment;
 	}
 
@@ -119,7 +118,7 @@ public class DeploymentFragment extends Fragment {
 
 		// Get the metrics
 		DisplayMetrics metrics = new DisplayMetrics();
-		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		// Get the smaller dimension
 		float size = (float) Math.min(metrics.widthPixels, metrics.heightPixels);
 

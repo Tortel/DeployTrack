@@ -171,7 +171,7 @@ public class SyncSetupFragment extends Fragment {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), task -> {
+                .addOnCompleteListener(requireActivity(), task -> {
                     Log.d("signInWithCredential:onComplete:" + task.isSuccessful());
 
                     // If sign in fails, display a message to the user. If sign in succeeds
@@ -204,7 +204,7 @@ public class SyncSetupFragment extends Fragment {
      * Update the mStatusTextView to reflect the current sync settings
      */
     private void showSyncStatus(){
-        FirebaseUser currentUser = DatabaseManager.getInstance(getContext()).getFirebaseUser();
+        FirebaseUser currentUser = DatabaseManager.getInstance(requireContext()).getFirebaseUser();
         if(currentUser != null){
             // If sync is enabled, show the email address it is using
             binding.syncStatus.setText(getString(R.string.pref_sync_enabled, currentUser.getEmail()));

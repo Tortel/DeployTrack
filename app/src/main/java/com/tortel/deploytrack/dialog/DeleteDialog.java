@@ -45,6 +45,10 @@ public class DeleteDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        if (getArguments() == null) {
+            throw new IllegalArgumentException("No arguments");
+        }
+
         mId = getArguments().getString(KEY_ID);
         Deployment deployment = DatabaseManager.getInstance(getActivity()).getDeployment(mId);
         mName = deployment.getName();
@@ -59,7 +63,7 @@ public class DeleteDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setMessage(getString(R.string.confirm, mName));
         builder.setTitle(R.string.delete);
         builder.setPositiveButton(R.string.delete, (DialogInterface dialog, int which) -> {
@@ -69,9 +73,9 @@ public class DeleteDialog extends DialogFragment {
             // Notify the app
             Intent deleteIntent = new Intent(DatabaseManager.DATA_DELETED);
             deleteIntent.putExtra(KEY_ID, mId);
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(deleteIntent);
+            LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(deleteIntent);
             // Log the event
-            FirebaseAnalytics.getInstance(getActivity())
+            FirebaseAnalytics.getInstance(requireActivity())
                     .logEvent(Analytics.EVENT_DELETED_DEPLOYMENT, null);
         });
         builder.setNegativeButton(R.string.cancel, null);

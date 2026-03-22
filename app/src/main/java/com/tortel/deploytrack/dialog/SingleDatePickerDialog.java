@@ -63,7 +63,7 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setAccentColor(getResources().getColor(R.color.md_theme_primary));
-        if(bundle != null){
+        if (bundle != null) {
             mType = bundle.getInt(EXTRA_TYPE) == 0 ? PickerType.START : PickerType.END;
         }
     }
@@ -84,6 +84,6 @@ public class SingleDatePickerDialog extends DatePickerDialog implements DatePick
         intent.putExtra(EXTRA_MONTH, month);
         intent.putExtra(EXTRA_YEAR, year);
         intent.putExtra(EXTRA_TYPE, mType == PickerType.START ? 0 : 1);
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
     }
 }

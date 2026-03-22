@@ -72,7 +72,7 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
 
         if(savedInstanceState != null){
             mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
@@ -85,14 +85,6 @@ public class MainFragment extends Fragment {
             if (DatabaseUpgrader.needsUpgrade(getContext())) {
                 DatabaseUpgradeDialog upgradeDialog = new DatabaseUpgradeDialog();
                 upgradeDialog.show(getParentFragmentManager(), "upgrade");
-            } else {
-                // Only show the welcome dialog if its the first time the app is opened,
-                // and the DB doesn't need to be upgraded
-                if (!Prefs.isWelcomeShown()) {
-                    Prefs.setWelcomeShown(getContext());
-                    WelcomeDialog dialog = new WelcomeDialog();
-                    dialog.show(getParentFragmentManager(), "welcome");
-                }
             }
 
             mCurrentPosition = 0;
@@ -100,7 +92,7 @@ public class MainFragment extends Fragment {
             setupSync();
         }
 
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(requireContext());
         lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_DELETED));
         lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_ADDED));
         lbm.registerReceiver(mChangeListener, new IntentFilter(DatabaseManager.DATA_CHANGED));
@@ -134,7 +126,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getContext());
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(requireContext());
         lbm.unregisterReceiver(mChangeListener);
     }
 
@@ -177,9 +169,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Swarner.dev@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Deployment Tracker Feedback");
                 intent.setType("plain/text");
-                if (isAvailable(intent)) {
-                    startActivity(intent);
-                }
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.menu_screenshot) {
                 if (!Prefs.isAboutScreenShotShown()) {
@@ -194,7 +184,7 @@ public class MainFragment extends Fragment {
                 // Propagate screen shot mode to the widgets
                 Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
                 updateWidgetIntent.putExtra(WidgetProvider.KEY_SCREENSHOT_MODE, mScreenShotMode);
-                getActivity().sendBroadcast(updateWidgetIntent);
+                requireActivity().sendBroadcast(updateWidgetIntent);
 
                 reload();
                 return true;
@@ -270,23 +260,13 @@ public class MainFragment extends Fragment {
     /**
      * Set the various analytics properties
      */
-    private void setAnalyticsProperties(){
+    private void setAnalyticsProperties() {
         // Record the number of deployments
-        if(mAdapter != null) {
+        if (mAdapter != null) {
             mFirebaseAnalytics.setUserProperty(Analytics.PROPERTY_DEPLOYMENT_COUNT, "" + mAdapter.getCount());
         }
 
         Analytics.recordPreferences(mFirebaseAnalytics, mScreenShotMode);
-    }
-
-    /**
-     * Check if there is an app available to handle an intent
-     */
-    private boolean isAvailable(Intent intent) {
-        final PackageManager mgr = getContext().getPackageManager();
-        List<ResolveInfo> list = mgr.queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
     }
 
     /**
@@ -315,7 +295,7 @@ public class MainFragment extends Fragment {
     private final BroadcastReceiver mChangeListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(DatabaseManager.DATA_DELETED) && mAdapter != null) {
+            if (DatabaseManager.DATA_DELETED.equals(intent.getAction()) && mAdapter != null) {
                 mAdapter.deploymentDeleted(intent.getStringExtra(DeleteDialog.KEY_ID));
             }
             reload();

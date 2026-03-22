@@ -48,7 +48,7 @@ public class DatabaseUpgradeDialog extends DialogFragment {
         setCancelable(false);
 
         // Start the upgrade
-        doDatabaseUpgrade(getActivity());
+        doDatabaseUpgrade(requireActivity());
     }
 
     @Override
@@ -61,10 +61,10 @@ public class DatabaseUpgradeDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setCancelable(false);
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_progress, null);
         TextView messageView = view.findViewById(R.id.dialog_content);
@@ -86,7 +86,7 @@ public class DatabaseUpgradeDialog extends DialogFragment {
 
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        getActivity().startActivity(intent);
+        requireActivity().startActivity(intent);
     }
 
     private void doDatabaseUpgrade(@NonNull final Context context) {
@@ -103,9 +103,6 @@ public class DatabaseUpgradeDialog extends DialogFragment {
                         // Re-start the main activity
                         restartMainActivity();
                     });
-                } else {
-                    // Uh? What now?
-
                 }
             }
         }).start();

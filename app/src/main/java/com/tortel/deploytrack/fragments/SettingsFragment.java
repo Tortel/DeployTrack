@@ -15,6 +15,7 @@
  */
 package com.tortel.deploytrack.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ import com.tortel.deploytrack.databinding.FragmentSettingsBinding;
 import com.tortel.deploytrack.dialog.ScreenShotModeDialog;
 import com.tortel.deploytrack.dialog.WelcomeDialog;
 import com.tortel.deploytrack.provider.WidgetProvider;
+
+import java.util.Objects;
 
 /**
  * Fragment that handles settings
@@ -97,7 +100,10 @@ public class SettingsFragment extends Fragment {
         Log.v("Sending widget update broadcast");
         // Force the widgets to update
         Intent updateWidgetIntent = new Intent(WidgetProvider.UPDATE_INTENT);
-        getContext().sendBroadcast(updateWidgetIntent);
+        Context context = getContext();
+        if (context != null) {
+            context.sendBroadcast(updateWidgetIntent);
+        }
     }
 
     /**
@@ -123,7 +129,10 @@ public class SettingsFragment extends Fragment {
         private void setSyncStatus(){
             FirebaseUser currentUser = DatabaseManager.getInstance(getActivity()).getFirebaseUser();
             Preference syncPref = getPreferenceScreen().findPreference(KEY_SYNC);
-            if(currentUser != null){
+            if (syncPref == null) {
+                return;
+            }
+            if (currentUser != null) {
                 // Show that sync is enabled
                 syncPref.setTitle(getString(R.string.pref_sync_enabled, currentUser.getEmail()));
             } else {
@@ -137,16 +146,19 @@ public class SettingsFragment extends Fragment {
             super.onResume();
             setSyncStatus();
 
-            getPreferenceScreen().getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
+            SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
+            if (prefs != null) {
+                prefs.registerOnSharedPreferenceChangeListener(this);
+            }
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            getPreferenceScreen().getSharedPreferences()
-                    .unregisterOnSharedPreferenceChangeListener(this);
-
+            SharedPreferences prefs = getPreferenceScreen().getSharedPreferences();
+            if (prefs != null) {
+                prefs.unregisterOnSharedPreferenceChangeListener(this);
+            }
         }
 
         @Override
@@ -174,6 +186,10 @@ public class SettingsFragment extends Fragment {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key == null) {
+                return;
+            }
+
             // For theme changes, restart the app to apply it right away
             switch (key) {
                 case KEY_THEME:
@@ -187,7 +203,7 @@ public class SettingsFragment extends Fragment {
                     // Turn analytics on/off
                     boolean value = sharedPreferences.getBoolean(KEY_ANALYTICS, true);
                     Log.d("Analytics collection: "+value);
-                    FirebaseAnalytics.getInstance(getActivity()).setAnalyticsCollectionEnabled(value);
+                    FirebaseAnalytics.getInstance(requireActivity()).setAnalyticsCollectionEnabled(value);
                     break;
             }
         }

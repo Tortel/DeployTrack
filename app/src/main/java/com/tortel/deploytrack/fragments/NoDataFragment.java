@@ -36,7 +36,7 @@ public class NoDataFragment extends Fragment {
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		TextView view = new TextView(getActivity());
-		view.setText(getActivity().getResources().getString(R.string.howto_add));
+		view.setText(requireActivity().getResources().getString(R.string.howto_add));
 		view.setGravity(Gravity.CENTER);
 		return view;
 	}

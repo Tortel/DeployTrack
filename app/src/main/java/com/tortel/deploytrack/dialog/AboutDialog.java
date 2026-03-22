@@ -55,9 +55,9 @@ public abstract class AboutDialog extends DialogFragment {
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-		LayoutInflater inflater = getActivity().getLayoutInflater();
+		LayoutInflater inflater = requireActivity().getLayoutInflater();
 		@SuppressLint("InflateParams")
 		View view = inflater.inflate(R.layout.dialog_about, null);
 		TextView text = view.findViewById(R.id.about_view);
@@ -78,7 +78,7 @@ public abstract class AboutDialog extends DialogFragment {
 	}
 	
 	private String readRawTextFile(int id) {
-		InputStream inputStream = getActivity().getResources().openRawResource(id);
+		InputStream inputStream = requireActivity().getResources().openRawResource(id);
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader buf = new BufferedReader(in);
 		String line;
