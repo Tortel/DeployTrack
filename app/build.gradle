@@ -53,16 +53,16 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5'
 
     // http://www.joda.org/joda-time/
-    implementation 'joda-time:joda-time:2.14.1'
+    implementation 'joda-time:joda-time:2.14.2'
 
     // http://ormlite.com/
     implementation 'com.j256.ormlite:ormlite-android:6.1'
 
     // Google Services Auth
-    implementation 'com.google.android.gms:play-services-auth:21.5.1'
+    implementation 'com.google.android.gms:play-services-auth:21.6.0'
 
     // Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:34.11.0')
+    implementation platform('com.google.firebase:firebase-bom:34.14.0')
 
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-database'
